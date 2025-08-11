@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "channels",
     "apps.accounts",
+    "apps.listings",
 ]
 
 MIDDLEWARE = [
@@ -87,6 +88,11 @@ MEDIA_ROOT = BASE_DIR / "media"
 PRIVATE_MEDIA_ROOT = BASE_DIR / "private-media"
 PRIVATE_FILE_MAX_MB = env.int("PRIVATE_FILE_MAX_MB", default=5)
 
+# Publicaciones
+LISTING_IMAGE_MAX_MB = env.int("LISTING_IMAGE_MAX_MB", default=8)
+LISTING_MAX_IMAGES = env.int("LISTING_MAX_IMAGES", default=10)
+LISTING_CURRENCY = env("LISTING_CURRENCY", default="COP")
+
 S3_BUCKET = env("S3_BUCKET", default="")
 if S3_BUCKET:
     _s3 = {
@@ -144,6 +150,7 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "API del marketplace Trueke.",
     "VERSION": "0.1.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    "ENUM_NAME_OVERRIDES": {"ListingStatusEnum": "apps.listings.models.Listing.Status"},
 }
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=["http://localhost:5173"])
 

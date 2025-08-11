@@ -1,4 +1,4 @@
-.PHONY: dev down logs test lint format migrate makemigrations superuser shell
+.PHONY: dev down logs test lint format migrate makemigrations superuser shell categories
 
 dev:            ## Levanta todo (backend, worker, Postgres, Redis)
 	docker compose up --build
@@ -29,3 +29,6 @@ superuser:      ## Crea un operador con contraseña para el admin
 
 shell:
 	docker compose run --rm backend python manage.py shell
+
+categories:     ## Carga las 4 categorías de demo (idempotente)
+	docker compose run --rm backend python manage.py load_demo_categories
