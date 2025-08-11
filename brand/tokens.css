@@ -1,0 +1,46 @@
+/* Trueke · tokens de diseño (Tailwind CSS 4, bloque @theme).
+   Estilo: limpio con carácter + color vivo. La oferta se presenta como un ticket. */
+@import url("https://fonts.googleapis.com/css2?family=Gabarito:wght@600;700;800&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap");
+
+@theme {
+  /* Tipografía */
+  --font-display: "Gabarito", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* Neutros */
+  --color-ink: #14141a;
+  --color-ink-soft: #4a4a55;
+  --color-muted: #8a8a94;
+  --color-line: #e6e6e1;
+  --color-paper: #f6f6f3;
+  --color-white: #ffffff;
+
+  /* Marca */
+  --color-blue: #2b4bff;       /* primario: botones, enlaces, ticket */
+  --color-blue-dark: #1f38d6;  /* hover / pressed */
+  --color-blue-soft: #e4e9ff;
+  --color-lime: #c6f432;       /* acento: talón del ticket, destacados sobre tinta */
+  --color-lime-dark: #5d8a00;  /* lima legible como texto sobre blanco */
+  --color-lime-soft: #f1fccf;
+  --color-pink: #ff7ac6;       /* acento alegre: etiquetas, ilustraciones */
+  --color-pink-soft: #ffe3f3;
+  --color-tomato: #ff5a36;     /* errores y cancelaciones */
+  --color-tomato-soft: #ffe4dd;
+
+  /* Estados de una publicación */
+  --color-status-review: var(--color-pink);      /* EN_REVISION */
+  --color-status-offer: var(--color-blue);       /* CON_OFERTA */
+  --color-status-accepted: var(--color-lime);    /* ACEPTADA */
+  --color-status-pickup: #9b7bff;                /* RECOGIDA_ENVIADA */
+  --color-status-done: var(--color-ink);         /* COMPLETADA */
+  --color-status-cancelled: var(--color-tomato); /* CANCELADA */
+
+  /* Forma */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 0 var(--color-line), 0 8px 24px -12px rgb(20 20 26 / 0.18);
+  --shadow-pop: 4px 4px 0 var(--color-ink);   /* botones "sticker" en momentos clave */
+}

@@ -1,0 +1,25 @@
+# Entorno
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+dist/
+coverage/
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+
+# Datos locales
+media/
+staticfiles/
+*.sqlite3
+
+# Referencias de terceros (tablero de Dribbble): solo para uso local
+brand/inspiracion/
+brand/.tmp/
+
+# Herramientas internas (generación de imágenes, prompts)
+.interno/
