@@ -1,0 +1,41 @@
+# Entorno de desarrollo completo: `make dev`
+# Los archivos se guardan en disco (backend/media y backend/private-media). En producción, S3 (ver .env.example).
+x-backend: &backend
+  build: ./backend
+  volumes: ["./backend:/app"]
+  environment:
+    DEBUG: "true"
+    SECRET_KEY: dev-insecure-change-me
+    DATABASE_URL: postgres://trueke:trueke@db:5432/trueke
+    REDIS_URL: redis://redis:6379/0
+    OTP_PROVIDER: console
+  depends_on:
+    db: { condition: service_healthy }
+    redis: { condition: service_started }
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment: { POSTGRES_USER: trueke, POSTGRES_PASSWORD: trueke, POSTGRES_DB: trueke }
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    ports: ["5432:5432"]
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "trueke"]
+      interval: 2s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+
+  backend:
+    <<: *backend
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    ports: ["8000:8000"]
+
+  worker:
+    <<: *backend
+    command: celery -A config worker -l info
+
+volumes:
+  pgdata:

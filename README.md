@@ -7,7 +7,7 @@
 ## Stack
 - **Backend**: Python 3.12, Django 5, Django REST Framework, Channels (WebSockets), PostgreSQL, Redis, Celery.
 - **Frontend**: React 19, Vite, TypeScript, Tailwind CSS 4, TanStack Query.
-- **Infra**: Docker Compose, almacenamiento compatible con S3 (MinIO en local).
+- **Infra**: Docker Compose, almacenamiento compatible con S3 en producción.
 
 ## Marca
 Logo, paleta, tipografías e imágenes en [`brand/`](brand/README.md).

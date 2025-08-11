@@ -23,3 +23,7 @@ brand/.tmp/
 
 # Herramientas internas (generación de imágenes, prompts)
 .interno/
+
+# Backend local
+backend/private-media/
+backend/db.sqlite3
