@@ -22,7 +22,7 @@ S = Listing.Status
 SELLER = "seller"
 OPERATOR = "operator"
 
-# Argumentos: listing, event.
+# Argumentos: listing, event. También se emite al crear la publicación (event.action == "create").
 listing_transitioned = Signal()
 
 
@@ -132,6 +132,15 @@ def apply(listing: Listing, user, name: str, **data) -> ListingEvent:
         transaction.on_commit(lambda: listing_transitioned.send(Listing, listing=locked, event=event))
 
     listing.refresh_from_db()
+    return event
+
+
+def record_creation(listing: Listing, user) -> ListingEvent:
+    """Primer evento del historial. Emite `listing_transitioned` con `action="create"`."""
+    event = ListingEvent.objects.create(
+        listing=listing, actor=user, action="create", to_status=listing.status
+    )
+    transaction.on_commit(lambda: listing_transitioned.send(Listing, listing=listing, event=event))
     return event
 
 

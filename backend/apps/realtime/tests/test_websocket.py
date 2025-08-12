@@ -152,3 +152,23 @@ async def test_ping_and_unknown_type(listing):
     await ws.send_json_to({"type": "hack"})
     assert (await ws.receive_json_from())["code"] == "unknown_type"
     await ws.disconnect()
+
+
+async def test_notifications_arrive_on_personal_channel(listing, operator):
+    seller = await sync_to_async(lambda: listing.seller)()
+    ws = await login(seller)  # sin suscribirse a nada: user.<id> es automático
+
+    def act():
+        api = APIClient()
+        api.force_authenticate(operator)
+        api.post(reverse("listing-offer", args=[listing.pk]), {"amount": "100000"}, format="json")
+
+    await sync_to_async(act)()
+    event = await ws.receive_json_from(timeout=2)
+    assert (event["channel"], event["event"], event["data"]["kind"]) == (
+        f"user.{seller.pk}",
+        "notification.created",
+        "listing.offer",
+    )
+    assert await ws.receive_nothing(timeout=0.2)
+    await ws.disconnect()
