@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.db.models import Count
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from drf_spectacular.utils import extend_schema_field
@@ -6,6 +7,7 @@ from rest_framework import serializers
 
 from . import transitions
 from .models import Category, Listing, ListingEvent, ListingImage
+from .queries import unread_filter
 from .schema import attribute_errors
 
 
@@ -35,6 +37,7 @@ class ListingSerializer(serializers.ModelSerializer):
     images = ListingImageSerializer(many=True, read_only=True)
     terms_accepted = serializers.BooleanField(write_only=True, required=False)
     available_actions = serializers.SerializerMethodField()
+    unread_messages = serializers.SerializerMethodField()
 
     class Meta:
         model = Listing
@@ -61,6 +64,7 @@ class ListingSerializer(serializers.ModelSerializer):
             "pickup_notes",
             "cancel_reason",
             "available_actions",
+            "unread_messages",
             "created_at",
             "updated_at",
         ]
@@ -81,6 +85,14 @@ class ListingSerializer(serializers.ModelSerializer):
     @extend_schema_field(serializers.ListField(child=serializers.ChoiceField(list(transitions.TRANSITIONS))))
     def get_available_actions(self, listing):
         return transitions.available(listing, self.context["request"].user)
+
+    def get_unread_messages(self, listing) -> int:
+        if hasattr(listing, "unread_messages"):
+            return listing.unread_messages
+        user = self.context["request"].user
+        return Listing.objects.filter(pk=listing.pk).aggregate(
+            n=Count("messages", filter=unread_filter(user))
+        )["n"]
 
     def validate(self, attrs):
         if self.instance is None and not attrs.pop("terms_accepted", False):

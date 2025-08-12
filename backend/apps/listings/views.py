@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.utils.translation import gettext as _
 from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import generics, mixins, parsers, permissions, status, viewsets
@@ -9,6 +9,7 @@ from rest_framework.response import Response
 
 from . import transitions
 from .models import Category, Listing, ListingImage
+from .queries import unread_filter, visible_listings
 from .serializers import (
     CategorySerializer,
     EmptySerializer,
@@ -28,12 +29,6 @@ class CategoryListView(generics.ListAPIView):
     serializer_class = CategorySerializer
     permission_classes = [permissions.AllowAny]
     pagination_class = None
-
-
-def visible_listings(user):
-    """El vendedor ve solo lo suyo; el operador ve todo."""
-    qs = Listing.objects.select_related("seller", "category").prefetch_related("images")
-    return qs if user.is_operator else qs.filter(seller=user)
 
 
 FILTERS = [
@@ -78,7 +73,9 @@ class ListingViewSet(
     def get_queryset(self):
         if getattr(self, "swagger_fake_view", False):  # generación del esquema OpenAPI
             return Listing.objects.none()
-        qs = visible_listings(self.request.user)
+        user = self.request.user
+        qs = visible_listings(user).annotate(unread_messages=Count("messages", filter=unread_filter(user)))
+        qs = qs.order_by("-created_at", "-id")  # con annotate, Meta.ordering no se aplica
         if self.action != "list":
             return qs
         params = self.request.query_params

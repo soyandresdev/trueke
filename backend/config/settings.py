@@ -30,6 +30,8 @@ INSTALLED_APPS = [
     "channels",
     "apps.accounts",
     "apps.listings",
+    "apps.chat",
+    "apps.realtime",
 ]
 
 MIDDLEWARE = [
@@ -92,6 +94,7 @@ PRIVATE_FILE_MAX_MB = env.int("PRIVATE_FILE_MAX_MB", default=5)
 LISTING_IMAGE_MAX_MB = env.int("LISTING_IMAGE_MAX_MB", default=8)
 LISTING_MAX_IMAGES = env.int("LISTING_MAX_IMAGES", default=10)
 LISTING_CURRENCY = env("LISTING_CURRENCY", default="COP")
+CHAT_FILE_MAX_MB = env.int("CHAT_FILE_MAX_MB", default=10)
 
 S3_BUCKET = env("S3_BUCKET", default="")
 if S3_BUCKET:
