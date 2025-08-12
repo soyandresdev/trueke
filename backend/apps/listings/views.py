@@ -97,7 +97,7 @@ class ListingViewSet(
 
     def perform_create(self, serializer):
         listing = serializer.save(seller=self.request.user)
-        listing.events.create(actor=self.request.user, action="create", to_status=listing.status, data={})
+        transitions.record_creation(listing, self.request.user)
 
     def perform_update(self, serializer):
         self._check_editable(serializer.instance)
