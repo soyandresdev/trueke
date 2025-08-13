@@ -10,4 +10,10 @@ urlpatterns = [
     path("me/", views.MeView.as_view(), name="me"),
     path("me/documents/", views.MyDocumentsView.as_view(), name="me-documents"),
     path("me/documents/<slug:kind>/", views.MyDocumentFileView.as_view(), name="me-document-file"),
+    path("users/<int:pk>/", views.SellerDetailView.as_view(), name="user-detail"),
+    path(
+        "users/<int:pk>/documents/<slug:kind>/",
+        views.SellerDocumentFileView.as_view(),
+        name="user-document-file",
+    ),
 ]

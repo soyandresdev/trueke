@@ -189,3 +189,11 @@ def test_images_only_by_seller_while_editable(as_user, listing, operator):
     Listing.objects.filter(pk=listing.pk).update(status=Listing.Status.ACCEPTED)
     response = as_user(listing.seller).post(detail(listing, "images"), {"image": png()}, format="multipart")
     assert response.status_code == 403
+
+
+def test_stats_by_status(as_user, listing, operator):
+    ListingFactory(seller=listing.seller, status=Listing.Status.OFFERED)
+    ListingFactory(status=Listing.Status.OFFERED)
+    stats = as_user(listing.seller).get(reverse("listing-stats")).data
+    assert (stats["in_review"], stats["offered"], stats["completed"]) == (1, 1, 0)
+    assert as_user(operator).get(reverse("listing-stats")).data["offered"] == 2

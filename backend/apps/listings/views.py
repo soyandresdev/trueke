@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.db.models import Count, Q
 from django.utils.translation import gettext as _
-from drf_spectacular.utils import OpenApiParameter, extend_schema
-from rest_framework import generics, mixins, parsers, permissions, status, viewsets
+from drf_spectacular.utils import OpenApiParameter, extend_schema, inline_serializer
+from rest_framework import generics, mixins, parsers, permissions, serializers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.response import Response
@@ -108,6 +108,20 @@ class ListingViewSet(
             raise PermissionDenied(_("Solo el vendedor puede editar la publicación."))
         if not listing.is_editable:
             raise PermissionDenied(_("La publicación ya no se puede editar."))
+
+    @extend_schema(
+        responses={
+            200: inline_serializer(
+                "ListingStats", {s: serializers.IntegerField() for s in Listing.Status.values}
+            )
+        }
+    )
+    @action(detail=False, methods=["get"])
+    def stats(self, request):
+        """Cuántas publicaciones hay en cada estado (pestañas del panel)."""
+        rows = visible_listings(request.user).order_by().values("status").annotate(n=Count("id"))
+        counts = {row["status"]: row["n"] for row in rows}
+        return Response({s: counts.get(s, 0) for s in Listing.Status.values})
 
     @extend_schema(responses={200: ListingEventSerializer(many=True)})
     @action(detail=True, methods=["get"])

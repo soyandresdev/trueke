@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "apps.listings",
     "apps.chat",
     "apps.notifications",
+    "apps.newsletter",
     "apps.realtime",
 ]
 
@@ -142,7 +143,10 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
-    "DEFAULT_THROTTLE_RATES": {"otp": env("OTP_THROTTLE_RATE", default="10/hour")},
+    "DEFAULT_THROTTLE_RATES": {
+        "otp": env("OTP_THROTTLE_RATE", default="10/hour"),
+        "newsletter": env("NEWSLETTER_THROTTLE_RATE", default="20/hour"),
+    },
 }
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=env.int("JWT_ACCESS_MINUTES", default=15)),
