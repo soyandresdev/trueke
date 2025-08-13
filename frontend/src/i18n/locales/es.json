@@ -1,0 +1,16 @@
+{
+  "brand": {
+    "tagline": "Véndenos lo que ya no usas"
+  },
+  "home": {
+    "title": "Lo que ya no usas vale más de lo que crees",
+    "lead": "Publícalo en minutos, recibe una oferta y nosotros pasamos a recogerlo.",
+    "cta": "Vender algo"
+  },
+  "language": {
+    "label": "Idioma",
+    "es": "Español",
+    "en": "English"
+  },
+  "notFound": "Esta página no existe."
+}

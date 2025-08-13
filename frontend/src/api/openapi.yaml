@@ -1,0 +1,1786 @@
+openapi: 3.0.3
+info:
+  title: Trueke API
+  version: 0.1.0
+  description: API del marketplace Trueke.
+paths:
+  /api/auth/otp/request/:
+    post:
+      operationId: auth_otp_request_create
+      description: Envía un código de acceso al teléfono.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OtpRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OtpRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OtpRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '202':
+          description: Código enviado
+  /api/auth/otp/verify/:
+    post:
+      operationId: auth_otp_verify_create
+      description: Verifica el código. Si el teléfono no tiene cuenta, la crea.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OtpVerify'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OtpVerify'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OtpVerify'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+          description: ''
+  /api/auth/token/refresh/:
+    post:
+      operationId: auth_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/categories/:
+    get:
+      operationId: categories_list
+      description: Categorías activas con su esquema de campos extra. Pública (la
+        usa la landing).
+      tags:
+      - categories
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+  /api/listings/:
+    get:
+      operationId: listings_list
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+        description: Código de la categoría
+      - in: query
+        name: city
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: Un número de página dentro del conjunto de resultados paginado.
+        schema:
+          type: integer
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Busca en nombre, descripción y vendedor
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Uno o varios estados separados por coma
+      tags:
+      - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedListingList'
+          description: ''
+    post:
+      operationId: listings_create
+      tags:
+      - listings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Listing'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Listing'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Listing'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+          description: ''
+  /api/listings/{listing_id}/messages/:
+    get:
+      operationId: listings_messages_list
+      description: 'Mensajes de la publicación, del más nuevo al más viejo. Enviar:
+        JSON o multipart con adjunto.'
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: El valor del cursor de paginación.
+        schema:
+          type: string
+      - in: path
+        name: listing_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMessageList'
+          description: ''
+    post:
+      operationId: listings_messages_create
+      description: 'Mensajes de la publicación, del más nuevo al más viejo. Enviar:
+        JSON o multipart con adjunto.'
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - listings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Message'
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+  /api/listings/{listing_id}/messages/{id}/attachment/:
+    get:
+      operationId: listings_messages_attachment_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: listing_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: Archivo
+  /api/listings/{listing_id}/messages/read/:
+    post:
+      operationId: listings_messages_read_create
+      description: Marca como leídos los mensajes del otro lado.
+      parameters:
+      - in: path
+        name: listing_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarkRead'
+          description: ''
+  /api/listings/{id}/:
+    get:
+      operationId: listings_retrieve
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+        description: Código de la categoría
+      - in: query
+        name: city
+        schema:
+          type: string
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este publicación.
+        required: true
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Busca en nombre, descripción y vendedor
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Uno o varios estados separados por coma
+      tags:
+      - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+          description: ''
+    patch:
+      operationId: listings_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este publicación.
+        required: true
+      tags:
+      - listings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedListing'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedListing'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedListing'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+          description: ''
+  /api/listings/{id}/accept/:
+    post:
+      operationId: listings_accept_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este publicación.
+        required: true
+      tags:
+      - listings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Listing'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Listing'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Listing'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+          description: ''
+  /api/listings/{id}/cancel/:
+    post:
+      operationId: listings_cancel_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este publicación.
+        required: true
+      tags:
+      - listings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Listing'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Listing'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Listing'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+          description: ''
+  /api/listings/{id}/complete/:
+    post:
+      operationId: listings_complete_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este publicación.
+        required: true
+      tags:
+      - listings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Listing'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Listing'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Listing'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+          description: ''
+  /api/listings/{id}/events/:
+    get:
+      operationId: listings_events_list
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+        description: Código de la categoría
+      - in: query
+        name: city
+        schema:
+          type: string
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este publicación.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: Un número de página dentro del conjunto de resultados paginado.
+        schema:
+          type: integer
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Busca en nombre, descripción y vendedor
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Uno o varios estados separados por coma
+      tags:
+      - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedListingEventList'
+          description: ''
+  /api/listings/{id}/images/:
+    post:
+      operationId: listings_images_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este publicación.
+        required: true
+      tags:
+      - listings
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ListingImage'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListingImage'
+          description: ''
+  /api/listings/{id}/images/{image_id}/:
+    delete:
+      operationId: listings_images_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este publicación.
+        required: true
+      - in: path
+        name: image_id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/listings/{id}/offer/:
+    post:
+      operationId: listings_offer_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este publicación.
+        required: true
+      tags:
+      - listings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Listing'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Listing'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Listing'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+          description: ''
+  /api/listings/{id}/pickup/:
+    post:
+      operationId: listings_pickup_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este publicación.
+        required: true
+      tags:
+      - listings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Listing'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Listing'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Listing'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+          description: ''
+  /api/listings/{id}/reject/:
+    post:
+      operationId: listings_reject_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este publicación.
+        required: true
+      tags:
+      - listings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Listing'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Listing'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Listing'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+          description: ''
+  /api/listings/stats/:
+    get:
+      operationId: listings_stats_retrieve
+      description: Cuántas publicaciones hay en cada estado (pestañas del panel).
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+        description: Código de la categoría
+      - in: query
+        name: city
+        schema:
+          type: string
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Busca en nombre, descripción y vendedor
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Uno o varios estados separados por coma
+      tags:
+      - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListingStats'
+          description: ''
+  /api/me/:
+    get:
+      operationId: me_retrieve
+      tags:
+      - me
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: me_partial_update
+      tags:
+      - me
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/me/documents/:
+    patch:
+      operationId: me_documents_partial_update
+      description: Sube el documento de identidad y/o el certificado bancario (multipart).
+      tags:
+      - me
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDocuments'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Documents'
+          description: ''
+  /api/me/documents/{kind}/:
+    get:
+      operationId: me_documents_retrieve
+      parameters:
+      - in: path
+        name: kind
+        schema:
+          type: string
+        required: true
+      tags:
+      - me
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: Archivo
+  /api/newsletter/subscribe/:
+    post:
+      operationId: newsletter_subscribe_create
+      description: Suscribe un email. Responde igual exista o no, para no revelar
+        quién está suscrito.
+      tags:
+      - newsletter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subscribe'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Subscribe'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Subscribe'
+        required: true
+      security:
+      - {}
+      responses:
+        '202':
+          description: Recibido
+  /api/newsletter/unsubscribe/:
+    post:
+      operationId: newsletter_unsubscribe_create
+      tags:
+      - newsletter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Unsubscribe'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Unsubscribe'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Unsubscribe'
+        required: true
+      security:
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/notifications/:
+    get:
+      operationId: notifications_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: Un número de página dentro del conjunto de resultados paginado.
+        schema:
+          type: integer
+      - in: query
+        name: unseen
+        schema:
+          type: boolean
+        description: Solo las no vistas
+      tags:
+      - notifications
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationList'
+          description: ''
+  /api/notifications/{id}/seen/:
+    post:
+      operationId: notifications_seen_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este notificación.
+        required: true
+      tags:
+      - notifications
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationsSeen'
+          description: ''
+  /api/notifications/seen-all/:
+    post:
+      operationId: notifications_seen_all_create
+      description: Marca todas como vistas (la campana).
+      tags:
+      - notifications
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationsSeen'
+          description: ''
+  /api/notifications/unseen-count/:
+    get:
+      operationId: notifications_unseen_count_retrieve
+      parameters:
+      - in: query
+        name: unseen
+        schema:
+          type: boolean
+        description: Solo las no vistas
+      tags:
+      - notifications
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationCount'
+          description: ''
+  /api/users/{id}/:
+    get:
+      operationId: users_retrieve
+      description: Perfil completo de un usuario, para que el operador lo verifique
+        y le pague. Solo operadores.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/users/{id}/documents/{kind}/:
+    get:
+      operationId: users_documents_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: kind
+        schema:
+          type: string
+        required: true
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: Archivo
+components:
+  schemas:
+    AuthResponse:
+      type: object
+      properties:
+        access:
+          type: string
+        refresh:
+          type: string
+        created:
+          type: boolean
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+      - access
+      - created
+      - refresh
+      - user
+    AvailableActionsEnum:
+      enum:
+      - offer
+      - accept
+      - reject
+      - pickup
+      - complete
+      - cancel
+      type: string
+      description: |-
+        * `offer` - offer
+        * `accept` - accept
+        * `reject` - reject
+        * `pickup` - pickup
+        * `complete` - complete
+        * `cancel` - cancel
+    BlankEnum:
+      enum:
+      - ''
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        code:
+          type: string
+          title: Código
+          maxLength: 40
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+        fields_schema:
+          title: Campos extra
+          description: JSON Schema (tipo object) con los campos propios de la categoría.
+      required:
+      - code
+      - id
+      - name
+    ConditionEnum:
+      enum:
+      - new
+      - like_new
+      - good
+      - fair
+      - for_parts
+      type: string
+      description: |-
+        * `new` - Nuevo
+        * `like_new` - Como nuevo
+        * `good` - Buen estado
+        * `fair` - Con detalles
+        * `for_parts` - Para repuestos
+    DocumentTypeEnum:
+      enum:
+      - national_id
+      - foreign_id
+      - passport
+      type: string
+      description: |-
+        * `national_id` - Documento nacional
+        * `foreign_id` - Documento de extranjería
+        * `passport` - Pasaporte
+    Documents:
+      type: object
+      properties:
+        document_file:
+          type: string
+          format: uri
+          nullable: true
+          writeOnly: true
+          title: Documento
+        bank_certificate:
+          type: string
+          format: uri
+          nullable: true
+          writeOnly: true
+          title: Certificado bancario
+    KindEnum:
+      enum:
+      - listing.create
+      - listing.offer
+      - listing.accept
+      - listing.reject
+      - listing.pickup
+      - listing.complete
+      - listing.cancel
+      - message.new
+      type: string
+      description: |-
+        * `listing.create` - Nueva publicación
+        * `listing.offer` - Nueva oferta
+        * `listing.accept` - Oferta aceptada
+        * `listing.reject` - Oferta rechazada
+        * `listing.pickup` - Recogida coordinada
+        * `listing.complete` - Venta completada
+        * `listing.cancel` - Publicación cancelada
+        * `message.new` - Mensajes nuevos
+    LanguageEnum:
+      enum:
+      - es
+      - en
+      type: string
+      description: |-
+        * `es` - Español
+        * `en` - English
+    Listing:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        seller:
+          allOf:
+          - $ref: '#/components/schemas/Seller'
+          readOnly: true
+        category:
+          type: integer
+        title:
+          type: string
+          title: Nombre
+          maxLength: 120
+        description:
+          type: string
+          title: Descripción
+          maxLength: 4000
+        condition:
+          allOf:
+          - $ref: '#/components/schemas/ConditionEnum'
+          title: Estado del artículo
+        attributes:
+          title: Campos de la categoría
+        city:
+          type: string
+          title: Ciudad
+          maxLength: 80
+        pickup_address:
+          type: string
+          title: Dirección de recogida
+          maxLength: 200
+        is_original:
+          type: boolean
+          title: ¿es original?
+        terms_accepted:
+          type: boolean
+          writeOnly: true
+        terms_accepted_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Términos aceptados
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListingImage'
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ListingStatusEnum'
+          readOnly: true
+          title: Estado
+        status_changed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Último cambio de estado
+        offer_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+          nullable: true
+          title: Oferta
+        offer_currency:
+          type: string
+          readOnly: true
+          title: Moneda
+        pickup_by:
+          allOf:
+          - $ref: '#/components/schemas/PickupByEnum'
+          readOnly: true
+          title: Responsable de la recogida
+        pickup_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          title: Fecha de recogida
+        pickup_notes:
+          type: string
+          readOnly: true
+          title: Indicaciones de recogida
+        cancel_reason:
+          type: string
+          readOnly: true
+          title: Motivo de cancelación
+        available_actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AvailableActionsEnum'
+          readOnly: true
+        unread_messages:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - available_actions
+      - cancel_reason
+      - category
+      - city
+      - condition
+      - created_at
+      - description
+      - id
+      - images
+      - offer_amount
+      - offer_currency
+      - pickup_address
+      - pickup_by
+      - pickup_date
+      - pickup_notes
+      - seller
+      - status
+      - status_changed_at
+      - terms_accepted_at
+      - title
+      - unread_messages
+      - updated_at
+    ListingEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        action:
+          type: string
+          title: Acción
+          maxLength: 20
+        from_status:
+          oneOf:
+          - $ref: '#/components/schemas/ListingStatusEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        to_status:
+          $ref: '#/components/schemas/ListingStatusEnum'
+        actor:
+          allOf:
+          - $ref: '#/components/schemas/Seller'
+          readOnly: true
+        data: {}
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - action
+      - actor
+      - created_at
+      - id
+      - to_status
+    ListingImage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        image:
+          type: string
+          format: uri
+          title: Imagen
+        position:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: Orden
+      required:
+      - id
+      - image
+    ListingStats:
+      type: object
+      properties:
+        in_review:
+          type: integer
+        offered:
+          type: integer
+        accepted:
+          type: integer
+        pickup_sent:
+          type: integer
+        completed:
+          type: integer
+        cancelled:
+          type: integer
+      required:
+      - accepted
+      - cancelled
+      - completed
+      - in_review
+      - offered
+      - pickup_sent
+    ListingStatusEnum:
+      enum:
+      - in_review
+      - offered
+      - accepted
+      - pickup_sent
+      - completed
+      - cancelled
+      type: string
+      description: |-
+        * `in_review` - En revisión
+        * `offered` - Con oferta
+        * `accepted` - Aceptada
+        * `pickup_sent` - Recogida enviada
+        * `completed` - Completada
+        * `cancelled` - Cancelada
+    MarkRead:
+      type: object
+      properties:
+        updated:
+          type: integer
+      required:
+      - updated
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        listing:
+          type: integer
+          readOnly: true
+        sender:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          readOnly: true
+        from_platform:
+          type: boolean
+          readOnly: true
+          title: Enviado por la plataforma
+        text:
+          type: string
+          title: Texto
+          maxLength: 4000
+        attachment:
+          type: string
+          format: uri
+          nullable: true
+          writeOnly: true
+          title: Adjunto
+        attachment_kind:
+          type: string
+          description: '`pdf` o `image`; el nombre original no se guarda (puede tener
+            datos personales).'
+          readOnly: true
+        attachment_url:
+          type: string
+          nullable: true
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        read_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+          title: Leído
+      required:
+      - attachment_kind
+      - attachment_url
+      - created_at
+      - from_platform
+      - id
+      - listing
+      - read_at
+      - sender
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/KindEnum'
+          title: Tipo
+        listing:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          readOnly: true
+        actor:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          readOnly: true
+        data: {}
+        created_at:
+          type: string
+          format: date-time
+        seen_at:
+          type: string
+          format: date-time
+          nullable: true
+          title: Vista
+      required:
+      - actor
+      - created_at
+      - id
+      - kind
+      - listing
+    NotificationCount:
+      type: object
+      properties:
+        count:
+          type: integer
+      required:
+      - count
+    NotificationsSeen:
+      type: object
+      properties:
+        updated:
+          type: integer
+      required:
+      - updated
+    OtpRequest:
+      type: object
+      properties:
+        phone:
+          type: string
+          maxLength: 30
+      required:
+      - phone
+    OtpVerify:
+      type: object
+      properties:
+        phone:
+          type: string
+          maxLength: 30
+        code:
+          type: string
+          pattern: ^\d{4,8}$
+      required:
+      - code
+      - phone
+    PaginatedListingEventList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListingEvent'
+    PaginatedListingList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Listing'
+    PaginatedMessageList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+    PatchedDocuments:
+      type: object
+      properties:
+        document_file:
+          type: string
+          format: uri
+          nullable: true
+          writeOnly: true
+          title: Documento
+        bank_certificate:
+          type: string
+          format: uri
+          nullable: true
+          writeOnly: true
+          title: Certificado bancario
+    PatchedListing:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        seller:
+          allOf:
+          - $ref: '#/components/schemas/Seller'
+          readOnly: true
+        category:
+          type: integer
+        title:
+          type: string
+          title: Nombre
+          maxLength: 120
+        description:
+          type: string
+          title: Descripción
+          maxLength: 4000
+        condition:
+          allOf:
+          - $ref: '#/components/schemas/ConditionEnum'
+          title: Estado del artículo
+        attributes:
+          title: Campos de la categoría
+        city:
+          type: string
+          title: Ciudad
+          maxLength: 80
+        pickup_address:
+          type: string
+          title: Dirección de recogida
+          maxLength: 200
+        is_original:
+          type: boolean
+          title: ¿es original?
+        terms_accepted:
+          type: boolean
+          writeOnly: true
+        terms_accepted_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Términos aceptados
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListingImage'
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ListingStatusEnum'
+          readOnly: true
+          title: Estado
+        status_changed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Último cambio de estado
+        offer_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+          nullable: true
+          title: Oferta
+        offer_currency:
+          type: string
+          readOnly: true
+          title: Moneda
+        pickup_by:
+          allOf:
+          - $ref: '#/components/schemas/PickupByEnum'
+          readOnly: true
+          title: Responsable de la recogida
+        pickup_date:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          title: Fecha de recogida
+        pickup_notes:
+          type: string
+          readOnly: true
+          title: Indicaciones de recogida
+        cancel_reason:
+          type: string
+          readOnly: true
+          title: Motivo de cancelación
+        available_actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AvailableActionsEnum'
+          readOnly: true
+        unread_messages:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        phone:
+          type: string
+          readOnly: true
+          title: Teléfono
+        first_name:
+          type: string
+          title: Nombre
+          maxLength: 80
+        last_name:
+          type: string
+          title: Apellido
+          maxLength: 80
+        email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        photo:
+          type: string
+          format: uri
+          nullable: true
+          title: Foto
+        language:
+          allOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          title: Idioma
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RoleEnum'
+          readOnly: true
+          title: Rol
+        document_type:
+          title: Tipo de documento
+          oneOf:
+          - $ref: '#/components/schemas/DocumentTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        document_number:
+          type: string
+          title: Número de documento
+          maxLength: 30
+        has_document_file:
+          type: boolean
+          readOnly: true
+        has_bank_certificate:
+          type: boolean
+          readOnly: true
+        profile_complete:
+          type: boolean
+          description: Datos mínimos para que la plataforma pueda pagarle al vendedor.
+          readOnly: true
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+    PickupByEnum:
+      enum:
+      - seller
+      - platform
+      type: string
+      description: |-
+        * `seller` - El vendedor lo envía
+        * `platform` - Trueke lo recoge
+    RoleEnum:
+      enum:
+      - seller
+      - operator
+      type: string
+      description: |-
+        * `seller` - Vendedor
+        * `operator` - Operador
+    Seller:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      required:
+      - id
+      - name
+    Subscribe:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 254
+      required:
+      - email
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    Unsubscribe:
+      type: object
+      properties:
+        token:
+          type: string
+          format: uuid
+      required:
+      - token
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        phone:
+          type: string
+          readOnly: true
+          title: Teléfono
+        first_name:
+          type: string
+          title: Nombre
+          maxLength: 80
+        last_name:
+          type: string
+          title: Apellido
+          maxLength: 80
+        email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        photo:
+          type: string
+          format: uri
+          nullable: true
+          title: Foto
+        language:
+          allOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          title: Idioma
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RoleEnum'
+          readOnly: true
+          title: Rol
+        document_type:
+          title: Tipo de documento
+          oneOf:
+          - $ref: '#/components/schemas/DocumentTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        document_number:
+          type: string
+          title: Número de documento
+          maxLength: 30
+        has_document_file:
+          type: boolean
+          readOnly: true
+        has_bank_certificate:
+          type: boolean
+          readOnly: true
+        profile_complete:
+          type: boolean
+          description: Datos mínimos para que la plataforma pueda pagarle al vendedor.
+          readOnly: true
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - date_joined
+      - has_bank_certificate
+      - has_document_file
+      - id
+      - phone
+      - profile_complete
+      - role
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

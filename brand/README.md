@@ -31,6 +31,8 @@ Ticket de intercambio (dos flechas = trueque) con el talón en lima. La palabra 
 - **Instrument Sans** 400–600: interfaz y texto.
 - **Geist Mono**: números de ticket, códigos, fechas.
 
+Las tres se sirven desde la app con Fontsource (`@fontsource-variable/*`), no desde Google Fonts.
+
 ## Imágenes
 Fotos de objetos reales, de estudio, sobre fondos planos de color de la marca, con luz suave y sombra corta. Archivos finales en `images/`.
 
