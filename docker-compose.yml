@@ -2,7 +2,8 @@
 # Los archivos se guardan en disco (backend/media y backend/private-media). En producción, S3 (ver .env.example).
 x-backend: &backend
   build: ./backend
-  volumes: ["./backend:/app"]
+  # brand/images se monta para `make seed` (fotos de las publicaciones de demo).
+  volumes: ["./backend:/app", "./brand/images:/brand/images:ro"]
   environment:
     DEBUG: "true"
     SECRET_KEY: dev-insecure-change-me

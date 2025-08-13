@@ -45,6 +45,7 @@ env = [
     "S3_BUCKET=",
     "OTP_PROVIDER=console",
     "OTP_THROTTLE_RATE=1000/hour",
+    "NEWSLETTER_THROTTLE_RATE=1000/hour",
 ]
 
 [tool.ruff]

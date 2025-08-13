@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from . import otp
 from .models import User
+from .permissions import IsOperator
 from .serializers import (
     AuthResponseSerializer,
     DocumentsSerializer,
@@ -138,3 +139,22 @@ class MyDocumentFileView(APIView):
         if kind not in self.FIELDS:
             raise Http404
         return serve_private_file(getattr(request.user, self.FIELDS[kind]))
+
+
+class SellerDetailView(generics.RetrieveAPIView):
+    """Perfil completo de un usuario, para que el operador lo verifique y le pague. Solo operadores."""
+
+    serializer_class = UserSerializer
+    permission_classes = [IsOperator]
+    queryset = User.objects.all()
+
+
+class SellerDocumentFileView(APIView):
+    permission_classes = [IsOperator]
+
+    @extend_schema(responses={(200, "application/octet-stream"): OpenApiResponse(description="Archivo")})
+    def get(self, request, pk, kind):
+        if kind not in MyDocumentFileView.FIELDS:
+            raise Http404
+        user = generics.get_object_or_404(User, pk=pk)
+        return serve_private_file(getattr(user, MyDocumentFileView.FIELDS[kind]))

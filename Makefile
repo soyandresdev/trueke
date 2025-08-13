@@ -1,4 +1,4 @@
-.PHONY: dev down logs test lint format migrate makemigrations superuser shell categories
+.PHONY: dev down logs test lint format migrate makemigrations superuser shell categories seed
 
 dev:            ## Levanta todo (backend, worker, Postgres, Redis)
 	docker compose up --build
@@ -32,3 +32,6 @@ shell:
 
 categories:     ## Carga las 4 categorías de demo (idempotente)
 	docker compose run --rm backend python manage.py load_demo_categories
+
+seed:           ## Datos de demo: usuarios, 12 publicaciones en todos los estados, mensajes (--reset para rehacer)
+	docker compose run --rm backend python manage.py seed_demo $(ARGS)
