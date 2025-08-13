@@ -22,3 +22,31 @@ jobs:
       - run: uv run python manage.py makemigrations --check --dry-run
         env: { SECRET_KEY: ci, DEBUG: "false" }
       - run: uv run pytest
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: frontend/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm exec oxfmt --check .
+      # Los tipos de la API deben estar al día con el backend.
+      - run: cd ../backend && uv sync --frozen
+      - run: pnpm api:generate && git diff --exit-code -- src/api
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build

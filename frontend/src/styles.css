@@ -1,0 +1,18 @@
+@import 'tailwindcss';
+@import '../../brand/tokens.css';
+
+@layer base {
+  html {
+    @apply bg-white font-sans text-ink antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-blue;
+  }
+}

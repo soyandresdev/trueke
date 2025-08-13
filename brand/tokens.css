@@ -1,12 +1,12 @@
 /* Trueke · tokens de diseño (Tailwind CSS 4, bloque @theme).
    Estilo: limpio con carácter + color vivo. La oferta se presenta como un ticket. */
-@import url("https://fonts.googleapis.com/css2?family=Gabarito:wght@600;700;800&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap");
+/* Las fuentes se sirven desde la app con Fontsource (variables): sin llamadas a Google Fonts. */
 
 @theme {
   /* Tipografía */
-  --font-display: "Gabarito", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", monospace;
+  --font-display: "Gabarito Variable", "Gabarito", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Instrument Sans Variable", "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", "Geist Mono", ui-monospace, "SFMono-Regular", monospace;
 
   /* Neutros */
   --color-ink: #14141a;

@@ -1,22 +1,36 @@
-.PHONY: dev down logs test lint format migrate makemigrations superuser shell categories seed
+.PHONY: dev down logs test test-back test-front lint lint-back lint-front format api migrate makemigrations superuser shell categories seed
 
-dev:            ## Levanta todo (backend, worker, Postgres, Redis)
+dev:            ## Levanta todo: frontend (http://localhost:5173), backend, worker, Postgres, Redis
 	docker compose up --build
 
 down:
 	docker compose down
 
 logs:
-	docker compose logs -f backend worker
+	docker compose logs -f backend worker frontend
 
-test:           ## Tests del backend (SQLite en memoria, sin Docker)
+test: test-back test-front
+
+test-back:      ## Tests del backend (SQLite en memoria, sin Docker)
 	cd backend && uv run pytest
 
-lint:
+test-front:
+	cd frontend && pnpm test
+
+lint: lint-back lint-front
+
+lint-back:
 	cd backend && uv run ruff check . && uv run ruff format --check .
+
+lint-front:
+	cd frontend && pnpm lint && pnpm exec oxfmt --check . && pnpm typecheck
 
 format:
 	cd backend && uv run ruff format . && uv run ruff check --fix .
+	cd frontend && pnpm format
+
+api:            ## Regenera frontend/src/api/schema.d.ts desde el esquema OpenAPI del backend
+	cd frontend && pnpm api:generate
 
 migrate:
 	docker compose run --rm backend python manage.py migrate
