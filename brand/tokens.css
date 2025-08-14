@@ -1,8 +1,9 @@
-/* Trueke · tokens de diseño (Tailwind CSS 4, bloque @theme).
+/* Trueke · tokens de diseño (Tailwind CSS 4, bloque @theme static: todas las variables se emiten
+   aunque ninguna clase las use, para poder usarlas con var() en CSS o estilos en línea).
    Estilo: limpio con carácter + color vivo. La oferta se presenta como un ticket. */
 /* Las fuentes se sirven desde la app con Fontsource (variables): sin llamadas a Google Fonts. */
 
-@theme {
+@theme static {
   /* Tipografía */
   --font-display: "Gabarito Variable", "Gabarito", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Instrument Sans Variable", "Instrument Sans", ui-sans-serif, system-ui, sans-serif;

@@ -16,3 +16,21 @@
     @apply outline-2 outline-offset-2 outline-blue;
   }
 }
+
+/* Ticket de la oferta: muescas arriba y abajo sobre la línea troquelada (--cut = ancho del talón). */
+.ticket {
+  --cut: 7rem;
+  --notch: 0.75rem;
+  mask:
+    radial-gradient(circle var(--notch) at calc(100% - var(--cut)) 0, #0000 98%, #000) top / 100%
+      51% no-repeat,
+    radial-gradient(circle var(--notch) at calc(100% - var(--cut)) 100%, #0000 98%, #000) bottom /
+      100% 51% no-repeat;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}

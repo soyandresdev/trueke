@@ -2,6 +2,7 @@ import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 
 import { Logo } from '@/components/Logo'
+import { Toaster } from '@/components/ui/Toaster'
 import { languages } from '@/i18n'
 
 export const Route = createRootRoute({
@@ -35,6 +36,7 @@ function RootLayout() {
       <main className="flex-1">
         <Outlet />
       </main>
+      <Toaster />
     </div>
   )
 }
