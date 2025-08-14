@@ -1,7 +1,7 @@
 from django.http import FileResponse, Http404, HttpResponseRedirect
 from django.utils.translation import gettext as _
-from drf_spectacular.utils import OpenApiResponse, extend_schema
-from rest_framework import generics, parsers, permissions, status
+from drf_spectacular.utils import OpenApiResponse, extend_schema, extend_schema_view, inline_serializer
+from rest_framework import generics, parsers, permissions, serializers, status
 from rest_framework.response import Response
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
@@ -27,7 +27,21 @@ class OtpRequestView(APIView):
     throttle_scope = "otp"
 
     @extend_schema(
-        request=OtpRequestSerializer, responses={202: OpenApiResponse(description="Código enviado")}
+        request=OtpRequestSerializer,
+        responses={
+            202: inline_serializer(
+                "OtpIssued",
+                {"expires_in": serializers.IntegerField(), "resend_in": serializers.IntegerField()},
+            ),
+            429: inline_serializer(
+                "OtpResendTooSoon",
+                {
+                    "code": serializers.CharField(),
+                    "detail": serializers.CharField(),
+                    "wait": serializers.IntegerField(),
+                },
+            ),
+        },
     )
     def post(self, request):
         serializer = OtpRequestSerializer(data=request.data)
@@ -96,6 +110,7 @@ class MeView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 
+@extend_schema_view(patch=extend_schema(responses={200: UserSerializer}))
 class MyDocumentsView(generics.UpdateAPIView):
     """Sube el documento de identidad y/o el certificado bancario (multipart)."""
 

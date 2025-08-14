@@ -548,18 +548,6 @@ export interface components {
          * @enum {string}
          */
         DocumentTypeEnum: "national_id" | "foreign_id" | "passport";
-        Documents: {
-            /**
-             * Documento
-             * Format: uri
-             */
-            document_file?: string | null;
-            /**
-             * Certificado bancario
-             * Format: uri
-             */
-            bank_certificate?: string | null;
-        };
         /**
          * @description * `listing.create` - Nueva publicación
          *     * `listing.offer` - Nueva oferta
@@ -731,8 +719,17 @@ export interface components {
         NotificationsSeen: {
             updated: number;
         };
+        OtpIssued: {
+            expires_in: number;
+            resend_in: number;
+        };
         OtpRequest: {
             phone: string;
+        };
+        OtpResendTooSoon: {
+            code: string;
+            detail: string;
+            wait: number;
         };
         OtpVerify: {
             phone: string;
@@ -975,12 +972,21 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Código enviado */
             202: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["OtpIssued"];
+                };
+            };
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OtpResendTooSoon"];
+                };
             };
         };
     };
@@ -1594,7 +1600,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Documents"];
+                    "application/json": components["schemas"]["User"];
                 };
             };
         };

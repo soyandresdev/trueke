@@ -14,7 +14,10 @@
   },
   "notFound": "This page doesn't exist.",
   "ui": {
-    "close": "Close"
+    "close": "Close",
+    "save": "Save",
+    "retry": "Try again",
+    "optional": "Optional"
   },
   "status": {
     "in_review": "In review",
@@ -35,5 +38,59 @@
   "listing": {
     "unread_one": "{{count}} unread message",
     "unread_other": "{{count}} unread messages"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again."
+  },
+  "validation": {
+    "required": "This field is required.",
+    "email": "Enter a valid email.",
+    "phone": "Enter a valid phone number.",
+    "code": "The code has 6 digits."
+  },
+  "auth": {
+    "login": "Log in",
+    "title": "Log in to Trueke",
+    "phoneLead": "We'll text you a code. If it's your first time, we'll create your account.",
+    "phone": "Phone",
+    "sendCode": "Send code",
+    "changePhone": "Change number",
+    "codeTitle": "Enter the code",
+    "codeLead": "We sent it to {{phone}}.",
+    "code": "Code",
+    "enter": "Log in",
+    "resendIn": "You can request another code in {{seconds}} s.",
+    "resend": "Send another code"
+  },
+  "account": {
+    "title": "My account",
+    "logout": "Log out",
+    "incompleteTitle": "Complete your profile to sell",
+    "incompleteLead": "We need your details, your ID and a bank certificate to pay you when you accept an offer.",
+    "profile": "Personal details",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "documentType": "ID type",
+    "documentTypes": {
+      "national_id": "National ID",
+      "foreign_id": "Foreign ID",
+      "passport": "Passport"
+    },
+    "documentNumber": "ID number",
+    "saved": "Details saved.",
+    "documents": "Documents",
+    "documentsLead": "Only the Trueke team can see them. PDF, JPG or PNG up to 5 MB.",
+    "docs": {
+      "document": "ID document",
+      "bank-certificate": "Bank certificate"
+    },
+    "docUploaded": "Uploaded",
+    "docMissing": "Not uploaded yet",
+    "upload": "Upload",
+    "replace": "Replace",
+    "view": "View",
+    "uploaded": "File uploaded.",
+    "tooBig": "The file is larger than {{mb}} MB."
   }
 }

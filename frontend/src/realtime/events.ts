@@ -4,6 +4,7 @@ import type { RealtimeEvent } from './client'
 
 /** Claves de TanStack Query compartidas por toda la app. */
 export const queryKeys = {
+  me: ['me'] as const,
   listings: ['listings'] as const,
   listing: (id: number) => ['listings', id] as const,
   messages: (listingId: number) => ['listings', listingId, 'messages'] as const,
