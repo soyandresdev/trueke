@@ -7,6 +7,8 @@ x-backend: &backend
   environment:
     DEBUG: "true"
     SECRET_KEY: dev-insecure-change-me
+    # `backend` es el nombre con el que llega el proxy de Vite (contenedor frontend).
+    ALLOWED_HOSTS: localhost,127.0.0.1,backend
     DATABASE_URL: postgres://trueke:trueke@db:5432/trueke
     REDIS_URL: redis://redis:6379/0
     OTP_PROVIDER: console
