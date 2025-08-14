@@ -12,5 +12,28 @@
     "es": "Español",
     "en": "English"
   },
-  "notFound": "Esta página no existe."
+  "notFound": "Esta página no existe.",
+  "ui": {
+    "close": "Cerrar"
+  },
+  "status": {
+    "in_review": "En revisión",
+    "offered": "Con oferta",
+    "accepted": "Aceptada",
+    "pickup_sent": "Recogida enviada",
+    "completed": "Completada",
+    "cancelled": "Cancelada"
+  },
+  "ticket": {
+    "label": "Te ofrecemos"
+  },
+  "notifications": {
+    "bell_one": "Notificaciones: {{count}} sin ver",
+    "bell_other": "Notificaciones: {{count}} sin ver",
+    "bell_zero": "Notificaciones"
+  },
+  "listing": {
+    "unread_one": "{{count}} mensaje sin leer",
+    "unread_other": "{{count}} mensajes sin leer"
+  }
 }
