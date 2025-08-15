@@ -162,17 +162,21 @@ SPECTACULAR_SETTINGS = {
 }
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=["http://localhost:5173"])
 
+
 # Redis: canales en tiempo real y Celery. Sin REDIS_URL todo corre en memoria y en línea.
-REDIS_URL = env("REDIS_URL", default="")
-if REDIS_URL:
+def redis_channel_layer(url: str) -> dict:
     # channels_redis espera mensajes con BZPOPMIN bloqueando 5 s; redis-py 8 corta las lecturas a los 5 s
     # por defecto y cada WebSocket moría con "Timeout reading from redis". El timeout debe ser mayor.
-    CHANNEL_LAYERS = {
-        "default": {
-            "BACKEND": "channels_redis.core.RedisChannelLayer",
-            "CONFIG": {"hosts": [{"address": REDIS_URL, "socket_timeout": 30}]},
-        }
+    # Lo prueba apps/realtime/tests/test_redis.py contra un Redis real.
+    return {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {"hosts": [{"address": url, "socket_timeout": 30}]},
     }
+
+
+REDIS_URL = env("REDIS_URL", default="")
+if REDIS_URL:
+    CHANNEL_LAYERS = {"default": redis_channel_layer(REDIS_URL)}
     CELERY_BROKER_URL = REDIS_URL
 else:
     CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
