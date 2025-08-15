@@ -17,7 +17,9 @@
     "close": "Cerrar",
     "save": "Guardar",
     "retry": "Reintentar",
-    "optional": "Opcional"
+    "optional": "Opcional",
+    "yes": "Sí",
+    "no": "No"
   },
   "status": {
     "in_review": "En revisión",
@@ -28,7 +30,8 @@
     "cancelled": "Cancelada"
   },
   "ticket": {
-    "label": "Te ofrecemos"
+    "label": "Te ofrecemos",
+    "sold": "Vendido por"
   },
   "notifications": {
     "bell_one": "Notificaciones: {{count}} sin ver",
@@ -37,7 +40,12 @@
   },
   "listing": {
     "unread_one": "{{count}} mensaje sin leer",
-    "unread_other": "{{count}} mensajes sin leer"
+    "unread_other": "{{count}} mensajes sin leer",
+    "history": "Historial",
+    "details": "Detalles",
+    "category": "Categoría",
+    "original": "Original",
+    "reason": "Motivo"
   },
   "errors": {
     "generic": "Algo salió mal. Inténtalo de nuevo."
@@ -46,7 +54,15 @@
     "required": "Este campo es obligatorio.",
     "email": "Escribe un email válido.",
     "phone": "Escribe un número de teléfono válido.",
-    "code": "El código tiene 6 dígitos."
+    "code": "El código tiene 6 dígitos.",
+    "number": "Escribe un número.",
+    "integer": "Escribe un número entero.",
+    "min": "El valor es demasiado bajo.",
+    "max": "El valor es demasiado alto.",
+    "maxLength": "Es demasiado largo.",
+    "description": "Cuéntanos un poco más (mínimo 10 caracteres).",
+    "terms": "Debes aceptar los términos.",
+    "amount": "Escribe un monto válido, mayor que cero."
   },
   "auth": {
     "login": "Entrar",
@@ -92,5 +108,140 @@
     "view": "Ver",
     "uploaded": "Archivo subido.",
     "tooBig": "El archivo supera los {{mb}} MB."
+  },
+  "condition": {
+    "new": "Nuevo",
+    "like_new": "Como nuevo",
+    "good": "Buen estado",
+    "fair": "Con detalles",
+    "for_parts": "Para repuestos"
+  },
+  "pickupBy": {
+    "platform": "Trueke lo recoge",
+    "seller": "El vendedor lo envía"
+  },
+  "nav": {
+    "listings": "Mis publicaciones",
+    "listingsOperator": "Publicaciones"
+  },
+  "listings": {
+    "title": "Mis publicaciones",
+    "titleOperator": "Publicaciones",
+    "new": "Nueva publicación",
+    "filter": "Filtrar por estado",
+    "all": "Todas",
+    "empty": "Todavía no has publicado nada.",
+    "emptyFiltered": "No hay publicaciones en este estado.",
+    "emptyCta": "Publica tu primer artículo"
+  },
+  "wizard": {
+    "step": "Paso {{current}} de {{total}}",
+    "titles": {
+      "category": "¿Qué quieres vender?",
+      "details": "Cuéntanos cómo es",
+      "photos": "Sube las fotos",
+      "pickup": "¿Dónde lo recogemos?"
+    },
+    "categoryLead": "Elige la categoría. Cada una tiene sus propios campos.",
+    "titleField": "Nombre del artículo",
+    "titlePlaceholder": "Guitarra acústica Yamaha",
+    "description": "Descripción",
+    "descriptionHint": "Estado real, qué incluye, detalles o golpes.",
+    "condition": "Estado del artículo",
+    "back": "Atrás",
+    "next": "Continuar",
+    "photosLead": "La primera será la portada. Hasta {{max}} fotos JPG, PNG o WebP.",
+    "addPhotos": "Añadir fotos",
+    "cover": "Portada",
+    "photoAlt": "Foto {{n}}",
+    "removePhoto": "Quitar la foto {{n}}",
+    "photosRequired": "Sube al menos una foto.",
+    "photosRejected": "Algunas fotos no se añadieron: usa JPG, PNG o WebP de hasta {{mb}} MB.",
+    "photosMax": "Solo se permiten {{max}} fotos.",
+    "city": "Ciudad",
+    "address": "Dirección de recogida",
+    "addressHint": "Solo la ve el equipo de Trueke.",
+    "isOriginal": "Es original (no es réplica ni imitación)",
+    "terms": "Acepto los términos y condiciones de Trueke",
+    "publish": "Publicar",
+    "published": "¡Publicado! Te avisaremos cuando tengamos una oferta.",
+    "photosFailed_one": "La publicación se creó, pero {{count}} foto no se pudo subir.",
+    "photosFailed_other": "La publicación se creó, pero {{count}} fotos no se pudieron subir."
+  },
+  "history": {
+    "create": "Publicación creada",
+    "offer": "Oferta enviada",
+    "accept": "Oferta aceptada",
+    "reject": "Oferta rechazada",
+    "pickup": "Recogida coordinada",
+    "complete": "Venta completada",
+    "cancel": "Publicación cancelada"
+  },
+  "statusNote": {
+    "seller": {
+      "in_review": "Estamos revisando tu publicación. Te avisaremos cuando tengamos una oferta.",
+      "offered": "¡Tienes una oferta! Acéptala o recházala.",
+      "accepted": "Aceptaste la oferta. Estamos coordinando la recogida.",
+      "pickup_sent": "La recogida está coordinada. Cuando recibamos el artículo, te pagamos.",
+      "completed": "Venta completada. ¡Gracias por vender con Trueke!",
+      "cancelled": "Esta publicación está cancelada."
+    },
+    "operator": {
+      "in_review": "Pendiente de revisión: revisa las fotos y haz una oferta.",
+      "offered": "Esperando la respuesta del vendedor.",
+      "accepted": "El vendedor aceptó: coordina la recogida.",
+      "pickup_sent": "Recogida en curso. Complétala cuando llegue el artículo.",
+      "completed": "Venta completada.",
+      "cancelled": "Publicación cancelada."
+    }
+  },
+  "actions": {
+    "reason": "Motivo",
+    "offer": {
+      "button": "Hacer oferta",
+      "title": "Hacer una oferta",
+      "lead": "¿Cuánto ofreces por «{{title}}»?",
+      "amount": "Monto (COP)",
+      "confirm": "Enviar oferta",
+      "done": "Oferta enviada."
+    },
+    "accept": {
+      "button": "Aceptar oferta",
+      "title": "¿Aceptas la oferta?",
+      "lead": "Al aceptar, coordinamos la recogida y te pagamos cuando recibamos el artículo.",
+      "confirm": "Aceptar",
+      "done": "¡Oferta aceptada!",
+      "completeProfile": "Completar mi perfil"
+    },
+    "reject": {
+      "button": "Rechazar",
+      "title": "¿Rechazar la oferta?",
+      "lead": "La publicación se cancelará. Puedes contarnos por qué.",
+      "confirm": "Rechazar oferta",
+      "done": "Oferta rechazada."
+    },
+    "pickup": {
+      "button": "Coordinar recogida",
+      "title": "Coordinar la recogida",
+      "by": "¿Quién se encarga?",
+      "date": "Fecha",
+      "notes": "Indicaciones",
+      "confirm": "Guardar",
+      "done": "Recogida coordinada."
+    },
+    "complete": {
+      "button": "Completar venta",
+      "title": "¿Completar la venta?",
+      "lead": "Confirma que recibiste el artículo. La venta quedará cerrada.",
+      "confirm": "Completar",
+      "done": "Venta completada."
+    },
+    "cancel": {
+      "button": "Cancelar publicación",
+      "title": "¿Cancelar la publicación?",
+      "lead": "No se puede deshacer. Puedes contarnos por qué.",
+      "confirm": "Cancelar publicación",
+      "done": "Publicación cancelada."
+    }
   }
 }

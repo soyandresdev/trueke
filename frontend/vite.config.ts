@@ -12,7 +12,11 @@ const backend = process.env.VITE_BACKEND_URL ?? 'http://localhost:8000'
 export default defineConfig({
   plugins: [
     // Rutas por archivos en src/routes (genera src/routeTree.gen.ts). Va antes de react().
-    tanstackRouter({ target: 'react', autoCodeSplitting: true, routeFileIgnorePattern: '\\.test\\.' }),
+    tanstackRouter({
+      target: 'react',
+      autoCodeSplitting: true,
+      routeFileIgnorePattern: '\\.test\\.',
+    }),
     react(),
     babel({ presets: [reactCompilerPreset()] }),
     tailwindcss(),
@@ -35,5 +39,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     css: false,
+    // Los flujos completos simulan escritura tecla a tecla; con los tests en paralelo pasan de 5 s.
+    testTimeout: 15_000,
   },
 })

@@ -167,6 +167,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Aceptar oferta */
         post: operations["listings_accept_create"];
         delete?: never;
         options?: never;
@@ -183,6 +184,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Cancelar */
         post: operations["listings_cancel_create"];
         delete?: never;
         options?: never;
@@ -199,6 +201,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Completar venta */
         post: operations["listings_complete_create"];
         delete?: never;
         options?: never;
@@ -263,6 +266,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Hacer oferta */
         post: operations["listings_offer_create"];
         delete?: never;
         options?: never;
@@ -279,6 +283,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Coordinar recogida */
         post: operations["listings_pickup_create"];
         delete?: never;
         options?: never;
@@ -295,6 +300,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        /** Rechazar oferta */
         post: operations["listings_reject_create"];
         delete?: never;
         options?: never;
@@ -606,7 +612,7 @@ export interface components {
             /** Moneda */
             readonly offer_currency: string;
             /** Responsable de la recogida */
-            readonly pickup_by: components["schemas"]["PickupByEnum"];
+            readonly pickup_by: components["schemas"]["ListingPickupByEnum"];
             /**
              * Fecha de recogida
              * Format: date
@@ -647,6 +653,12 @@ export interface components {
              */
             position?: number;
         };
+        /**
+         * @description * `seller` - El vendedor lo envía
+         *     * `platform` - Trueke lo recoge
+         * @enum {string}
+         */
+        ListingPickupByEnum: "seller" | "platform";
         ListingStats: {
             in_review: number;
             offered: number;
@@ -719,6 +731,12 @@ export interface components {
         NotificationsSeen: {
             updated: number;
         };
+        Offer: {
+            /** Format: decimal */
+            amount: string;
+            /** @default COP */
+            currency: string;
+        };
         OtpIssued: {
             expires_in: number;
             resend_in: number;
@@ -734,21 +752,6 @@ export interface components {
         OtpVerify: {
             phone: string;
             code: string;
-        };
-        PaginatedListingEventList: {
-            /** @example 123 */
-            count: number;
-            /**
-             * Format: uri
-             * @example http://api.example.org/accounts/?page=4
-             */
-            next?: string | null;
-            /**
-             * Format: uri
-             * @example http://api.example.org/accounts/?page=2
-             */
-            previous?: string | null;
-            results: components["schemas"]["ListingEvent"][];
         };
         PaginatedListingList: {
             /** @example 123 */
@@ -845,7 +848,7 @@ export interface components {
             /** Moneda */
             readonly offer_currency?: string;
             /** Responsable de la recogida */
-            readonly pickup_by?: components["schemas"]["PickupByEnum"];
+            readonly pickup_by?: components["schemas"]["ListingPickupByEnum"];
             /**
              * Fecha de recogida
              * Format: date
@@ -891,12 +894,21 @@ export interface components {
             /** Format: date-time */
             readonly date_joined?: string;
         };
+        Pickup: {
+            pickup_by: components["schemas"]["PickupPickupByEnum"];
+            /** Format: date */
+            pickup_date?: string | null;
+            notes?: string;
+        };
         /**
-         * @description * `seller` - El vendedor lo envía
-         *     * `platform` - Trueke lo recoge
+         * @description * `seller` - seller
+         *     * `platform` - platform
          * @enum {string}
          */
-        PickupByEnum: "seller" | "platform";
+        PickupPickupByEnum: "seller" | "platform";
+        Reason: {
+            reason?: string;
+        };
         /**
          * @description * `seller` - Vendedor
          *     * `operator` - Operador
@@ -1273,13 +1285,7 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["Listing"];
-                "application/x-www-form-urlencoded": components["schemas"]["Listing"];
-                "multipart/form-data": components["schemas"]["Listing"];
-            };
-        };
+        requestBody?: never;
         responses: {
             200: {
                 headers: {
@@ -1301,11 +1307,11 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
+        requestBody?: {
             content: {
-                "application/json": components["schemas"]["Listing"];
-                "application/x-www-form-urlencoded": components["schemas"]["Listing"];
-                "multipart/form-data": components["schemas"]["Listing"];
+                "application/json": components["schemas"]["Reason"];
+                "application/x-www-form-urlencoded": components["schemas"]["Reason"];
+                "multipart/form-data": components["schemas"]["Reason"];
             };
         };
         responses: {
@@ -1329,13 +1335,7 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["Listing"];
-                "application/x-www-form-urlencoded": components["schemas"]["Listing"];
-                "multipart/form-data": components["schemas"]["Listing"];
-            };
-        };
+        requestBody?: never;
         responses: {
             200: {
                 headers: {
@@ -1353,8 +1353,6 @@ export interface operations {
                 /** @description Código de la categoría */
                 category?: string;
                 city?: string;
-                /** @description Un número de página dentro del conjunto de resultados paginado. */
-                page?: number;
                 /** @description Busca en nombre, descripción y vendedor */
                 q?: string;
                 /** @description Uno o varios estados separados por coma */
@@ -1374,7 +1372,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PaginatedListingEventList"];
+                    "application/json": components["schemas"]["ListingEvent"][];
                 };
             };
         };
@@ -1439,9 +1437,9 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["Listing"];
-                "application/x-www-form-urlencoded": components["schemas"]["Listing"];
-                "multipart/form-data": components["schemas"]["Listing"];
+                "application/json": components["schemas"]["Offer"];
+                "application/x-www-form-urlencoded": components["schemas"]["Offer"];
+                "multipart/form-data": components["schemas"]["Offer"];
             };
         };
         responses: {
@@ -1467,9 +1465,9 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["Listing"];
-                "application/x-www-form-urlencoded": components["schemas"]["Listing"];
-                "multipart/form-data": components["schemas"]["Listing"];
+                "application/json": components["schemas"]["Pickup"];
+                "application/x-www-form-urlencoded": components["schemas"]["Pickup"];
+                "multipart/form-data": components["schemas"]["Pickup"];
             };
         };
         responses: {
@@ -1493,11 +1491,11 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
+        requestBody?: {
             content: {
-                "application/json": components["schemas"]["Listing"];
-                "application/x-www-form-urlencoded": components["schemas"]["Listing"];
-                "multipart/form-data": components["schemas"]["Listing"];
+                "application/json": components["schemas"]["Reason"];
+                "application/x-www-form-urlencoded": components["schemas"]["Reason"];
+                "multipart/form-data": components["schemas"]["Reason"];
             };
         };
         responses: {

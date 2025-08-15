@@ -350,6 +350,7 @@ paths:
   /api/listings/{id}/accept/:
     post:
       operationId: listings_accept_create
+      summary: Aceptar oferta
       parameters:
       - in: path
         name: id
@@ -359,18 +360,6 @@ paths:
         required: true
       tags:
       - listings
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Listing'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Listing'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/Listing'
-        required: true
       security:
       - jwtAuth: []
       responses:
@@ -383,6 +372,7 @@ paths:
   /api/listings/{id}/cancel/:
     post:
       operationId: listings_cancel_create
+      summary: Cancelar
       parameters:
       - in: path
         name: id
@@ -396,14 +386,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Listing'
+              $ref: '#/components/schemas/Reason'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Listing'
+              $ref: '#/components/schemas/Reason'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Listing'
-        required: true
+              $ref: '#/components/schemas/Reason'
       security:
       - jwtAuth: []
       responses:
@@ -416,6 +405,7 @@ paths:
   /api/listings/{id}/complete/:
     post:
       operationId: listings_complete_create
+      summary: Completar venta
       parameters:
       - in: path
         name: id
@@ -425,18 +415,6 @@ paths:
         required: true
       tags:
       - listings
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Listing'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Listing'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/Listing'
-        required: true
       security:
       - jwtAuth: []
       responses:
@@ -465,12 +443,6 @@ paths:
           type: integer
         description: Un valor de entero único que identifique este publicación.
         required: true
-      - name: page
-        required: false
-        in: query
-        description: Un número de página dentro del conjunto de resultados paginado.
-        schema:
-          type: integer
       - in: query
         name: q
         schema:
@@ -490,7 +462,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedListingEventList'
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListingEvent'
           description: ''
   /api/listings/{id}/images/:
     post:
@@ -545,6 +519,7 @@ paths:
   /api/listings/{id}/offer/:
     post:
       operationId: listings_offer_create
+      summary: Hacer oferta
       parameters:
       - in: path
         name: id
@@ -558,13 +533,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Listing'
+              $ref: '#/components/schemas/Offer'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Listing'
+              $ref: '#/components/schemas/Offer'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Listing'
+              $ref: '#/components/schemas/Offer'
         required: true
       security:
       - jwtAuth: []
@@ -578,6 +553,7 @@ paths:
   /api/listings/{id}/pickup/:
     post:
       operationId: listings_pickup_create
+      summary: Coordinar recogida
       parameters:
       - in: path
         name: id
@@ -591,13 +567,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Listing'
+              $ref: '#/components/schemas/Pickup'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Listing'
+              $ref: '#/components/schemas/Pickup'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Listing'
+              $ref: '#/components/schemas/Pickup'
         required: true
       security:
       - jwtAuth: []
@@ -611,6 +587,7 @@ paths:
   /api/listings/{id}/reject/:
     post:
       operationId: listings_reject_create
+      summary: Rechazar oferta
       parameters:
       - in: path
         name: id
@@ -624,14 +601,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Listing'
+              $ref: '#/components/schemas/Reason'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Listing'
+              $ref: '#/components/schemas/Reason'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Listing'
-        required: true
+              $ref: '#/components/schemas/Reason'
       security:
       - jwtAuth: []
       responses:
@@ -1103,7 +1079,7 @@ components:
           title: Moneda
         pickup_by:
           allOf:
-          - $ref: '#/components/schemas/PickupByEnum'
+          - $ref: '#/components/schemas/ListingPickupByEnum'
           readOnly: true
           title: Responsable de la recogida
         pickup_date:
@@ -1209,6 +1185,14 @@ components:
       required:
       - id
       - image
+    ListingPickupByEnum:
+      enum:
+      - seller
+      - platform
+      type: string
+      description: |-
+        * `seller` - El vendedor lo envía
+        * `platform` - Trueke lo recoge
     ListingStats:
       type: object
       properties:
@@ -1359,6 +1343,19 @@ components:
           type: integer
       required:
       - updated
+    Offer:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          default: COP
+          maxLength: 3
+      required:
+      - amount
     OtpIssued:
       type: object
       properties:
@@ -1402,29 +1399,6 @@ components:
       required:
       - code
       - phone
-    PaginatedListingEventList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ListingEvent'
     PaginatedListingList:
       type: object
       required:
@@ -1578,7 +1552,7 @@ components:
           title: Moneda
         pickup_by:
           allOf:
-          - $ref: '#/components/schemas/PickupByEnum'
+          - $ref: '#/components/schemas/ListingPickupByEnum'
           readOnly: true
           title: Responsable de la recogida
         pickup_date:
@@ -1673,14 +1647,34 @@ components:
           type: string
           format: date-time
           readOnly: true
-    PickupByEnum:
+    Pickup:
+      type: object
+      properties:
+        pickup_by:
+          $ref: '#/components/schemas/PickupPickupByEnum'
+        pickup_date:
+          type: string
+          format: date
+          nullable: true
+        notes:
+          type: string
+          maxLength: 500
+      required:
+      - pickup_by
+    PickupPickupByEnum:
       enum:
       - seller
       - platform
       type: string
       description: |-
-        * `seller` - El vendedor lo envía
-        * `platform` - Trueke lo recoge
+        * `seller` - seller
+        * `platform` - platform
+    Reason:
+      type: object
+      properties:
+        reason:
+          type: string
+          maxLength: 500
     RoleEnum:
       enum:
       - seller

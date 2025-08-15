@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { api } from '@/api/client'
 import type { User } from '@/api/types'
+import i18n from '@/i18n'
 import { queryClient } from '@/lib/queryClient'
 import { queryKeys } from '@/realtime/events'
 
@@ -24,6 +25,8 @@ export function useMe() {
 export function startSession(tokens: { access: string; refresh: string }, user: User) {
   useAuth.getState().setTokens(tokens)
   queryClient.setQueryData(queryKeys.me, user)
+  // El idioma elegido en el perfil manda sobre el del navegador.
+  if (user.language) void i18n.changeLanguage(user.language)
 }
 
 export function endSession() {

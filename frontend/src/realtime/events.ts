@@ -6,7 +6,11 @@ import type { RealtimeEvent } from './client'
 export const queryKeys = {
   me: ['me'] as const,
   listings: ['listings'] as const,
+  listingList: (filters: object) => ['listings', 'list', filters] as const,
+  listingStats: ['listings', 'stats'] as const,
   listing: (id: number) => ['listings', id] as const,
+  listingEvents: (id: number) => ['listings', id, 'events'] as const,
+  categories: ['categories'] as const,
   messages: (listingId: number) => ['listings', listingId, 'messages'] as const,
   notifications: ['notifications'] as const,
 }

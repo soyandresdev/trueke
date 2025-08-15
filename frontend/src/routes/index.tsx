@@ -1,7 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
-
-import { Button } from '@/components/ui/Button'
 
 export const Route = createFileRoute('/')({ component: Home })
 
@@ -13,9 +11,12 @@ function Home() {
       <p className="font-mono text-sm uppercase tracking-widest text-blue">{t('brand.tagline')}</p>
       <h1 className="mt-4 max-w-3xl text-5xl font-extrabold sm:text-7xl">{t('home.title')}</h1>
       <p className="mt-6 max-w-xl text-lg text-ink-soft">{t('home.lead')}</p>
-      <Button variant="pop" className="mt-10 text-lg">
+      <Link
+        to="/publicaciones/nueva"
+        className="mt-10 inline-flex h-14 items-center rounded-pill border-2 border-ink bg-lime px-7 text-lg font-semibold shadow-pop transition hover:-translate-x-px hover:-translate-y-px"
+      >
         {t('home.cta')}
-      </Button>
+      </Link>
     </section>
   )
 }
