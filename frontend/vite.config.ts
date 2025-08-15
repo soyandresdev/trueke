@@ -22,10 +22,12 @@ export default defineConfig({
   },
   server: {
     // Mismo origen para la API y el WebSocket: sin CORS en desarrollo.
+    // changeOrigin: false conserva el Host del navegador; así Django arma URLs absolutas
+    // (fotos en /media) que el navegador puede abrir, en vez de http://backend:8000/...
     proxy: {
-      '/api': backend,
-      '/media': backend,
-      '/ws': { target: backend, ws: true },
+      '/api': { target: backend, changeOrigin: false },
+      '/media': { target: backend, changeOrigin: false },
+      '/ws': { target: backend, ws: true, changeOrigin: false },
     },
     fs: { allow: ['..'] }, // brand/ está fuera de frontend/
   },
