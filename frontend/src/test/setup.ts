@@ -2,11 +2,17 @@ import '@testing-library/jest-dom/vitest'
 import '@/i18n'
 
 import { cleanup } from '@testing-library/react'
-import { afterEach } from 'vitest'
+import { afterEach, vi } from 'vitest'
+
+import { useAuth } from '@/auth/store'
+import { queryClient } from '@/lib/queryClient'
 
 afterEach(() => {
   cleanup()
   localStorage.clear()
+  useAuth.setState({ access: null, refresh: null })
+  queryClient.clear()
+  vi.unstubAllGlobals()
 })
 
 // jsdom no implementa <dialog>.showModal/close.

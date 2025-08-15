@@ -14,7 +14,10 @@
   },
   "notFound": "Esta página no existe.",
   "ui": {
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "save": "Guardar",
+    "retry": "Reintentar",
+    "optional": "Opcional"
   },
   "status": {
     "in_review": "En revisión",
@@ -35,5 +38,59 @@
   "listing": {
     "unread_one": "{{count}} mensaje sin leer",
     "unread_other": "{{count}} mensajes sin leer"
+  },
+  "errors": {
+    "generic": "Algo salió mal. Inténtalo de nuevo."
+  },
+  "validation": {
+    "required": "Este campo es obligatorio.",
+    "email": "Escribe un email válido.",
+    "phone": "Escribe un número de teléfono válido.",
+    "code": "El código tiene 6 dígitos."
+  },
+  "auth": {
+    "login": "Entrar",
+    "title": "Entra a Trueke",
+    "phoneLead": "Te enviamos un código por SMS. Si es tu primera vez, creamos tu cuenta.",
+    "phone": "Teléfono",
+    "sendCode": "Enviar código",
+    "changePhone": "Cambiar número",
+    "codeTitle": "Escribe el código",
+    "codeLead": "Lo enviamos al {{phone}}.",
+    "code": "Código",
+    "enter": "Entrar",
+    "resendIn": "Puedes pedir otro código en {{seconds}} s.",
+    "resend": "Enviar otro código"
+  },
+  "account": {
+    "title": "Mi cuenta",
+    "logout": "Salir",
+    "incompleteTitle": "Completa tu perfil para vender",
+    "incompleteLead": "Necesitamos tus datos, tu documento y un certificado bancario para poder pagarte cuando aceptes una oferta.",
+    "profile": "Datos personales",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Email",
+    "documentType": "Tipo de documento",
+    "documentTypes": {
+      "national_id": "Documento nacional",
+      "foreign_id": "Documento de extranjería",
+      "passport": "Pasaporte"
+    },
+    "documentNumber": "Número de documento",
+    "saved": "Datos guardados.",
+    "documents": "Documentos",
+    "documentsLead": "Solo los ve el equipo de Trueke. PDF, JPG o PNG de hasta 5 MB.",
+    "docs": {
+      "document": "Documento de identidad",
+      "bank-certificate": "Certificado bancario"
+    },
+    "docUploaded": "Subido",
+    "docMissing": "Falta por subir",
+    "upload": "Subir",
+    "replace": "Cambiar",
+    "view": "Ver",
+    "uploaded": "Archivo subido.",
+    "tooBig": "El archivo supera los {{mb}} MB."
   }
 }

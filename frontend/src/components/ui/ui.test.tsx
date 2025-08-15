@@ -71,6 +71,12 @@ describe('Ticket', () => {
 })
 
 describe('Avatar', () => {
+  it('sin nombre muestra un icono, no una inicial rara', () => {
+    const { container } = render(<Avatar name="" />)
+    expect(container.querySelector('svg')).toBeInTheDocument()
+    expect(container).toHaveTextContent('')
+  })
+
   it('usa las iniciales si no hay foto', () => {
     render(<Avatar name="laura gómez ruiz" />)
     expect(screen.getByRole('img', { name: 'laura gómez ruiz' })).toHaveTextContent('LG')

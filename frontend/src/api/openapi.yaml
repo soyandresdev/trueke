@@ -27,7 +27,17 @@ paths:
       - {}
       responses:
         '202':
-          description: Código enviado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtpIssued'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtpResendTooSoon'
+          description: ''
   /api/auth/otp/verify/:
     post:
       operationId: auth_otp_verify_create
@@ -722,7 +732,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Documents'
+                $ref: '#/components/schemas/User'
           description: ''
   /api/me/documents/{kind}/:
     get:
@@ -992,21 +1002,6 @@ components:
         * `national_id` - Documento nacional
         * `foreign_id` - Documento de extranjería
         * `passport` - Pasaporte
-    Documents:
-      type: object
-      properties:
-        document_file:
-          type: string
-          format: uri
-          nullable: true
-          writeOnly: true
-          title: Documento
-        bank_certificate:
-          type: string
-          format: uri
-          nullable: true
-          writeOnly: true
-          title: Certificado bancario
     KindEnum:
       enum:
       - listing.create
@@ -1364,6 +1359,16 @@ components:
           type: integer
       required:
       - updated
+    OtpIssued:
+      type: object
+      properties:
+        expires_in:
+          type: integer
+        resend_in:
+          type: integer
+      required:
+      - expires_in
+      - resend_in
     OtpRequest:
       type: object
       properties:
@@ -1372,6 +1377,19 @@ components:
           maxLength: 30
       required:
       - phone
+    OtpResendTooSoon:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        wait:
+          type: integer
+      required:
+      - code
+      - detail
+      - wait
     OtpVerify:
       type: object
       properties:
