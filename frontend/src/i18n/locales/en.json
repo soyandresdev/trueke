@@ -17,7 +17,9 @@
     "close": "Close",
     "save": "Save",
     "retry": "Try again",
-    "optional": "Optional"
+    "optional": "Optional",
+    "yes": "Yes",
+    "no": "No"
   },
   "status": {
     "in_review": "In review",
@@ -28,7 +30,8 @@
     "cancelled": "Cancelled"
   },
   "ticket": {
-    "label": "Our offer"
+    "label": "Our offer",
+    "sold": "Sold for"
   },
   "notifications": {
     "bell_one": "Notifications: {{count}} unseen",
@@ -37,7 +40,12 @@
   },
   "listing": {
     "unread_one": "{{count}} unread message",
-    "unread_other": "{{count}} unread messages"
+    "unread_other": "{{count}} unread messages",
+    "history": "History",
+    "details": "Details",
+    "category": "Category",
+    "original": "Original",
+    "reason": "Reason"
   },
   "errors": {
     "generic": "Something went wrong. Please try again."
@@ -46,7 +54,15 @@
     "required": "This field is required.",
     "email": "Enter a valid email.",
     "phone": "Enter a valid phone number.",
-    "code": "The code has 6 digits."
+    "code": "The code has 6 digits.",
+    "number": "Enter a number.",
+    "integer": "Enter a whole number.",
+    "min": "The value is too low.",
+    "max": "The value is too high.",
+    "maxLength": "It's too long.",
+    "description": "Tell us a bit more (at least 10 characters).",
+    "terms": "You must accept the terms.",
+    "amount": "Enter a valid amount greater than zero."
   },
   "auth": {
     "login": "Log in",
@@ -92,5 +108,140 @@
     "view": "View",
     "uploaded": "File uploaded.",
     "tooBig": "The file is larger than {{mb}} MB."
+  },
+  "condition": {
+    "new": "New",
+    "like_new": "Like new",
+    "good": "Good condition",
+    "fair": "Some wear",
+    "for_parts": "For parts"
+  },
+  "pickupBy": {
+    "platform": "Trueke picks it up",
+    "seller": "The seller ships it"
+  },
+  "nav": {
+    "listings": "My listings",
+    "listingsOperator": "Listings"
+  },
+  "listings": {
+    "title": "My listings",
+    "titleOperator": "Listings",
+    "new": "New listing",
+    "filter": "Filter by status",
+    "all": "All",
+    "empty": "You haven't listed anything yet.",
+    "emptyFiltered": "No listings in this status.",
+    "emptyCta": "List your first item"
+  },
+  "wizard": {
+    "step": "Step {{current}} of {{total}}",
+    "titles": {
+      "category": "What do you want to sell?",
+      "details": "Tell us about it",
+      "photos": "Add photos",
+      "pickup": "Where do we pick it up?"
+    },
+    "categoryLead": "Choose a category. Each one has its own fields.",
+    "titleField": "Item name",
+    "titlePlaceholder": "Yamaha acoustic guitar",
+    "description": "Description",
+    "descriptionHint": "Actual condition, what's included, any dents or scratches.",
+    "condition": "Condition",
+    "back": "Back",
+    "next": "Continue",
+    "photosLead": "The first one is the cover. Up to {{max}} JPG, PNG or WebP photos.",
+    "addPhotos": "Add photos",
+    "cover": "Cover",
+    "photoAlt": "Photo {{n}}",
+    "removePhoto": "Remove photo {{n}}",
+    "photosRequired": "Add at least one photo.",
+    "photosRejected": "Some photos weren't added: use JPG, PNG or WebP up to {{mb}} MB.",
+    "photosMax": "Only {{max}} photos are allowed.",
+    "city": "City",
+    "address": "Pickup address",
+    "addressHint": "Only the Trueke team can see it.",
+    "isOriginal": "It's original (not a replica or knockoff)",
+    "terms": "I accept Trueke's terms and conditions",
+    "publish": "Publish",
+    "published": "Published! We'll let you know when we have an offer.",
+    "photosFailed_one": "The listing was created, but {{count}} photo couldn't be uploaded.",
+    "photosFailed_other": "The listing was created, but {{count}} photos couldn't be uploaded."
+  },
+  "history": {
+    "create": "Listing created",
+    "offer": "Offer sent",
+    "accept": "Offer accepted",
+    "reject": "Offer declined",
+    "pickup": "Pickup scheduled",
+    "complete": "Sale completed",
+    "cancel": "Listing cancelled"
+  },
+  "statusNote": {
+    "seller": {
+      "in_review": "We're reviewing your listing. We'll let you know when we have an offer.",
+      "offered": "You have an offer! Accept or decline it.",
+      "accepted": "You accepted the offer. We're arranging the pickup.",
+      "pickup_sent": "Pickup is scheduled. We'll pay you once we receive the item.",
+      "completed": "Sale completed. Thanks for selling with Trueke!",
+      "cancelled": "This listing is cancelled."
+    },
+    "operator": {
+      "in_review": "Pending review: check the photos and make an offer.",
+      "offered": "Waiting for the seller's answer.",
+      "accepted": "The seller accepted: arrange the pickup.",
+      "pickup_sent": "Pickup in progress. Complete it when the item arrives.",
+      "completed": "Sale completed.",
+      "cancelled": "Listing cancelled."
+    }
+  },
+  "actions": {
+    "reason": "Reason",
+    "offer": {
+      "button": "Make an offer",
+      "title": "Make an offer",
+      "lead": "How much do you offer for “{{title}}”?",
+      "amount": "Amount (COP)",
+      "confirm": "Send offer",
+      "done": "Offer sent."
+    },
+    "accept": {
+      "button": "Accept offer",
+      "title": "Accept the offer?",
+      "lead": "Once you accept, we'll arrange the pickup and pay you when we receive the item.",
+      "confirm": "Accept",
+      "done": "Offer accepted!",
+      "completeProfile": "Complete my profile"
+    },
+    "reject": {
+      "button": "Decline",
+      "title": "Decline the offer?",
+      "lead": "The listing will be cancelled. You can tell us why.",
+      "confirm": "Decline offer",
+      "done": "Offer declined."
+    },
+    "pickup": {
+      "button": "Arrange pickup",
+      "title": "Arrange the pickup",
+      "by": "Who handles it?",
+      "date": "Date",
+      "notes": "Instructions",
+      "confirm": "Save",
+      "done": "Pickup arranged."
+    },
+    "complete": {
+      "button": "Complete sale",
+      "title": "Complete the sale?",
+      "lead": "Confirm you received the item. The sale will be closed.",
+      "confirm": "Complete",
+      "done": "Sale completed."
+    },
+    "cancel": {
+      "button": "Cancel listing",
+      "title": "Cancel the listing?",
+      "lead": "This can't be undone. You can tell us why.",
+      "confirm": "Cancel listing",
+      "done": "Listing cancelled."
+    }
   }
 }

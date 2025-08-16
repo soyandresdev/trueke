@@ -1,9 +1,18 @@
 import { vi } from 'vitest'
 
 type Handler = (request: Request) => unknown | Promise<unknown>
-export type Reply = { status: number; body?: unknown }
+/** Respuesta con un código distinto de 200. Es una clase para no confundirla con un body que tenga `status`. */
+export class Reply {
+  readonly status: number
+  readonly body?: unknown
 
-export const reply = (status: number, body?: unknown): Reply => ({ status, body })
+  constructor(status: number, body?: unknown) {
+    this.status = status
+    this.body = body
+  }
+}
+
+export const reply = (status: number, body?: unknown) => new Reply(status, body)
 
 /**
  * Sustituye `fetch` y responde según "MÉTODO /ruta". Un handler devuelve el body (200)
@@ -21,10 +30,7 @@ export function mockApi(routes: Record<string, Handler>) {
       if (!handler)
         return new Response(JSON.stringify({ detail: `Sin mock: ${key}` }), { status: 500 })
       const result = await handler(request)
-      const { status, body } =
-        result && typeof result === 'object' && 'status' in result
-          ? (result as Reply)
-          : { status: 200, body: result }
+      const { status, body } = result instanceof Reply ? result : { status: 200, body: result }
       return new Response(body === undefined ? null : JSON.stringify(body), {
         status,
         headers: { 'Content-Type': 'application/json' },
@@ -49,5 +55,53 @@ export const user = (overrides: Record<string, unknown> = {}) => ({
   has_bank_certificate: false,
   profile_complete: false,
   date_joined: '2026-09-19T12:00:00Z',
+  ...overrides,
+})
+
+export const category = (overrides: Record<string, unknown> = {}) => ({
+  id: 2,
+  code: 'instrumentos',
+  name: 'Instrumentos musicales',
+  fields_schema: {
+    type: 'object',
+    properties: {
+      kind: {
+        type: 'string',
+        title: 'Tipo',
+        enum: ['string', 'keys'],
+        'x-labels': { string: 'Cuerda', keys: 'Teclado' },
+      },
+      brand: { type: 'string', title: 'Marca', maxLength: 60 },
+    },
+    required: ['kind'],
+  },
+  ...overrides,
+})
+
+export const listing = (overrides: Record<string, unknown> = {}) => ({
+  id: 13,
+  seller: { id: 7, name: 'Laura Gómez' },
+  category: 2,
+  title: 'Teclado MIDI',
+  description: 'Todas las teclas funcionan.',
+  condition: 'like_new',
+  attributes: { kind: 'keys', brand: 'Arturia' },
+  city: 'Bogotá',
+  pickup_address: 'Calle 1',
+  is_original: true,
+  terms_accepted_at: '2026-09-19T12:00:00Z',
+  images: [{ id: 1, image: 'http://localhost/media/1.jpg', position: 0 }],
+  status: 'in_review',
+  status_changed_at: '2026-09-19T12:00:00Z',
+  offer_amount: null,
+  offer_currency: '',
+  pickup_by: '',
+  pickup_date: null,
+  pickup_notes: '',
+  cancel_reason: '',
+  available_actions: ['cancel'],
+  unread_messages: 0,
+  created_at: '2026-09-19T12:00:00Z',
+  updated_at: '2026-09-19T12:00:00Z',
   ...overrides,
 })

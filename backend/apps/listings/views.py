@@ -43,7 +43,6 @@ def transition_action(name, serializer_class):
     """Crea el endpoint POST /listings/{id}/<name>/ para una transición."""
     t = transitions.TRANSITIONS[name]
 
-    @extend_schema(request=serializer_class, responses={200: ListingSerializer}, summary=str(t.label))
     def view(self, request, pk=None):
         listing = self.get_object()
         serializer = serializer_class(data=request.data)
@@ -56,7 +55,9 @@ def transition_action(name, serializer_class):
         return Response(ListingSerializer(listing, context=self.get_serializer_context()).data)
 
     view.__name__ = name
-    return action(detail=True, methods=["post"], url_path=name)(view)
+    # extend_schema va por fuera de action(), igual que al apilar @extend_schema sobre @action.
+    schema = extend_schema(request=serializer_class, responses={200: ListingSerializer}, summary=str(t.label))
+    return schema(action(detail=True, methods=["post"], url_path=name)(view))
 
 
 @extend_schema(parameters=FILTERS, methods=["GET"])
@@ -124,7 +125,7 @@ class ListingViewSet(
         return Response({s: counts.get(s, 0) for s in Listing.Status.values})
 
     @extend_schema(responses={200: ListingEventSerializer(many=True)})
-    @action(detail=True, methods=["get"])
+    @action(detail=True, methods=["get"], pagination_class=None)
     def events(self, request, pk=None):
         listing = self.get_object()
         events = listing.events.select_related("actor")

@@ -8,6 +8,11 @@ import es from './locales/es.json'
 export const languages = ['es', 'en'] as const
 export type Language = (typeof languages)[number]
 
+// El HTML declara el idioma actual (también el detectado al arrancar: por eso va antes de init).
+i18n.on('languageChanged', (lng) => {
+  document.documentElement.lang = lng
+})
+
 void i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -17,12 +22,12 @@ void i18n
     supportedLngs: languages,
     nonExplicitSupportedLngs: true,
     interpolation: { escapeValue: false }, // React ya escapa
-    detection: { order: ['localStorage', 'navigator'], caches: ['localStorage'] },
+    detection: {
+      order: ['localStorage', 'navigator'],
+      caches: ['localStorage'],
+      // `en-US` → `en`: el resto de la app (fechas, campos de categoría, Accept-Language) compara con `es`/`en`.
+      convertDetectedLanguage: (lng: string) => lng.split('-')[0]!,
+    },
   })
-
-// El backend responde en el idioma de `Accept-Language` y el HTML declara el idioma actual.
-i18n.on('languageChanged', (lng) => {
-  document.documentElement.lang = lng
-})
 
 export default i18n

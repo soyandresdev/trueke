@@ -14,6 +14,9 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as AppCuentaRouteImport } from './routes/_app/cuenta'
 import { Route as DevUiRouteImport } from './routes/dev.ui'
+import { Route as AppPublicacionesIndexRouteImport } from './routes/_app/publicaciones/index'
+import { Route as AppPublicacionesIdRouteImport } from './routes/_app/publicaciones/$id'
+import { Route as AppPublicacionesNuevaRouteImport } from './routes/_app/publicaciones/nueva'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -39,18 +42,39 @@ const DevUiRoute = DevUiRouteImport.update({
   path: '/dev/ui',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppPublicacionesIndexRoute = AppPublicacionesIndexRouteImport.update({
+  id: '/publicaciones/',
+  path: '/publicaciones/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPublicacionesIdRoute = AppPublicacionesIdRouteImport.update({
+  id: '/publicaciones/$id',
+  path: '/publicaciones/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPublicacionesNuevaRoute = AppPublicacionesNuevaRouteImport.update({
+  id: '/publicaciones/nueva',
+  path: '/publicaciones/nueva',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/entrar': typeof EntrarRoute
   '/cuenta': typeof AppCuentaRoute
   '/dev/ui': typeof DevUiRoute
+  '/publicaciones/$id': typeof AppPublicacionesIdRoute
+  '/publicaciones/nueva': typeof AppPublicacionesNuevaRoute
+  '/publicaciones/': typeof AppPublicacionesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/entrar': typeof EntrarRoute
   '/cuenta': typeof AppCuentaRoute
   '/dev/ui': typeof DevUiRoute
+  '/publicaciones/$id': typeof AppPublicacionesIdRoute
+  '/publicaciones/nueva': typeof AppPublicacionesNuevaRoute
+  '/publicaciones': typeof AppPublicacionesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -59,13 +83,39 @@ export interface FileRoutesById {
   '/entrar': typeof EntrarRoute
   '/_app/cuenta': typeof AppCuentaRoute
   '/dev/ui': typeof DevUiRoute
+  '/_app/publicaciones/$id': typeof AppPublicacionesIdRoute
+  '/_app/publicaciones/nueva': typeof AppPublicacionesNuevaRoute
+  '/_app/publicaciones/': typeof AppPublicacionesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/entrar' | '/cuenta' | '/dev/ui'
+  fullPaths:
+    | '/'
+    | '/entrar'
+    | '/cuenta'
+    | '/dev/ui'
+    | '/publicaciones/$id'
+    | '/publicaciones/nueva'
+    | '/publicaciones/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/entrar' | '/cuenta' | '/dev/ui'
-  id: '__root__' | '/' | '/_app' | '/entrar' | '/_app/cuenta' | '/dev/ui'
+  to:
+    | '/'
+    | '/entrar'
+    | '/cuenta'
+    | '/dev/ui'
+    | '/publicaciones/$id'
+    | '/publicaciones/nueva'
+    | '/publicaciones'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/entrar'
+    | '/_app/cuenta'
+    | '/dev/ui'
+    | '/_app/publicaciones/$id'
+    | '/_app/publicaciones/nueva'
+    | '/_app/publicaciones/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -112,15 +162,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DevUiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/publicaciones/': {
+      id: '/_app/publicaciones/'
+      path: '/publicaciones'
+      fullPath: '/publicaciones/'
+      preLoaderRoute: typeof AppPublicacionesIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/publicaciones/$id': {
+      id: '/_app/publicaciones/$id'
+      path: '/publicaciones/$id'
+      fullPath: '/publicaciones/$id'
+      preLoaderRoute: typeof AppPublicacionesIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/publicaciones/nueva': {
+      id: '/_app/publicaciones/nueva'
+      path: '/publicaciones/nueva'
+      fullPath: '/publicaciones/nueva'
+      preLoaderRoute: typeof AppPublicacionesNuevaRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppCuentaRoute: typeof AppCuentaRoute
+  AppPublicacionesIdRoute: typeof AppPublicacionesIdRoute
+  AppPublicacionesNuevaRoute: typeof AppPublicacionesNuevaRoute
+  AppPublicacionesIndexRoute: typeof AppPublicacionesIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppCuentaRoute: AppCuentaRoute,
+  AppPublicacionesIdRoute: AppPublicacionesIdRoute,
+  AppPublicacionesNuevaRoute: AppPublicacionesNuevaRoute,
+  AppPublicacionesIndexRoute: AppPublicacionesIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

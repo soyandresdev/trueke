@@ -63,9 +63,17 @@ function SessionLink() {
   }
   const name = me ? `${me.first_name ?? ''} ${me.last_name ?? ''}`.trim() : ''
   return (
-    <Link to="/cuenta" aria-label={t('account.title')} className="rounded-full">
-      <Avatar name={name} src={me?.photo} size="sm" />
-    </Link>
+    <>
+      <Link
+        to="/publicaciones"
+        className="hidden text-sm font-semibold hover:text-blue sm:inline [&.active]:text-blue"
+      >
+        {me?.role === 'operator' ? t('nav.listingsOperator') : t('nav.listings')}
+      </Link>
+      <Link to="/cuenta" aria-label={t('account.title')} className="rounded-full">
+        <Avatar name={name} src={me?.photo} size="sm" />
+      </Link>
+    </>
   )
 }
 
