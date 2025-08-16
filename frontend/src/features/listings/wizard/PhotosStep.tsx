@@ -2,7 +2,7 @@ import { ImagePlus, X } from 'lucide-react'
 import { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { StepNav } from './DetailsStep'
+import { StepNav } from '../form/StepNav'
 import { MAX_PHOTO_MB, MAX_PHOTOS, PHOTO_TYPES } from './photoRules'
 
 export type Photo = { id: string; file: File; url: string }

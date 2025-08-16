@@ -3,18 +3,15 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 
-import { Checkbox, TextField } from '@/components/ui/fields'
+import { Checkbox } from '@/components/ui/fields'
 import { useFieldError } from '@/lib/useFieldError'
 
-import { StepNav } from './DetailsStep'
+import { PickupFields } from '../form/ListingFields'
+import { pickupShape, type PickupFormValues } from '../form/schemas'
+import { StepNav } from '../form/StepNav'
 
-const schema = z.object({
-  city: z.string().trim().min(2, 'validation.required').max(80, 'validation.maxLength'),
-  pickup_address: z.string().trim().min(5, 'validation.required').max(200, 'validation.maxLength'),
-  is_original: z.boolean(),
-  terms: z.literal(true, 'validation.terms'),
-})
-export type Pickup = { city: string; pickup_address: string; is_original: boolean }
+const schema = z.object({ ...pickupShape, terms: z.literal(true, 'validation.terms') })
+export type Pickup = PickupFormValues
 
 type Props = {
   onBack: () => void
@@ -43,22 +40,7 @@ export function PickupStep({ onBack, onSubmit, submitting, error }: Props) {
       className="flex flex-col gap-5"
       onSubmit={form.handleSubmit(({ terms: _terms, ...pickup }) => onSubmit(pickup))}
     >
-      <div className="grid gap-5 sm:grid-cols-2">
-        <TextField
-          label={t('wizard.city')}
-          autoComplete="address-level2"
-          error={fieldError(errors.city?.message)}
-          {...form.register('city')}
-        />
-        <TextField
-          label={t('wizard.address')}
-          hint={t('wizard.addressHint')}
-          autoComplete="street-address"
-          error={fieldError(errors.pickup_address?.message)}
-          {...form.register('pickup_address')}
-        />
-      </div>
-      <Checkbox label={t('wizard.isOriginal')} {...form.register('is_original')} />
+      <PickupFields register={form.register as never} errors={errors} />
       <Checkbox
         label={t('wizard.terms')}
         error={fieldError(errors.terms?.message)}

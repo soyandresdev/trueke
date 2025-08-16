@@ -148,3 +148,17 @@ export async function openSellerDocument(id: number, kind: 'document' | 'bank-ce
   win.location.href = url
   setTimeout(() => URL.revokeObjectURL(url), 60_000)
 }
+
+export async function updateListing(id: number, body: Record<string, unknown>) {
+  return unwrap(
+    await api.PATCH('/api/listings/{id}/', { params: { path: { id } }, body: body as never }),
+  )
+}
+
+export async function deleteListingImage(id: number, imageId: number) {
+  const { error, response } = await api.DELETE('/api/listings/{id}/images/{image_id}/', {
+    params: { path: { id, image_id: String(imageId) } },
+  })
+  if (error !== undefined || !response.ok)
+    throw { status: response.status, body: (error ?? {}) as ApiErrorBody }
+}
