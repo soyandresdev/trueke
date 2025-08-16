@@ -3,9 +3,10 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from apps.chat.models import Message
+from apps.chat.signals import messages_read
 from apps.listings.transitions import listing_transitioned
 
-from . import tasks
+from . import services, tasks
 
 
 @receiver(listing_transitioned)
@@ -18,3 +19,9 @@ def on_listing_event(sender, listing, event, **kwargs):
 def on_message(sender, instance, created, **kwargs):
     if created:
         transaction.on_commit(lambda: tasks.notify_message.delay(instance.pk))
+
+
+@receiver(messages_read)
+def on_messages_read(sender, listing, user, **kwargs):
+    # Quien lee el chat ya vio el aviso de "mensajes nuevos" de esa publicación.
+    services.mark_message_notifications_seen(user, listing)

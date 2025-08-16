@@ -12,6 +12,7 @@ from apps.realtime.broadcast import broadcast
 
 from .models import Message
 from .serializers import MessageSerializer
+from .signals import messages_read
 
 
 def from_platform(user, listing) -> bool:
@@ -66,6 +67,8 @@ class MarkReadView(ListingChatMixin, APIView):
         updated = listing.messages.filter(from_platform=not platform, read_at__isnull=True).update(
             read_at=now
         )
+        # Siempre: aunque no queden mensajes por leer, puede quedar su aviso en la campana.
+        messages_read.send(Message, listing=listing, user=request.user)
         if updated:
             broadcast(
                 f"listing.{listing.pk}",

@@ -36,7 +36,26 @@
   "notifications": {
     "bell_one": "Notificaciones: {{count}} sin ver",
     "bell_other": "Notificaciones: {{count}} sin ver",
-    "bell_zero": "Notificaciones"
+    "bell_zero": "Notificaciones",
+    "title": "Notificaciones",
+    "markAll": "Marcar todas como vistas",
+    "empty": "No tienes notificaciones.",
+    "unseen": "sin ver",
+    "kinds": {
+      "listing": {
+        "create": "{{actor}} publicó «{{title}}».",
+        "offer": "Tienes una oferta por «{{title}}»: {{amount}}.",
+        "accept": "{{actor}} aceptó la oferta por «{{title}}».",
+        "reject": "{{actor}} rechazó la oferta por «{{title}}».",
+        "pickup": "La recogida de «{{title}}» está coordinada.",
+        "complete": "Venta completada: «{{title}}».",
+        "cancel": "«{{title}}» fue cancelada."
+      },
+      "message": {
+        "new_one": "Mensaje nuevo de {{actor}} en «{{title}}».",
+        "new_other": "{{count}} mensajes nuevos de {{actor}} en «{{title}}»."
+      }
+    }
   },
   "listing": {
     "unread_one": "{{count}} mensaje sin leer",
@@ -243,5 +262,19 @@
       "confirm": "Cancelar publicación",
       "done": "Publicación cancelada."
     }
+  },
+  "chat": {
+    "title": "Chat con Trueke",
+    "withSeller": "Chat con el vendedor",
+    "empty": "¿Tienes dudas sobre tu publicación o la oferta? Escríbenos aquí.",
+    "emptyOperator": "Aún no hay mensajes. Escríbele al vendedor.",
+    "older": "Ver mensajes anteriores",
+    "placeholder": "Escribe un mensaje…",
+    "send": "Enviar",
+    "attach": "Adjuntar archivo",
+    "removeFile": "Quitar el archivo",
+    "pdf": "Ver PDF",
+    "image": "Ver imagen",
+    "read": "Leído"
   }
 }

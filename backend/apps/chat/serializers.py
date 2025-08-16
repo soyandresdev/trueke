@@ -1,6 +1,9 @@
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
+
+from apps.listings.serializers import SellerSerializer
 
 from .models import Message
 
@@ -27,7 +30,8 @@ class MessageSerializer(serializers.ModelSerializer):
         # Sin declarar el campo a mano: así se conservan los validadores del modelo (tipo y tamaño).
         extra_kwargs = {"attachment": {"write_only": True}}
 
-    def get_sender(self, message) -> dict | None:
+    @extend_schema_field(SellerSerializer(allow_null=True))
+    def get_sender(self, message):
         if message.sender is None:
             return None
         return {"id": message.sender_id, "name": message.sender.get_full_name()}

@@ -34,3 +34,14 @@
     transform: translateY(0.5rem);
   }
 }
+
+/* Paneles `popover` anclados al botón que los abre (Chrome: ancla implícita por popovertarget).
+   Sin soporte quedan en la esquina superior derecha (clases fixed del propio panel). */
+@supports (position-area: bottom) {
+  .popover-anchored {
+    inset: auto;
+    position-area: bottom span-left;
+    position-try-fallbacks: flip-inline;
+    margin: 0.5rem 0 0;
+  }
+}

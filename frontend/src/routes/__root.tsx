@@ -5,6 +5,7 @@ import { useMe } from '@/auth/session'
 import { useAuth } from '@/auth/store'
 import { Logo } from '@/components/Logo'
 import { Avatar } from '@/components/ui/Avatar'
+import { NotificationMenu } from '@/features/notifications/NotificationMenu'
 import { Toaster } from '@/components/ui/Toaster'
 import { languages } from '@/i18n'
 
@@ -70,6 +71,7 @@ function SessionLink() {
       >
         {me?.role === 'operator' ? t('nav.listingsOperator') : t('nav.listings')}
       </Link>
+      <NotificationMenu />
       <Link to="/cuenta" aria-label={t('account.title')} className="rounded-full">
         <Avatar name={name} src={me?.photo} size="sm" />
       </Link>

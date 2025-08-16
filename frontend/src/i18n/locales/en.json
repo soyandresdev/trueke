@@ -36,7 +36,26 @@
   "notifications": {
     "bell_one": "Notifications: {{count}} unseen",
     "bell_other": "Notifications: {{count}} unseen",
-    "bell_zero": "Notifications"
+    "bell_zero": "Notifications",
+    "title": "Notifications",
+    "markAll": "Mark all as seen",
+    "empty": "You have no notifications.",
+    "unseen": "unseen",
+    "kinds": {
+      "listing": {
+        "create": "{{actor}} listed “{{title}}”.",
+        "offer": "You have an offer for “{{title}}”: {{amount}}.",
+        "accept": "{{actor}} accepted the offer for “{{title}}”.",
+        "reject": "{{actor}} declined the offer for “{{title}}”.",
+        "pickup": "Pickup for “{{title}}” is arranged.",
+        "complete": "Sale completed: “{{title}}”.",
+        "cancel": "“{{title}}” was cancelled."
+      },
+      "message": {
+        "new_one": "New message from {{actor}} on “{{title}}”.",
+        "new_other": "{{count}} new messages from {{actor}} on “{{title}}”."
+      }
+    }
   },
   "listing": {
     "unread_one": "{{count}} unread message",
@@ -243,5 +262,19 @@
       "confirm": "Cancel listing",
       "done": "Listing cancelled."
     }
+  },
+  "chat": {
+    "title": "Chat with Trueke",
+    "withSeller": "Chat with the seller",
+    "empty": "Questions about your listing or the offer? Write to us here.",
+    "emptyOperator": "No messages yet. Write to the seller.",
+    "older": "See earlier messages",
+    "placeholder": "Write a message…",
+    "send": "Send",
+    "attach": "Attach a file",
+    "removeFile": "Remove the file",
+    "pdf": "View PDF",
+    "image": "View image",
+    "read": "Read"
   }
 }

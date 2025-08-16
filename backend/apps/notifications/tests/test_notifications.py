@@ -145,3 +145,16 @@ def test_notifications_are_pushed_to_user_channel(run, listing, operators):
         "notification.created",
         "listing.offer",
     )
+
+
+def test_reading_the_chat_marks_its_notification_seen(run, listing, operators):
+    run(operators[0], "post", reverse("message-list", args=[listing.pk]), {"text": "Hola"})
+    other = ListingFactory(seller=listing.seller)
+    run(operators[0], "post", reverse("message-list", args=[other.pk]), {"text": "Otra"})
+    assert Notification.objects.filter(user=listing.seller, seen_at__isnull=True).count() == 2
+
+    with mock.patch("apps.notifications.services.broadcast") as broadcast:
+        run(listing.seller, "post", reverse("message-read", args=[listing.pk]))
+    unseen = Notification.objects.filter(user=listing.seller, seen_at__isnull=True)
+    assert list(unseen.values_list("listing", flat=True)) == [other.pk]  # solo el de este chat
+    assert broadcast.call_args.args[:2] == (f"user.{listing.seller.pk}", "notification.seen")
