@@ -7,6 +7,7 @@ import { useMe } from '@/auth/session'
 import { Spinner } from '@/components/ui/Spinner'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 import { Ticket } from '@/components/ui/Ticket'
+import { Chat } from '@/features/chat/Chat'
 import { useCategories, useListing, type ApiFailure } from '@/features/listings/api'
 import { ActionPanel } from '@/features/listings/detail/ActionPanel'
 import { Gallery } from '@/features/listings/detail/Gallery'
@@ -111,10 +112,13 @@ function ListingView({ listing }: { listing: Listing }) {
 
       <div className="mt-12 grid gap-10 lg:grid-cols-[1.2fr_1fr]">
         <Details listing={listing} />
-        <section>
-          <h2 className="mb-5 text-2xl font-bold">{t('listing.history')}</h2>
-          <History listingId={listing.id} />
-        </section>
+        <div className="flex flex-col gap-10">
+          <Chat listingId={listing.id} asPlatform={!isOwner} />
+          <section>
+            <h2 className="mb-5 text-2xl font-bold">{t('listing.history')}</h2>
+            <History listingId={listing.id} />
+          </section>
+        </div>
       </div>
     </div>
   )

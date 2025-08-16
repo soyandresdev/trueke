@@ -14,13 +14,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OtpRequest'
+              $ref: '#/components/schemas/OtpRequestRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/OtpRequest'
+              $ref: '#/components/schemas/OtpRequestRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/OtpRequest'
+              $ref: '#/components/schemas/OtpRequestRequest'
         required: true
       security:
       - jwtAuth: []
@@ -48,13 +48,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OtpVerify'
+              $ref: '#/components/schemas/OtpVerifyRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/OtpVerify'
+              $ref: '#/components/schemas/OtpVerifyRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/OtpVerify'
+              $ref: '#/components/schemas/OtpVerifyRequest'
         required: true
       security:
       - jwtAuth: []
@@ -78,13 +78,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TokenRefresh'
+              $ref: '#/components/schemas/TokenRefreshRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/TokenRefresh'
+              $ref: '#/components/schemas/TokenRefreshRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/TokenRefresh'
+              $ref: '#/components/schemas/TokenRefreshRequest'
         required: true
       responses:
         '200':
@@ -160,13 +160,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Listing'
+              $ref: '#/components/schemas/ListingRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Listing'
+              $ref: '#/components/schemas/ListingRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Listing'
+              $ref: '#/components/schemas/ListingRequest'
         required: true
       security:
       - jwtAuth: []
@@ -221,10 +221,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Message'
+              $ref: '#/components/schemas/MessageRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Message'
+              $ref: '#/components/schemas/MessageRequest'
       security:
       - jwtAuth: []
       responses:
@@ -331,13 +331,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedListing'
+              $ref: '#/components/schemas/PatchedListingRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedListing'
+              $ref: '#/components/schemas/PatchedListingRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedListing'
+              $ref: '#/components/schemas/PatchedListingRequest'
       security:
       - jwtAuth: []
       responses:
@@ -386,13 +386,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Reason'
+              $ref: '#/components/schemas/ReasonRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Reason'
+              $ref: '#/components/schemas/ReasonRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Reason'
+              $ref: '#/components/schemas/ReasonRequest'
       security:
       - jwtAuth: []
       responses:
@@ -482,7 +482,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ListingImage'
+              $ref: '#/components/schemas/ListingImageRequest'
         required: true
       security:
       - jwtAuth: []
@@ -533,13 +533,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Offer'
+              $ref: '#/components/schemas/OfferRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Offer'
+              $ref: '#/components/schemas/OfferRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Offer'
+              $ref: '#/components/schemas/OfferRequest'
         required: true
       security:
       - jwtAuth: []
@@ -567,13 +567,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pickup'
+              $ref: '#/components/schemas/PickupRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Pickup'
+              $ref: '#/components/schemas/PickupRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Pickup'
+              $ref: '#/components/schemas/PickupRequest'
         required: true
       security:
       - jwtAuth: []
@@ -601,13 +601,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Reason'
+              $ref: '#/components/schemas/ReasonRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Reason'
+              $ref: '#/components/schemas/ReasonRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Reason'
+              $ref: '#/components/schemas/ReasonRequest'
       security:
       - jwtAuth: []
       responses:
@@ -674,13 +674,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedUser'
+              $ref: '#/components/schemas/PatchedUserRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedUser'
+              $ref: '#/components/schemas/PatchedUserRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedUser'
+              $ref: '#/components/schemas/PatchedUserRequest'
       security:
       - jwtAuth: []
       responses:
@@ -700,7 +700,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedDocuments'
+              $ref: '#/components/schemas/PatchedDocumentsRequest'
       security:
       - jwtAuth: []
       responses:
@@ -737,13 +737,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Subscribe'
+              $ref: '#/components/schemas/SubscribeRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Subscribe'
+              $ref: '#/components/schemas/SubscribeRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Subscribe'
+              $ref: '#/components/schemas/SubscribeRequest'
         required: true
       security:
       - {}
@@ -759,13 +759,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Unsubscribe'
+              $ref: '#/components/schemas/UnsubscribeRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Unsubscribe'
+              $ref: '#/components/schemas/UnsubscribeRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Unsubscribe'
+              $ref: '#/components/schemas/UnsubscribeRequest'
         required: true
       security:
       - {}
@@ -1043,9 +1043,6 @@ components:
         is_original:
           type: boolean
           title: ¿es original?
-        terms_accepted:
-          type: boolean
-          writeOnly: true
         terms_accepted_at:
           type: string
           format: date-time
@@ -1185,6 +1182,21 @@ components:
       required:
       - id
       - image
+    ListingImageRequest:
+      type: object
+      properties:
+        image:
+          type: string
+          format: binary
+          title: Imagen
+        position:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: Orden
+      required:
+      - image
     ListingPickupByEnum:
       enum:
       - seller
@@ -1193,6 +1205,50 @@ components:
       description: |-
         * `seller` - El vendedor lo envía
         * `platform` - Trueke lo recoge
+    ListingRequest:
+      type: object
+      properties:
+        category:
+          type: integer
+        title:
+          type: string
+          minLength: 1
+          title: Nombre
+          maxLength: 120
+        description:
+          type: string
+          minLength: 1
+          title: Descripción
+          maxLength: 4000
+        condition:
+          allOf:
+          - $ref: '#/components/schemas/ConditionEnum'
+          title: Estado del artículo
+        attributes:
+          title: Campos de la categoría
+        city:
+          type: string
+          minLength: 1
+          title: Ciudad
+          maxLength: 80
+        pickup_address:
+          type: string
+          minLength: 1
+          title: Dirección de recogida
+          maxLength: 200
+        is_original:
+          type: boolean
+          title: ¿es original?
+        terms_accepted:
+          type: boolean
+          writeOnly: true
+      required:
+      - category
+      - city
+      - condition
+      - description
+      - pickup_address
+      - title
     ListingStats:
       type: object
       properties:
@@ -1248,8 +1304,8 @@ components:
           type: integer
           readOnly: true
         sender:
-          type: object
-          additionalProperties: {}
+          allOf:
+          - $ref: '#/components/schemas/Seller'
           nullable: true
           readOnly: true
         from_platform:
@@ -1260,12 +1316,6 @@ components:
           type: string
           title: Texto
           maxLength: 4000
-        attachment:
-          type: string
-          format: uri
-          nullable: true
-          writeOnly: true
-          title: Adjunto
         attachment_kind:
           type: string
           description: '`pdf` o `image`; el nombre original no se guarda (puede tener
@@ -1294,6 +1344,18 @@ components:
       - listing
       - read_at
       - sender
+    MessageRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          title: Texto
+          maxLength: 4000
+        attachment:
+          type: string
+          format: binary
+          writeOnly: true
+          title: Adjunto
     Notification:
       type: object
       properties:
@@ -1305,13 +1367,13 @@ components:
           - $ref: '#/components/schemas/KindEnum'
           title: Tipo
         listing:
-          type: object
-          additionalProperties: {}
+          allOf:
+          - $ref: '#/components/schemas/NotificationListing'
           nullable: true
           readOnly: true
         actor:
-          type: object
-          additionalProperties: {}
+          allOf:
+          - $ref: '#/components/schemas/Seller'
           nullable: true
           readOnly: true
         data: {}
@@ -1336,6 +1398,35 @@ components:
           type: integer
       required:
       - count
+    NotificationListing:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        status:
+          $ref: '#/components/schemas/NotificationListingStatusEnum'
+      required:
+      - id
+      - status
+      - title
+    NotificationListingStatusEnum:
+      enum:
+      - in_review
+      - offered
+      - accepted
+      - pickup_sent
+      - completed
+      - cancelled
+      type: string
+      description: |-
+        * `in_review` - in_review
+        * `offered` - offered
+        * `accepted` - accepted
+        * `pickup_sent` - pickup_sent
+        * `completed` - completed
+        * `cancelled` - cancelled
     NotificationsSeen:
       type: object
       properties:
@@ -1343,7 +1434,7 @@ components:
           type: integer
       required:
       - updated
-    Offer:
+    OfferRequest:
       type: object
       properties:
         amount:
@@ -1352,6 +1443,7 @@ components:
           pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
         currency:
           type: string
+          minLength: 1
           default: COP
           maxLength: 3
       required:
@@ -1366,11 +1458,12 @@ components:
       required:
       - expires_in
       - resend_in
-    OtpRequest:
+    OtpRequestRequest:
       type: object
       properties:
         phone:
           type: string
+          minLength: 1
           maxLength: 30
       required:
       - phone
@@ -1387,14 +1480,16 @@ components:
       - code
       - detail
       - wait
-    OtpVerify:
+    OtpVerifyRequest:
       type: object
       properties:
         phone:
           type: string
+          minLength: 1
           maxLength: 30
         code:
           type: string
+          minLength: 1
           pattern: ^\d{4,8}$
       required:
       - code
@@ -1464,39 +1559,32 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Notification'
-    PatchedDocuments:
+    PatchedDocumentsRequest:
       type: object
       properties:
         document_file:
           type: string
-          format: uri
-          nullable: true
+          format: binary
           writeOnly: true
           title: Documento
         bank_certificate:
           type: string
-          format: uri
-          nullable: true
+          format: binary
           writeOnly: true
           title: Certificado bancario
-    PatchedListing:
+    PatchedListingRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        seller:
-          allOf:
-          - $ref: '#/components/schemas/Seller'
-          readOnly: true
         category:
           type: integer
         title:
           type: string
+          minLength: 1
           title: Nombre
           maxLength: 120
         description:
           type: string
+          minLength: 1
           title: Descripción
           maxLength: 4000
         condition:
@@ -1507,10 +1595,12 @@ components:
           title: Campos de la categoría
         city:
           type: string
+          minLength: 1
           title: Ciudad
           maxLength: 80
         pickup_address:
           type: string
+          minLength: 1
           title: Dirección de recogida
           maxLength: 200
         is_original:
@@ -1519,82 +1609,9 @@ components:
         terms_accepted:
           type: boolean
           writeOnly: true
-        terms_accepted_at:
-          type: string
-          format: date-time
-          readOnly: true
-          title: Términos aceptados
-        images:
-          type: array
-          items:
-            $ref: '#/components/schemas/ListingImage'
-          readOnly: true
-        status:
-          allOf:
-          - $ref: '#/components/schemas/ListingStatusEnum'
-          readOnly: true
-          title: Estado
-        status_changed_at:
-          type: string
-          format: date-time
-          readOnly: true
-          title: Último cambio de estado
-        offer_amount:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
-          readOnly: true
-          nullable: true
-          title: Oferta
-        offer_currency:
-          type: string
-          readOnly: true
-          title: Moneda
-        pickup_by:
-          allOf:
-          - $ref: '#/components/schemas/ListingPickupByEnum'
-          readOnly: true
-          title: Responsable de la recogida
-        pickup_date:
-          type: string
-          format: date
-          readOnly: true
-          nullable: true
-          title: Fecha de recogida
-        pickup_notes:
-          type: string
-          readOnly: true
-          title: Indicaciones de recogida
-        cancel_reason:
-          type: string
-          readOnly: true
-          title: Motivo de cancelación
-        available_actions:
-          type: array
-          items:
-            $ref: '#/components/schemas/AvailableActionsEnum'
-          readOnly: true
-        unread_messages:
-          type: integer
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-    PatchedUser:
+    PatchedUserRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        phone:
-          type: string
-          readOnly: true
-          title: Teléfono
         first_name:
           type: string
           title: Nombre
@@ -1612,18 +1629,12 @@ components:
             maxLength: 0
         photo:
           type: string
-          format: uri
-          nullable: true
+          format: binary
           title: Foto
         language:
           allOf:
           - $ref: '#/components/schemas/LanguageEnum'
           title: Idioma
-        role:
-          allOf:
-          - $ref: '#/components/schemas/RoleEnum'
-          readOnly: true
-          title: Rol
         document_type:
           title: Tipo de documento
           oneOf:
@@ -1633,21 +1644,15 @@ components:
           type: string
           title: Número de documento
           maxLength: 30
-        has_document_file:
-          type: boolean
-          readOnly: true
-        has_bank_certificate:
-          type: boolean
-          readOnly: true
-        profile_complete:
-          type: boolean
-          description: Datos mínimos para que la plataforma pueda pagarle al vendedor.
-          readOnly: true
-        date_joined:
-          type: string
-          format: date-time
-          readOnly: true
-    Pickup:
+    PickupPickupByEnum:
+      enum:
+      - seller
+      - platform
+      type: string
+      description: |-
+        * `seller` - seller
+        * `platform` - platform
+    PickupRequest:
       type: object
       properties:
         pickup_by:
@@ -1661,15 +1666,7 @@ components:
           maxLength: 500
       required:
       - pickup_by
-    PickupPickupByEnum:
-      enum:
-      - seller
-      - platform
-      type: string
-      description: |-
-        * `seller` - seller
-        * `platform` - platform
-    Reason:
+    ReasonRequest:
       type: object
       properties:
         reason:
@@ -1693,12 +1690,24 @@ components:
       required:
       - id
       - name
-    Subscribe:
+    SellerRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          minLength: 1
+      required:
+      - id
+      - name
+    SubscribeRequest:
       type: object
       properties:
         email:
           type: string
           format: email
+          minLength: 1
           maxLength: 254
       required:
       - email
@@ -1713,7 +1722,15 @@ components:
       required:
       - access
       - refresh
-    Unsubscribe:
+    TokenRefreshRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
+      - refresh
+    UnsubscribeRequest:
       type: object
       properties:
         token:

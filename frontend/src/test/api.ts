@@ -105,3 +105,27 @@ export const listing = (overrides: Record<string, unknown> = {}) => ({
   updated_at: '2026-09-19T12:00:00Z',
   ...overrides,
 })
+
+export const message = (overrides: Record<string, unknown> = {}) => ({
+  id: 1,
+  listing: 13,
+  sender: { id: 1, name: 'Sara Operadora' },
+  from_platform: true,
+  text: 'Hola, ¿sigue disponible?',
+  attachment_kind: '',
+  attachment_url: null,
+  created_at: '2026-09-19T12:00:00Z',
+  read_at: null,
+  ...overrides,
+})
+
+export const notification = (overrides: Record<string, unknown> = {}) => ({
+  id: 1,
+  kind: 'listing.offer',
+  listing: { id: 13, title: 'Teclado MIDI', status: 'offered' },
+  actor: { id: 1, name: 'Sara Operadora' },
+  data: { status: 'offered', amount: '380000.00', currency: 'COP' },
+  created_at: '2026-09-19T12:00:00Z',
+  seen_at: null,
+  ...overrides,
+})

@@ -590,7 +590,6 @@ export interface components {
             pickup_address: string;
             /** ¿es original? */
             is_original?: boolean;
-            terms_accepted?: boolean;
             /**
              * Términos aceptados
              * Format: date-time
@@ -653,12 +652,42 @@ export interface components {
              */
             position?: number;
         };
+        ListingImageRequest: {
+            /**
+             * Imagen
+             * Format: binary
+             */
+            image: string;
+            /**
+             * Orden
+             * Format: int64
+             */
+            position?: number;
+        };
         /**
          * @description * `seller` - El vendedor lo envía
          *     * `platform` - Trueke lo recoge
          * @enum {string}
          */
         ListingPickupByEnum: "seller" | "platform";
+        ListingRequest: {
+            category: number;
+            /** Nombre */
+            title: string;
+            /** Descripción */
+            description: string;
+            /** Estado del artículo */
+            condition: components["schemas"]["ConditionEnum"];
+            /** Campos de la categoría */
+            attributes?: unknown;
+            /** Ciudad */
+            city: string;
+            /** Dirección de recogida */
+            pickup_address: string;
+            /** ¿es original? */
+            is_original?: boolean;
+            terms_accepted?: boolean;
+        };
         ListingStats: {
             in_review: number;
             offered: number;
@@ -683,18 +712,11 @@ export interface components {
         Message: {
             readonly id: number;
             readonly listing: number;
-            readonly sender: {
-                [key: string]: unknown;
-            } | null;
+            readonly sender: components["schemas"]["Seller"] | null;
             /** Enviado por la plataforma */
             readonly from_platform: boolean;
             /** Texto */
             text?: string;
-            /**
-             * Adjunto
-             * Format: uri
-             */
-            attachment?: string | null;
             /** @description `pdf` o `image`; el nombre original no se guarda (puede tener datos personales). */
             readonly attachment_kind: string;
             readonly attachment_url: string | null;
@@ -706,16 +728,21 @@ export interface components {
              */
             readonly read_at: string | null;
         };
+        MessageRequest: {
+            /** Texto */
+            text?: string;
+            /**
+             * Adjunto
+             * Format: binary
+             */
+            attachment?: string;
+        };
         Notification: {
             readonly id: number;
             /** Tipo */
             kind: components["schemas"]["KindEnum"];
-            readonly listing: {
-                [key: string]: unknown;
-            } | null;
-            readonly actor: {
-                [key: string]: unknown;
-            } | null;
+            readonly listing: components["schemas"]["NotificationListing"] | null;
+            readonly actor: components["schemas"]["Seller"] | null;
             data?: unknown;
             /** Format: date-time */
             created_at: string;
@@ -728,10 +755,25 @@ export interface components {
         NotificationCount: {
             count: number;
         };
+        NotificationListing: {
+            id: number;
+            title: string;
+            status: components["schemas"]["NotificationListingStatusEnum"];
+        };
+        /**
+         * @description * `in_review` - in_review
+         *     * `offered` - offered
+         *     * `accepted` - accepted
+         *     * `pickup_sent` - pickup_sent
+         *     * `completed` - completed
+         *     * `cancelled` - cancelled
+         * @enum {string}
+         */
+        NotificationListingStatusEnum: "in_review" | "offered" | "accepted" | "pickup_sent" | "completed" | "cancelled";
         NotificationsSeen: {
             updated: number;
         };
-        Offer: {
+        OfferRequest: {
             /** Format: decimal */
             amount: string;
             /** @default COP */
@@ -741,7 +783,7 @@ export interface components {
             expires_in: number;
             resend_in: number;
         };
-        OtpRequest: {
+        OtpRequestRequest: {
             phone: string;
         };
         OtpResendTooSoon: {
@@ -749,7 +791,7 @@ export interface components {
             detail: string;
             wait: number;
         };
-        OtpVerify: {
+        OtpVerifyRequest: {
             phone: string;
             code: string;
         };
@@ -796,21 +838,19 @@ export interface components {
             previous?: string | null;
             results: components["schemas"]["Notification"][];
         };
-        PatchedDocuments: {
+        PatchedDocumentsRequest: {
             /**
              * Documento
-             * Format: uri
+             * Format: binary
              */
-            document_file?: string | null;
+            document_file?: string;
             /**
              * Certificado bancario
-             * Format: uri
+             * Format: binary
              */
-            bank_certificate?: string | null;
+            bank_certificate?: string;
         };
-        PatchedListing: {
-            readonly id?: number;
-            readonly seller?: components["schemas"]["Seller"];
+        PatchedListingRequest: {
             category?: number;
             /** Nombre */
             title?: string;
@@ -827,48 +867,8 @@ export interface components {
             /** ¿es original? */
             is_original?: boolean;
             terms_accepted?: boolean;
-            /**
-             * Términos aceptados
-             * Format: date-time
-             */
-            readonly terms_accepted_at?: string;
-            readonly images?: components["schemas"]["ListingImage"][];
-            /** Estado */
-            readonly status?: components["schemas"]["ListingStatusEnum"];
-            /**
-             * Último cambio de estado
-             * Format: date-time
-             */
-            readonly status_changed_at?: string;
-            /**
-             * Oferta
-             * Format: decimal
-             */
-            readonly offer_amount?: string | null;
-            /** Moneda */
-            readonly offer_currency?: string;
-            /** Responsable de la recogida */
-            readonly pickup_by?: components["schemas"]["ListingPickupByEnum"];
-            /**
-             * Fecha de recogida
-             * Format: date
-             */
-            readonly pickup_date?: string | null;
-            /** Indicaciones de recogida */
-            readonly pickup_notes?: string;
-            /** Motivo de cancelación */
-            readonly cancel_reason?: string;
-            readonly available_actions?: components["schemas"]["AvailableActionsEnum"][];
-            readonly unread_messages?: number;
-            /** Format: date-time */
-            readonly created_at?: string;
-            /** Format: date-time */
-            readonly updated_at?: string;
         };
-        PatchedUser: {
-            readonly id?: number;
-            /** Teléfono */
-            readonly phone?: string;
+        PatchedUserRequest: {
             /** Nombre */
             first_name?: string;
             /** Apellido */
@@ -876,29 +876,15 @@ export interface components {
             email?: string;
             /**
              * Foto
-             * Format: uri
+             * Format: binary
              */
-            photo?: string | null;
+            photo?: string;
             /** Idioma */
             language?: components["schemas"]["LanguageEnum"];
-            /** Rol */
-            readonly role?: components["schemas"]["RoleEnum"];
             /** Tipo de documento */
             document_type?: components["schemas"]["DocumentTypeEnum"] | components["schemas"]["BlankEnum"];
             /** Número de documento */
             document_number?: string;
-            readonly has_document_file?: boolean;
-            readonly has_bank_certificate?: boolean;
-            /** @description Datos mínimos para que la plataforma pueda pagarle al vendedor. */
-            readonly profile_complete?: boolean;
-            /** Format: date-time */
-            readonly date_joined?: string;
-        };
-        Pickup: {
-            pickup_by: components["schemas"]["PickupPickupByEnum"];
-            /** Format: date */
-            pickup_date?: string | null;
-            notes?: string;
         };
         /**
          * @description * `seller` - seller
@@ -906,7 +892,13 @@ export interface components {
          * @enum {string}
          */
         PickupPickupByEnum: "seller" | "platform";
-        Reason: {
+        PickupRequest: {
+            pickup_by: components["schemas"]["PickupPickupByEnum"];
+            /** Format: date */
+            pickup_date?: string | null;
+            notes?: string;
+        };
+        ReasonRequest: {
             reason?: string;
         };
         /**
@@ -919,7 +911,11 @@ export interface components {
             id: number;
             name: string;
         };
-        Subscribe: {
+        SellerRequest: {
+            id: number;
+            name: string;
+        };
+        SubscribeRequest: {
             /** Format: email */
             email: string;
         };
@@ -927,7 +923,10 @@ export interface components {
             readonly access: string;
             refresh: string;
         };
-        Unsubscribe: {
+        TokenRefreshRequest: {
+            refresh: string;
+        };
+        UnsubscribeRequest: {
             /** Format: uuid */
             token: string;
         };
@@ -978,9 +977,9 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["OtpRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["OtpRequest"];
-                "multipart/form-data": components["schemas"]["OtpRequest"];
+                "application/json": components["schemas"]["OtpRequestRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["OtpRequestRequest"];
+                "multipart/form-data": components["schemas"]["OtpRequestRequest"];
             };
         };
         responses: {
@@ -1011,9 +1010,9 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["OtpVerify"];
-                "application/x-www-form-urlencoded": components["schemas"]["OtpVerify"];
-                "multipart/form-data": components["schemas"]["OtpVerify"];
+                "application/json": components["schemas"]["OtpVerifyRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["OtpVerifyRequest"];
+                "multipart/form-data": components["schemas"]["OtpVerifyRequest"];
             };
         };
         responses: {
@@ -1036,9 +1035,9 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["TokenRefresh"];
-                "application/x-www-form-urlencoded": components["schemas"]["TokenRefresh"];
-                "multipart/form-data": components["schemas"]["TokenRefresh"];
+                "application/json": components["schemas"]["TokenRefreshRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["TokenRefreshRequest"];
+                "multipart/form-data": components["schemas"]["TokenRefreshRequest"];
             };
         };
         responses: {
@@ -1109,9 +1108,9 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["Listing"];
-                "application/x-www-form-urlencoded": components["schemas"]["Listing"];
-                "multipart/form-data": components["schemas"]["Listing"];
+                "application/json": components["schemas"]["ListingRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ListingRequest"];
+                "multipart/form-data": components["schemas"]["ListingRequest"];
             };
         };
         responses: {
@@ -1160,8 +1159,8 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["Message"];
-                "multipart/form-data": components["schemas"]["Message"];
+                "application/json": components["schemas"]["MessageRequest"];
+                "multipart/form-data": components["schemas"]["MessageRequest"];
             };
         };
         responses: {
@@ -1259,9 +1258,9 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["PatchedListing"];
-                "application/x-www-form-urlencoded": components["schemas"]["PatchedListing"];
-                "multipart/form-data": components["schemas"]["PatchedListing"];
+                "application/json": components["schemas"]["PatchedListingRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedListingRequest"];
+                "multipart/form-data": components["schemas"]["PatchedListingRequest"];
             };
         };
         responses: {
@@ -1309,9 +1308,9 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["Reason"];
-                "application/x-www-form-urlencoded": components["schemas"]["Reason"];
-                "multipart/form-data": components["schemas"]["Reason"];
+                "application/json": components["schemas"]["ReasonRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ReasonRequest"];
+                "multipart/form-data": components["schemas"]["ReasonRequest"];
             };
         };
         responses: {
@@ -1389,7 +1388,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "multipart/form-data": components["schemas"]["ListingImage"];
+                "multipart/form-data": components["schemas"]["ListingImageRequest"];
             };
         };
         responses: {
@@ -1437,9 +1436,9 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["Offer"];
-                "application/x-www-form-urlencoded": components["schemas"]["Offer"];
-                "multipart/form-data": components["schemas"]["Offer"];
+                "application/json": components["schemas"]["OfferRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["OfferRequest"];
+                "multipart/form-data": components["schemas"]["OfferRequest"];
             };
         };
         responses: {
@@ -1465,9 +1464,9 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["Pickup"];
-                "application/x-www-form-urlencoded": components["schemas"]["Pickup"];
-                "multipart/form-data": components["schemas"]["Pickup"];
+                "application/json": components["schemas"]["PickupRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PickupRequest"];
+                "multipart/form-data": components["schemas"]["PickupRequest"];
             };
         };
         responses: {
@@ -1493,9 +1492,9 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["Reason"];
-                "application/x-www-form-urlencoded": components["schemas"]["Reason"];
-                "multipart/form-data": components["schemas"]["Reason"];
+                "application/json": components["schemas"]["ReasonRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ReasonRequest"];
+                "multipart/form-data": components["schemas"]["ReasonRequest"];
             };
         };
         responses: {
@@ -1564,9 +1563,9 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["PatchedUser"];
-                "application/x-www-form-urlencoded": components["schemas"]["PatchedUser"];
-                "multipart/form-data": components["schemas"]["PatchedUser"];
+                "application/json": components["schemas"]["PatchedUserRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedUserRequest"];
+                "multipart/form-data": components["schemas"]["PatchedUserRequest"];
             };
         };
         responses: {
@@ -1589,7 +1588,7 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "multipart/form-data": components["schemas"]["PatchedDocuments"];
+                "multipart/form-data": components["schemas"]["PatchedDocumentsRequest"];
             };
         };
         responses: {
@@ -1632,9 +1631,9 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["Subscribe"];
-                "application/x-www-form-urlencoded": components["schemas"]["Subscribe"];
-                "multipart/form-data": components["schemas"]["Subscribe"];
+                "application/json": components["schemas"]["SubscribeRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["SubscribeRequest"];
+                "multipart/form-data": components["schemas"]["SubscribeRequest"];
             };
         };
         responses: {
@@ -1656,9 +1655,9 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["Unsubscribe"];
-                "application/x-www-form-urlencoded": components["schemas"]["Unsubscribe"];
-                "multipart/form-data": components["schemas"]["Unsubscribe"];
+                "application/json": components["schemas"]["UnsubscribeRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["UnsubscribeRequest"];
+                "multipart/form-data": components["schemas"]["UnsubscribeRequest"];
             };
         };
         responses: {

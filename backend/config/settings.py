@@ -158,6 +158,8 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "API del marketplace Trueke.",
     "VERSION": "0.1.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    # Esquemas separados para lo que se envía (sin campos de solo lectura) y lo que se recibe.
+    "COMPONENT_SPLIT_REQUEST": True,
     "ENUM_NAME_OVERRIDES": {"ListingStatusEnum": "apps.listings.models.Listing.Status"},
 }
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=["http://localhost:5173"])

@@ -70,3 +70,14 @@ def notify_message(message) -> list[Notification]:
             push(notification)
             result.append(notification)
     return result
+
+
+def mark_message_notifications_seen(user, listing) -> None:
+    now = timezone.now()
+    pending = Notification.objects.filter(
+        user=user, listing=listing, kind=Notification.Kind.MESSAGE_NEW, seen_at__isnull=True
+    )
+    ids = list(pending.values_list("pk", flat=True))
+    if ids:
+        Notification.objects.filter(pk__in=ids).update(seen_at=now)
+        broadcast(f"user.{user.pk}", "notification.seen", {"ids": ids, "seen_at": now.isoformat()})
