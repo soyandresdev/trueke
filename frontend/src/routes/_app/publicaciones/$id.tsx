@@ -12,6 +12,7 @@ import { useCategories, useListing, type ApiFailure } from '@/features/listings/
 import { ActionPanel } from '@/features/listings/detail/ActionPanel'
 import { Gallery } from '@/features/listings/detail/Gallery'
 import { History } from '@/features/listings/detail/History'
+import { SellerCard } from '@/features/listings/detail/SellerCard'
 import { displayAttribute, fieldsFromSchema } from '@/features/listings/schemaFields'
 import { formatDate, ticketCode } from '@/lib/format'
 import { useRealtimeChannel } from '@/realtime/context'
@@ -84,12 +85,20 @@ function ListingView({ listing }: { listing: Listing }) {
               title={listing.title}
               amount={listing.offer_amount}
               currency={listing.offer_currency || undefined}
-              label={listing.status === 'completed' ? t('ticket.sold') : undefined}
+              // "Te ofrecemos" le habla al vendedor; el operador ve la oferta que hizo la plataforma.
+              label={
+                listing.status === 'completed'
+                  ? t('ticket.sold')
+                  : isOwner
+                    ? undefined
+                    : t('ticket.platform')
+              }
             />
           )}
 
           <StatusNote listing={listing} isOwner={isOwner} />
           <ActionPanel listing={listing} />
+          {me?.role === 'operator' && !isOwner && <SellerCard sellerId={listing.seller.id} />}
 
           {listing.pickup_by && (
             <div className="flex gap-3 rounded-lg bg-paper p-4">

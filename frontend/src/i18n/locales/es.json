@@ -31,7 +31,8 @@
   },
   "ticket": {
     "label": "Te ofrecemos",
-    "sold": "Vendido por"
+    "sold": "Vendido por",
+    "platform": "Oferta de Trueke"
   },
   "notifications": {
     "bell_one": "Notificaciones: {{count}} sin ver",
@@ -150,7 +151,7 @@
     "filter": "Filtrar por estado",
     "all": "Todas",
     "empty": "Todavía no has publicado nada.",
-    "emptyFiltered": "No hay publicaciones en este estado.",
+    "emptyFiltered": "No hay publicaciones con estos filtros.",
     "emptyCta": "Publica tu primer artículo"
   },
   "wizard": {
@@ -276,5 +277,31 @@
     "pdf": "Ver PDF",
     "image": "Ver imagen",
     "read": "Leído"
+  },
+  "filters": {
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por nombre, descripción o vendedor",
+    "anyCity": "Cualquier ciudad",
+    "anyCategory": "Todas las categorías",
+    "clear": "Borrar {{field}}"
+  },
+  "table": {
+    "listing": "Publicación",
+    "seller": "Vendedor",
+    "status": "Estado",
+    "offer": "Oferta",
+    "date": "Fecha"
+  },
+  "pagination": {
+    "label": "Paginación",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "status": "Página {{page}} de {{pages}}"
+  },
+  "seller": {
+    "noName": "Sin nombre",
+    "complete": "Perfil completo",
+    "incomplete": "Perfil incompleto: no se le puede pagar aún",
+    "missing": "Falta: {{doc}}"
   }
 }

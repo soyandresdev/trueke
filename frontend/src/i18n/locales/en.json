@@ -31,7 +31,8 @@
   },
   "ticket": {
     "label": "Our offer",
-    "sold": "Sold for"
+    "sold": "Sold for",
+    "platform": "Trueke’s offer"
   },
   "notifications": {
     "bell_one": "Notifications: {{count}} unseen",
@@ -150,7 +151,7 @@
     "filter": "Filter by status",
     "all": "All",
     "empty": "You haven't listed anything yet.",
-    "emptyFiltered": "No listings in this status.",
+    "emptyFiltered": "No listings match these filters.",
     "emptyCta": "List your first item"
   },
   "wizard": {
@@ -276,5 +277,31 @@
     "pdf": "View PDF",
     "image": "View image",
     "read": "Read"
+  },
+  "filters": {
+    "search": "Search",
+    "searchPlaceholder": "Search by name, description or seller",
+    "anyCity": "Any city",
+    "anyCategory": "All categories",
+    "clear": "Clear {{field}}"
+  },
+  "table": {
+    "listing": "Listing",
+    "seller": "Seller",
+    "status": "Status",
+    "offer": "Offer",
+    "date": "Date"
+  },
+  "pagination": {
+    "label": "Pagination",
+    "previous": "Previous",
+    "next": "Next",
+    "status": "Page {{page}} of {{pages}}"
+  },
+  "seller": {
+    "noName": "No name",
+    "complete": "Profile complete",
+    "incomplete": "Incomplete profile: can't be paid yet",
+    "missing": "Missing: {{doc}}"
   }
 }

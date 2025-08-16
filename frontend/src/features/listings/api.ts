@@ -31,7 +31,15 @@ export function useCategories() {
   })
 }
 
-export function useListings(filters: { status?: ListingStatus; page?: number }) {
+export type ListingFilters = {
+  status?: ListingStatus
+  q?: string
+  city?: string
+  category?: string
+  page?: number
+}
+
+export function useListings(filters: ListingFilters) {
   return useQuery({
     queryKey: queryKeys.listingList(filters),
     queryFn: async () => unwrap(await api.GET('/api/listings/', { params: { query: filters } })),
@@ -117,4 +125,26 @@ export async function uploadListingImage(id: number, file: File, position: numbe
       bodySerializer: () => form,
     }),
   )
+}
+
+/** Perfil completo de un vendedor (solo operadores). */
+export function useSeller(id: number, enabled: boolean) {
+  return useQuery({
+    queryKey: ['users', id] as const,
+    queryFn: async () => unwrap(await api.GET('/api/users/{id}/', { params: { path: { id } } })),
+    enabled,
+  })
+}
+
+/** Abre un documento privado del vendedor en otra pestaña (se descarga con la sesión del operador). */
+export async function openSellerDocument(id: number, kind: 'document' | 'bank-certificate') {
+  const win = window.open('', '_blank') // en el clic; si no, el navegador la bloquea
+  const { data } = await api.GET('/api/users/{id}/documents/{kind}/', {
+    params: { path: { id, kind } },
+    parseAs: 'blob',
+  })
+  if (!data || !win) return win?.close()
+  const url = URL.createObjectURL(data)
+  win.location.href = url
+  setTimeout(() => URL.revokeObjectURL(url), 60_000)
 }

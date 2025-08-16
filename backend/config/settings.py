@@ -162,7 +162,9 @@ SPECTACULAR_SETTINGS = {
     "COMPONENT_SPLIT_REQUEST": True,
     "ENUM_NAME_OVERRIDES": {"ListingStatusEnum": "apps.listings.models.Listing.Status"},
 }
-CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=["http://localhost:5173"])
+CORS_ALLOWED_ORIGINS = env.list(
+    "CORS_ALLOWED_ORIGINS", default=["http://localhost:5173", "http://127.0.0.1:5173"]
+)
 
 
 # Redis: canales en tiempo real y Celery. Sin REDIS_URL todo corre en memoria y en línea.
