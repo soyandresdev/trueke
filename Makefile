@@ -1,4 +1,4 @@
-.PHONY: dev down logs test test-back test-front test-redis lint lint-back lint-front format api migrate makemigrations superuser shell categories seed
+.PHONY: messages dev down logs test test-back test-front test-redis lint lint-back lint-front format api migrate makemigrations superuser shell categories seed
 
 dev:            ## Levanta todo: frontend (http://localhost:5173), backend, worker, Postgres, Redis
 	docker compose up --build
@@ -31,6 +31,10 @@ lint-front:
 format:
 	cd backend && uv run ruff format . && uv run ruff check --fix .
 	cd frontend && pnpm format
+
+messages:       ## Actualiza y compila las traducciones del backend (necesita gettext)
+	cd backend && SECRET_KEY=x uv run python manage.py makemessages -l en --ignore=.venv --ignore="*/tests/*" --ignore="*/migrations/*"
+	cd backend && SECRET_KEY=x uv run python manage.py compilemessages -l en --ignore=.venv
 
 api:            ## Regenera frontend/src/api/schema.d.ts desde el esquema OpenAPI del backend
 	cd frontend && pnpm api:generate

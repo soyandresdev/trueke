@@ -26,6 +26,7 @@ dependencies = [
 dev = [
     "factory-boy>=3.3.3",
     "freezegun>=1.5.5",
+    "polib>=1.2.0",
     "pytest>=9.1.1",
     "pytest-asyncio>=1.4.0",
     "pytest-django>=4.14.0",
