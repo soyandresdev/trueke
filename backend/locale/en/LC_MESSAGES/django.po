@@ -1,0 +1,519 @@
+# Traducciones al inglés del backend de Trueke.
+# Se generan con `make messages` (makemessages + compilemessages).
+msgid ""
+msgstr ""
+"Project-Id-Version: Trueke\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-19 08:48-0500\n"
+"PO-Revision-Date: 2026-09-19 08:50-0500\n"
+"Last-Translator: \n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps/accounts/admin.py:16
+msgid "Perfil"
+msgstr "Profile"
+
+#: apps/accounts/admin.py:18
+msgid "Documentos"
+msgstr "Documents"
+
+#: apps/accounts/admin.py:21
+msgid "Permisos"
+msgstr "Permissions"
+
+#: apps/accounts/admin.py:22
+msgid "Fechas"
+msgstr "Dates"
+
+#: apps/accounts/admin.py:26
+msgid "perfil completo"
+msgstr "profile complete"
+
+#: apps/accounts/files.py:31
+msgid "Formato no permitido. Usa PDF, JPG o PNG."
+msgstr "Format not allowed. Use PDF, JPG or PNG."
+
+#: apps/accounts/files.py:33 apps/chat/models.py:29
+#, python-format
+msgid "El archivo supera los %(mb)s MB."
+msgstr "The file is larger than %(mb)s MB."
+
+#: apps/accounts/models.py:12
+msgid "Vendedor"
+msgstr "Seller"
+
+#: apps/accounts/models.py:13
+msgid "Operador"
+msgstr "Operator"
+
+#: apps/accounts/models.py:16
+msgid "Documento nacional"
+msgstr "National ID"
+
+#: apps/accounts/models.py:17
+msgid "Documento de extranjería"
+msgstr "Foreign ID"
+
+#: apps/accounts/models.py:18
+msgid "Pasaporte"
+msgstr "Passport"
+
+#: apps/accounts/models.py:24
+msgid "teléfono"
+msgstr "phone"
+
+#: apps/accounts/models.py:25 apps/listings/models.py:17
+#: apps/listings/models.py:70
+msgid "nombre"
+msgstr "name"
+
+#: apps/accounts/models.py:26
+msgid "apellido"
+msgstr "last name"
+
+#: apps/accounts/models.py:27 apps/newsletter/models.py:8
+msgid "email"
+msgstr "email"
+
+#: apps/accounts/models.py:28
+msgid "foto"
+msgstr "photo"
+
+#: apps/accounts/models.py:29 apps/newsletter/models.py:9
+msgid "idioma"
+msgstr "language"
+
+#: apps/accounts/models.py:30
+msgid "rol"
+msgstr "role"
+
+#: apps/accounts/models.py:32
+msgid "tipo de documento"
+msgstr "ID type"
+
+#: apps/accounts/models.py:33
+msgid "número de documento"
+msgstr "ID number"
+
+#: apps/accounts/models.py:35
+msgid "documento"
+msgstr "ID document"
+
+#: apps/accounts/models.py:42
+msgid "certificado bancario"
+msgstr "bank certificate"
+
+#: apps/accounts/models.py:59
+msgid "usuario"
+msgstr "user"
+
+#: apps/accounts/models.py:60
+msgid "usuarios"
+msgstr "users"
+
+#: apps/accounts/phone.py:12 apps/accounts/phone.py:14
+msgid "Número de teléfono inválido."
+msgstr "Invalid phone number."
+
+#: apps/accounts/providers.py:16
+#, python-format
+msgid "Tu código de Trueke es %(code)s. No lo compartas con nadie."
+msgstr "Your Trueke code is %(code)s. Do not share it with anyone."
+
+#: apps/accounts/serializers.py:24
+msgid "Código inválido."
+msgstr "Invalid code."
+
+#: apps/accounts/views.py:55
+msgid "Espera antes de pedir otro código."
+msgstr "Please wait before requesting another code."
+
+#: apps/accounts/views.py:81
+msgid "El código es incorrecto o ya venció."
+msgstr "The code is wrong or has expired."
+
+#: apps/accounts/views.py:91
+msgid "Esta cuenta está desactivada."
+msgstr "This account is disabled."
+
+#: apps/chat/apps.py:7
+msgid "Chat"
+msgstr "Chat"
+
+#: apps/chat/models.py:27
+msgid "Formato no permitido. Usa PDF, JPG, PNG o WebP."
+msgstr "Format not allowed. Use PDF, JPG, PNG or WebP."
+
+#: apps/chat/models.py:37
+msgid "enviado por la plataforma"
+msgstr "sent by the platform"
+
+#: apps/chat/models.py:38
+msgid "texto"
+msgstr "text"
+
+#: apps/chat/models.py:41
+msgid "adjunto"
+msgstr "attachment"
+
+#: apps/chat/models.py:48
+msgid "leído"
+msgstr "read"
+
+#: apps/chat/models.py:53
+msgid "mensaje"
+msgstr "message"
+
+#: apps/chat/models.py:54
+msgid "mensajes"
+msgstr "messages"
+
+#: apps/chat/serializers.py:48
+msgid "Escribe un mensaje o adjunta un archivo."
+msgstr "Write a message or attach a file."
+
+#: apps/listings/apps.py:7
+msgid "Publicaciones"
+msgstr "Listings"
+
+#: apps/listings/models.py:16
+msgid "código"
+msgstr "code"
+
+#: apps/listings/models.py:18
+msgid "nombre en inglés"
+msgstr "English name"
+
+#: apps/listings/models.py:20
+msgid "campos extra"
+msgstr "extra fields"
+
+#: apps/listings/models.py:23
+msgid "JSON Schema (tipo object) con los campos propios de la categoría."
+msgstr "JSON Schema (object type) with the fields specific to the category."
+
+#: apps/listings/models.py:25 apps/listings/models.py:122
+msgid "orden"
+msgstr "order"
+
+#: apps/listings/models.py:26
+msgid "activa"
+msgstr "active"
+
+#: apps/listings/models.py:30 apps/listings/models.py:68
+msgid "categoría"
+msgstr "category"
+
+#: apps/listings/models.py:31
+msgid "categorías"
+msgstr "categories"
+
+#: apps/listings/models.py:43
+msgid "En revisión"
+msgstr "In review"
+
+#: apps/listings/models.py:44
+msgid "Con oferta"
+msgstr "Offer made"
+
+#: apps/listings/models.py:45
+msgid "Aceptada"
+msgstr "Accepted"
+
+#: apps/listings/models.py:46
+msgid "Recogida enviada"
+msgstr "Pickup scheduled"
+
+#: apps/listings/models.py:47
+msgid "Completada"
+msgstr "Completed"
+
+#: apps/listings/models.py:48
+msgid "Cancelada"
+msgstr "Cancelled"
+
+#: apps/listings/models.py:51
+msgid "Nuevo"
+msgstr "New"
+
+#: apps/listings/models.py:52
+msgid "Como nuevo"
+msgstr "Like new"
+
+#: apps/listings/models.py:53
+msgid "Buen estado"
+msgstr "Good condition"
+
+#: apps/listings/models.py:54
+msgid "Con detalles"
+msgstr "Some wear"
+
+#: apps/listings/models.py:55
+msgid "Para repuestos"
+msgstr "For parts"
+
+#: apps/listings/models.py:58
+msgid "El vendedor lo envía"
+msgstr "The seller ships it"
+
+#: apps/listings/models.py:59
+msgid "Trueke lo recoge"
+msgstr "Trueke picks it up"
+
+#: apps/listings/models.py:65
+msgid "vendedor"
+msgstr "seller"
+
+#: apps/listings/models.py:71
+msgid "descripción"
+msgstr "description"
+
+#: apps/listings/models.py:72
+msgid "estado del artículo"
+msgstr "condition"
+
+#: apps/listings/models.py:73
+msgid "campos de la categoría"
+msgstr "category fields"
+
+#: apps/listings/models.py:74
+msgid "ciudad"
+msgstr "city"
+
+#: apps/listings/models.py:75
+msgid "dirección de recogida"
+msgstr "pickup address"
+
+#: apps/listings/models.py:76
+msgid "¿es original?"
+msgstr "original?"
+
+#: apps/listings/models.py:77
+msgid "términos aceptados"
+msgstr "terms accepted"
+
+#: apps/listings/models.py:81
+msgid "estado"
+msgstr "status"
+
+#: apps/listings/models.py:83
+msgid "último cambio de estado"
+msgstr "last status change"
+
+#: apps/listings/models.py:84
+msgid "oferta"
+msgstr "offer"
+
+#: apps/listings/models.py:85
+msgid "moneda"
+msgstr "currency"
+
+#: apps/listings/models.py:86
+msgid "responsable de la recogida"
+msgstr "pickup handled by"
+
+#: apps/listings/models.py:87
+msgid "fecha de recogida"
+msgstr "pickup date"
+
+#: apps/listings/models.py:88
+msgid "indicaciones de recogida"
+msgstr "pickup instructions"
+
+#: apps/listings/models.py:89
+msgid "motivo de cancelación"
+msgstr "cancellation reason"
+
+#: apps/listings/models.py:96
+msgid "publicación"
+msgstr "listing"
+
+#: apps/listings/models.py:97
+msgid "publicaciones"
+msgstr "listings"
+
+#: apps/listings/models.py:114
+msgid "Formato no permitido. Usa JPG, PNG o WebP."
+msgstr "Format not allowed. Use JPG, PNG or WebP."
+
+#: apps/listings/models.py:116
+#, python-format
+msgid "La imagen supera los %(mb)s MB."
+msgstr "The image is larger than %(mb)s MB."
+
+#: apps/listings/models.py:121 apps/listings/models.py:127
+msgid "imagen"
+msgstr "image"
+
+#: apps/listings/models.py:128
+msgid "imágenes"
+msgstr "images"
+
+#: apps/listings/models.py:141
+msgid "acción"
+msgstr "action"
+
+#: apps/listings/models.py:149
+msgid "evento"
+msgstr "event"
+
+#: apps/listings/models.py:150
+msgid "eventos"
+msgstr "events"
+
+#: apps/listings/schema.py:23
+msgid "El esquema debe ser un objeto con \"type\": \"object\"."
+msgstr "The schema must be an object with \"type\": \"object\"."
+
+#: apps/listings/schema.py:27
+#, python-format
+msgid "Esquema JSON inválido: %(error)s"
+msgstr "Invalid JSON Schema: %(error)s"
+
+#: apps/listings/schema.py:36
+msgid "Este campo es obligatorio."
+msgstr "This field is required."
+
+#: apps/listings/schema.py:38
+#, python-format
+msgid "Campos no permitidos en esta categoría: %(detail)s"
+msgstr "Fields not allowed in this category: %(detail)s"
+
+#: apps/listings/schema.py:40
+msgid "Valor no permitido."
+msgstr "Value not allowed."
+
+#: apps/listings/serializers.py:99
+msgid "Debes aceptar los términos."
+msgstr "You must accept the terms."
+
+#: apps/listings/transitions.py:41
+msgid "Hacer oferta"
+msgstr "Make an offer"
+
+#: apps/listings/transitions.py:42
+msgid "Aceptar oferta"
+msgstr "Accept offer"
+
+#: apps/listings/transitions.py:43
+msgid "Rechazar oferta"
+msgstr "Decline offer"
+
+#: apps/listings/transitions.py:44
+msgid "Coordinar recogida"
+msgstr "Arrange pickup"
+
+#: apps/listings/transitions.py:45
+msgid "Completar venta"
+msgstr "Complete sale"
+
+#: apps/listings/transitions.py:46
+msgid "Cancelar"
+msgstr "Cancel"
+
+#: apps/listings/transitions.py:88
+msgid "No puedes hacer esta acción en esta publicación."
+msgstr "You can't do this on this listing."
+
+#: apps/listings/transitions.py:92
+#, python-format
+msgid "No se puede «%(action)s» una publicación %(status)s."
+msgstr "Can’t “%(action)s” a listing that is %(status)s."
+
+#: apps/listings/transitions.py:98
+msgid ""
+"Completa tu perfil (datos, documento y certificado bancario) para aceptar la"
+" oferta."
+msgstr ""
+"Complete your profile (details, ID and bank certificate) to accept the "
+"offer."
+
+#: apps/listings/views.py:109
+msgid "Solo el vendedor puede editar la publicación."
+msgstr "Only the seller can edit the listing."
+
+#: apps/listings/views.py:111
+msgid "La publicación ya no se puede editar."
+msgstr "The listing can no longer be edited."
+
+#: apps/listings/views.py:143
+#, python-format
+msgid "Máximo %(n)s imágenes por publicación."
+msgstr "At most %(n)s images per listing."
+
+#: apps/newsletter/admin.py:17
+msgid "Exportar activos a CSV"
+msgstr "Export active ones to CSV"
+
+#: apps/newsletter/apps.py:7
+msgid "Newsletter"
+msgstr "Newsletter"
+
+#: apps/newsletter/models.py:13
+msgid "dado de baja"
+msgstr "unsubscribed"
+
+#: apps/newsletter/models.py:17
+msgid "suscriptor"
+msgstr "subscriber"
+
+#: apps/newsletter/models.py:18
+msgid "suscriptores"
+msgstr "subscribers"
+
+#: apps/notifications/apps.py:7
+msgid "Notificaciones"
+msgstr "Notifications"
+
+#: apps/notifications/models.py:10
+msgid "Nueva publicación"
+msgstr "New listing"
+
+#: apps/notifications/models.py:11
+msgid "Nueva oferta"
+msgstr "New offer"
+
+#: apps/notifications/models.py:12
+msgid "Oferta aceptada"
+msgstr "Offer accepted"
+
+#: apps/notifications/models.py:13
+msgid "Oferta rechazada"
+msgstr "Offer declined"
+
+#: apps/notifications/models.py:14
+msgid "Recogida coordinada"
+msgstr "Pickup arranged"
+
+#: apps/notifications/models.py:15
+msgid "Venta completada"
+msgstr "Sale completed"
+
+#: apps/notifications/models.py:16
+msgid "Publicación cancelada"
+msgstr "Listing cancelled"
+
+#: apps/notifications/models.py:17
+msgid "Mensajes nuevos"
+msgstr "New messages"
+
+#: apps/notifications/models.py:20
+msgid "tipo"
+msgstr "type"
+
+#: apps/notifications/models.py:29
+msgid "vista"
+msgstr "seen"
+
+#: apps/notifications/models.py:34
+msgid "notificación"
+msgstr "notification"
+
+#: apps/notifications/models.py:35
+msgid "notificaciones"
+msgstr "notifications"
