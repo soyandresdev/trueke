@@ -1,11 +1,14 @@
 import '@testing-library/jest-dom/vitest'
 import '@/i18n'
 
-import { cleanup } from '@testing-library/react'
+import { cleanup, configure } from '@testing-library/react'
 import { afterEach, vi } from 'vitest'
 
 import { useAuth } from '@/auth/store'
 import { queryClient } from '@/lib/queryClient'
+
+// Con los tests en paralelo, los flujos completos a veces tardan más de 1 s en pintar el siguiente paso.
+configure({ asyncUtilTimeout: 3000 })
 
 afterEach(() => {
   cleanup()

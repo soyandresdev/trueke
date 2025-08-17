@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as EntrarRouteImport } from './routes/entrar'
+import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as AppCuentaRouteImport } from './routes/_app/cuenta'
 import { Route as DevUiRouteImport } from './routes/dev.ui'
+import { Route as NewsletterBajaRouteImport } from './routes/newsletter.baja'
 import { Route as AppPublicacionesIndexRouteImport } from './routes/_app/publicaciones/index'
 import { Route as AppPublicacionesIdRouteImport } from './routes/_app/publicaciones/$id'
 import { Route as AppPublicacionesNuevaRouteImport } from './routes/_app/publicaciones/nueva'
@@ -33,6 +35,11 @@ const EntrarRoute = EntrarRouteImport.update({
   path: '/entrar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TerminosRoute = TerminosRouteImport.update({
+  id: '/terminos',
+  path: '/terminos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppCuentaRoute = AppCuentaRouteImport.update({
   id: '/cuenta',
   path: '/cuenta',
@@ -41,6 +48,11 @@ const AppCuentaRoute = AppCuentaRouteImport.update({
 const DevUiRoute = DevUiRouteImport.update({
   id: '/dev/ui',
   path: '/dev/ui',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsletterBajaRoute = NewsletterBajaRouteImport.update({
+  id: '/newsletter/baja',
+  path: '/newsletter/baja',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppPublicacionesIndexRoute = AppPublicacionesIndexRouteImport.update({
@@ -68,8 +80,10 @@ const AppPublicacionesIdEditarRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/entrar': typeof EntrarRoute
+  '/terminos': typeof TerminosRoute
   '/cuenta': typeof AppCuentaRoute
   '/dev/ui': typeof DevUiRoute
+  '/newsletter/baja': typeof NewsletterBajaRoute
   '/publicaciones/$id': typeof AppPublicacionesIdRoute
   '/publicaciones/nueva': typeof AppPublicacionesNuevaRoute
   '/publicaciones/': typeof AppPublicacionesIndexRoute
@@ -78,8 +92,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/entrar': typeof EntrarRoute
+  '/terminos': typeof TerminosRoute
   '/cuenta': typeof AppCuentaRoute
   '/dev/ui': typeof DevUiRoute
+  '/newsletter/baja': typeof NewsletterBajaRoute
   '/publicaciones/$id': typeof AppPublicacionesIdRoute
   '/publicaciones/nueva': typeof AppPublicacionesNuevaRoute
   '/publicaciones': typeof AppPublicacionesIndexRoute
@@ -90,8 +106,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/entrar': typeof EntrarRoute
+  '/terminos': typeof TerminosRoute
   '/_app/cuenta': typeof AppCuentaRoute
   '/dev/ui': typeof DevUiRoute
+  '/newsletter/baja': typeof NewsletterBajaRoute
   '/_app/publicaciones/$id': typeof AppPublicacionesIdRoute
   '/_app/publicaciones/nueva': typeof AppPublicacionesNuevaRoute
   '/_app/publicaciones/': typeof AppPublicacionesIndexRoute
@@ -102,8 +120,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/entrar'
+    | '/terminos'
     | '/cuenta'
     | '/dev/ui'
+    | '/newsletter/baja'
     | '/publicaciones/$id'
     | '/publicaciones/nueva'
     | '/publicaciones/'
@@ -112,8 +132,10 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/entrar'
+    | '/terminos'
     | '/cuenta'
     | '/dev/ui'
+    | '/newsletter/baja'
     | '/publicaciones/$id'
     | '/publicaciones/nueva'
     | '/publicaciones'
@@ -123,8 +145,10 @@ export interface FileRouteTypes {
     | '/'
     | '/_app'
     | '/entrar'
+    | '/terminos'
     | '/_app/cuenta'
     | '/dev/ui'
+    | '/newsletter/baja'
     | '/_app/publicaciones/$id'
     | '/_app/publicaciones/nueva'
     | '/_app/publicaciones/'
@@ -135,7 +159,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   EntrarRoute: typeof EntrarRoute
+  TerminosRoute: typeof TerminosRoute
   DevUiRoute: typeof DevUiRoute
+  NewsletterBajaRoute: typeof NewsletterBajaRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -161,6 +187,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EntrarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/terminos': {
+      id: '/terminos'
+      path: '/terminos'
+      fullPath: '/terminos'
+      preLoaderRoute: typeof TerminosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app/cuenta': {
       id: '/_app/cuenta'
       path: '/cuenta'
@@ -173,6 +206,13 @@ declare module '@tanstack/react-router' {
       path: '/dev/ui'
       fullPath: '/dev/ui'
       preLoaderRoute: typeof DevUiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/newsletter/baja': {
+      id: '/newsletter/baja'
+      path: '/newsletter/baja'
+      fullPath: '/newsletter/baja'
+      preLoaderRoute: typeof NewsletterBajaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app/publicaciones/': {
@@ -228,7 +268,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   EntrarRoute: EntrarRoute,
+  TerminosRoute: TerminosRoute,
   DevUiRoute: DevUiRoute,
+  NewsletterBajaRoute: NewsletterBajaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
