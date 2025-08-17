@@ -17,6 +17,7 @@ import { Route as DevUiRouteImport } from './routes/dev.ui'
 import { Route as AppPublicacionesIndexRouteImport } from './routes/_app/publicaciones/index'
 import { Route as AppPublicacionesIdRouteImport } from './routes/_app/publicaciones/$id'
 import { Route as AppPublicacionesNuevaRouteImport } from './routes/_app/publicaciones/nueva'
+import { Route as AppPublicacionesIdEditarRouteImport } from './routes/_app/publicaciones/$id_.editar'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -57,6 +58,12 @@ const AppPublicacionesNuevaRoute = AppPublicacionesNuevaRouteImport.update({
   path: '/publicaciones/nueva',
   getParentRoute: () => AppRoute,
 } as any)
+const AppPublicacionesIdEditarRoute =
+  AppPublicacionesIdEditarRouteImport.update({
+    id: '/publicaciones/$id_/editar',
+    path: '/publicaciones/$id/editar',
+    getParentRoute: () => AppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/publicaciones/$id': typeof AppPublicacionesIdRoute
   '/publicaciones/nueva': typeof AppPublicacionesNuevaRoute
   '/publicaciones/': typeof AppPublicacionesIndexRoute
+  '/publicaciones/$id/editar': typeof AppPublicacionesIdEditarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -75,6 +83,7 @@ export interface FileRoutesByTo {
   '/publicaciones/$id': typeof AppPublicacionesIdRoute
   '/publicaciones/nueva': typeof AppPublicacionesNuevaRoute
   '/publicaciones': typeof AppPublicacionesIndexRoute
+  '/publicaciones/$id/editar': typeof AppPublicacionesIdEditarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,6 +95,7 @@ export interface FileRoutesById {
   '/_app/publicaciones/$id': typeof AppPublicacionesIdRoute
   '/_app/publicaciones/nueva': typeof AppPublicacionesNuevaRoute
   '/_app/publicaciones/': typeof AppPublicacionesIndexRoute
+  '/_app/publicaciones/$id_/editar': typeof AppPublicacionesIdEditarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/publicaciones/$id'
     | '/publicaciones/nueva'
     | '/publicaciones/'
+    | '/publicaciones/$id/editar'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/publicaciones/$id'
     | '/publicaciones/nueva'
     | '/publicaciones'
+    | '/publicaciones/$id/editar'
   id:
     | '__root__'
     | '/'
@@ -116,6 +128,7 @@ export interface FileRouteTypes {
     | '/_app/publicaciones/$id'
     | '/_app/publicaciones/nueva'
     | '/_app/publicaciones/'
+    | '/_app/publicaciones/$id_/editar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -183,6 +196,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPublicacionesNuevaRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/publicaciones/$id_/editar': {
+      id: '/_app/publicaciones/$id_/editar'
+      path: '/publicaciones/$id/editar'
+      fullPath: '/publicaciones/$id/editar'
+      preLoaderRoute: typeof AppPublicacionesIdEditarRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
@@ -191,6 +211,7 @@ interface AppRouteChildren {
   AppPublicacionesIdRoute: typeof AppPublicacionesIdRoute
   AppPublicacionesNuevaRoute: typeof AppPublicacionesNuevaRoute
   AppPublicacionesIndexRoute: typeof AppPublicacionesIndexRoute
+  AppPublicacionesIdEditarRoute: typeof AppPublicacionesIdEditarRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -198,6 +219,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppPublicacionesIdRoute: AppPublicacionesIdRoute,
   AppPublicacionesNuevaRoute: AppPublicacionesNuevaRoute,
   AppPublicacionesIndexRoute: AppPublicacionesIndexRoute,
+  AppPublicacionesIdEditarRoute: AppPublicacionesIdEditarRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

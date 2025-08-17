@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from '@tanstack/react-router'
-import { ArrowLeft, MapPin, Truck } from 'lucide-react'
+import { ArrowLeft, MapPin, Pencil, Truck } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import type { Listing } from '@/api/types'
@@ -97,7 +97,19 @@ function ListingView({ listing }: { listing: Listing }) {
           )}
 
           <StatusNote listing={listing} isOwner={isOwner} />
-          <ActionPanel listing={listing} />
+          <div className="flex flex-wrap gap-3">
+            <ActionPanel listing={listing} />
+            {isOwner && listing.status === 'in_review' && (
+              <Link
+                to="/publicaciones/$id/editar"
+                params={{ id: listing.id }}
+                className="inline-flex h-11 items-center gap-2 rounded-pill border border-line px-5 font-semibold hover:border-ink"
+              >
+                <Pencil className="size-4" aria-hidden />
+                {t('edit.button')}
+              </Link>
+            )}
+          </div>
           {me?.role === 'operator' && !isOwner && <SellerCard sellerId={listing.seller.id} />}
 
           {listing.pickup_by && (

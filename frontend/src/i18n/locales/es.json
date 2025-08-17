@@ -303,5 +303,17 @@
     "complete": "Perfil completo",
     "incomplete": "Perfil incompleto: no se le puede pagar aún",
     "missing": "Falta: {{doc}}"
+  },
+  "edit": {
+    "button": "Editar",
+    "title": "Editar publicación",
+    "photos": "Fotos",
+    "photosHint": "Los cambios en las fotos se guardan al momento. La primera es la portada.",
+    "details": "Detalles",
+    "pickup": "Recogida",
+    "cancel": "Cancelar",
+    "saved": "Cambios guardados.",
+    "uploadFailed": "Algunas fotos no se pudieron subir.",
+    "notEditable": "Esta publicación ya no se puede editar: solo se edita mientras está en revisión."
   }
 }
