@@ -1,8 +1,10 @@
 import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
+import { Package } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { useMe } from '@/auth/session'
 import { useAuth } from '@/auth/store'
+import { Footer } from '@/components/Footer'
 import { Logo } from '@/components/Logo'
 import { Avatar } from '@/components/ui/Avatar'
 import { NotificationMenu } from '@/features/notifications/NotificationMenu'
@@ -43,6 +45,7 @@ function RootLayout() {
       <main className="flex-1">
         <Outlet />
       </main>
+      <Footer />
       <Toaster />
     </div>
   )
@@ -70,6 +73,14 @@ function SessionLink() {
         className="hidden text-sm font-semibold hover:text-blue sm:inline [&.active]:text-blue"
       >
         {me?.role === 'operator' ? t('nav.listingsOperator') : t('nav.listings')}
+      </Link>
+      {/* En móvil el texto no cabe: el mismo enlace como icono. */}
+      <Link
+        to="/publicaciones"
+        aria-label={me?.role === 'operator' ? t('nav.listingsOperator') : t('nav.listings')}
+        className="rounded-pill p-2.5 hover:bg-paper sm:hidden [&.active]:text-blue"
+      >
+        <Package className="size-5" aria-hidden />
       </Link>
       <NotificationMenu />
       <Link to="/cuenta" aria-label={t('account.title')} className="rounded-full">

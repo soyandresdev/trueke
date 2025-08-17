@@ -27,10 +27,11 @@ export function Ticket({ listingId, title, amount, currency, label, className }:
       className={cn('w-full max-w-md drop-shadow-[0_12px_20px_rgb(43_75_255/0.28)]', className)}
     >
       <div className="ticket flex overflow-hidden rounded-lg">
-        <div className="flex min-w-0 flex-1 flex-col justify-between gap-8 bg-blue p-5 text-white">
+        <div className="@container flex min-w-0 flex-1 flex-col justify-between gap-8 bg-blue p-5 text-white">
           <p className="font-mono text-xs tracking-widest text-blue-soft uppercase">{text}</p>
           <div>
-            <p className="font-display text-4xl leading-none font-extrabold tabular-nums sm:text-5xl">
+            {/* El tamaño de la cifra depende del ancho del ticket, no de la pantalla: nunca se corta. */}
+            <p className="font-display text-2xl leading-none font-extrabold whitespace-nowrap tabular-nums @[13rem]:text-3xl @[16rem]:text-4xl @[19rem]:text-5xl">
               {money}
             </p>
             <p className="mt-2 truncate text-sm text-blue-soft">{title}</p>

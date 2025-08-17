@@ -5,7 +5,9 @@
   "home": {
     "title": "Lo que ya no usas vale más de lo que crees",
     "lead": "Publícalo en minutos, recibe una oferta y nosotros pasamos a recogerlo.",
-    "cta": "Vender algo"
+    "cta": "Vender algo",
+    "how": "Cómo funciona",
+    "ticketExample": "Celular de 128 GB"
   },
   "language": {
     "label": "Idioma",
@@ -315,5 +317,90 @@
     "saved": "Cambios guardados.",
     "uploadFailed": "Algunas fotos no se pudieron subir.",
     "notEditable": "Esta publicación ya no se puede editar: solo se edita mientras está en revisión."
+  },
+  "how": {
+    "title": "Vender es así de simple",
+    "publish": {
+      "title": "Publica con fotos",
+      "text": "Cuéntanos qué es, cómo está y súbele unas fotos. Te toma cinco minutos."
+    },
+    "offer": {
+      "title": "Recibe una oferta",
+      "text": "Nuestro equipo lo revisa y te manda una oferta. Si tienes dudas, lo hablamos por chat."
+    },
+    "pickup": {
+      "title": "Lo recogemos y te pagamos",
+      "text": "Si aceptas, coordinamos la recogida y te pagamos por transferencia."
+    }
+  },
+  "landingCategories": {
+    "title": "¿Qué compramos?",
+    "lead": "Por ahora, estas categorías. Cada una pide los datos que de verdad importan para ofertar bien."
+  },
+  "benefits": {
+    "title": "Por qué con Trueke",
+    "noHaggling": {
+      "title": "Sin regatear con desconocidos",
+      "text": "No publicas anuncios ni recibes mensajes a las 11 de la noche. Tratas con un solo comprador."
+    },
+    "pickup": {
+      "title": "Nosotros lo recogemos",
+      "text": "Coordinamos la recogida en tu casa o, si prefieres, lo envías tú."
+    },
+    "chat": {
+      "title": "Todo por chat",
+      "text": "Preguntas, fotos extra y detalles de la recogida, en un solo lugar y en tiempo real."
+    },
+    "payment": {
+      "title": "Pago a tu cuenta",
+      "text": "Te pagamos por transferencia cuando recibimos el artículo. Sin efectivo."
+    }
+  },
+  "faq": {
+    "title": "Preguntas frecuentes",
+    "what": {
+      "q": "¿Qué puedo vender?",
+      "a": "Tecnología, instrumentos musicales, bicicletas y movilidad, y fotografía. Tiene que ser tuyo, funcionar (o decirnos claramente si es para repuestos) y ser original."
+    },
+    "price": {
+      "q": "¿Cómo deciden cuánto ofrecer?",
+      "a": "Miramos el estado, la marca, el modelo y la demanda. Por eso cada categoría te pide sus propios datos: con buena información la oferta es más justa."
+    },
+    "time": {
+      "q": "¿Cuánto tardan en ofertar?",
+      "a": "Revisamos las publicaciones por orden de llegada. Te avisamos en la app y por la campana de notificaciones apenas tengas una oferta."
+    },
+    "payment": {
+      "q": "¿Cómo me pagan?",
+      "a": "Por transferencia a la cuenta de tu certificado bancario, cuando recibimos y revisamos el artículo. Por eso te pedimos completar el perfil antes de aceptar."
+    },
+    "documents": {
+      "q": "¿Quién ve mis documentos?",
+      "a": "Solo el equipo de Trueke que gestiona tu venta. Se guardan en almacenamiento privado, sin enlaces públicos."
+    },
+    "cancel": {
+      "q": "¿Puedo arrepentirme?",
+      "a": "Sí. Puedes cancelar la publicación mientras está en revisión o rechazar la oferta. Nada es definitivo hasta que aceptas."
+    }
+  },
+  "newsletter": {
+    "title": "Entérate primero",
+    "lead": "Te escribimos cuando abrimos categorías nuevas o hay campañas con mejores ofertas. Nada más.",
+    "placeholder": "tu@email.com",
+    "cta": "Suscribirme",
+    "done": "¡Listo! Te escribiremos solo cuando valga la pena.",
+    "unsubscribeTitle": "Darte de baja",
+    "unsubscribeLead": "Dejarás de recibir nuestros correos. Puedes volver a suscribirte cuando quieras.",
+    "unsubscribeConfirm": "Confirmar baja",
+    "unsubscribed": "Listo, ya no te escribiremos.",
+    "badLink": "Este enlace no es válido. Usa el enlace completo del correo."
+  },
+  "terms": {
+    "title": "Términos de uso"
+  },
+  "footer": {
+    "tagline": "Véndenos lo que ya no usas.",
+    "nav": "Enlaces del pie de página",
+    "license": "Proyecto open source con licencia MIT."
   }
 }

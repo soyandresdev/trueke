@@ -5,7 +5,9 @@
   "home": {
     "title": "What you no longer use is worth more than you think",
     "lead": "List it in minutes, get an offer and we'll pick it up.",
-    "cta": "Sell something"
+    "cta": "Sell something",
+    "how": "How it works",
+    "ticketExample": "128 GB phone"
   },
   "language": {
     "label": "Language",
@@ -315,5 +317,90 @@
     "saved": "Changes saved.",
     "uploadFailed": "Some photos couldn't be uploaded.",
     "notEditable": "This listing can no longer be edited: it can only be edited while in review."
+  },
+  "how": {
+    "title": "Selling is this simple",
+    "publish": {
+      "title": "List it with photos",
+      "text": "Tell us what it is, what shape it's in and add a few photos. It takes five minutes."
+    },
+    "offer": {
+      "title": "Get an offer",
+      "text": "Our team reviews it and sends you an offer. Questions? We sort them out over chat."
+    },
+    "pickup": {
+      "title": "We pick it up and pay you",
+      "text": "If you accept, we arrange the pickup and pay you by bank transfer."
+    }
+  },
+  "landingCategories": {
+    "title": "What we buy",
+    "lead": "These categories, for now. Each one asks for the details that actually matter for a fair offer."
+  },
+  "benefits": {
+    "title": "Why Trueke",
+    "noHaggling": {
+      "title": "No haggling with strangers",
+      "text": "No ads to post, no messages at 11 p.m. You deal with a single buyer."
+    },
+    "pickup": {
+      "title": "We pick it up",
+      "text": "We arrange a pickup at your place or, if you prefer, you ship it."
+    },
+    "chat": {
+      "title": "All over chat",
+      "text": "Questions, extra photos and pickup details, in one place and in real time."
+    },
+    "payment": {
+      "title": "Paid to your account",
+      "text": "We pay you by bank transfer once we receive the item. No cash."
+    }
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "what": {
+      "q": "What can I sell?",
+      "a": "Tech, musical instruments, bikes and mobility, and photography. It must be yours, work (or be clearly listed for parts) and be original."
+    },
+    "price": {
+      "q": "How do you decide what to offer?",
+      "a": "We look at condition, brand, model and demand. That's why each category asks for its own details: good information means a fairer offer."
+    },
+    "time": {
+      "q": "How long until I get an offer?",
+      "a": "We review listings in order. You'll be notified in the app and in the notification bell as soon as you have an offer."
+    },
+    "payment": {
+      "q": "How do I get paid?",
+      "a": "By bank transfer to the account on your bank certificate, once we receive and check the item. That's why we ask you to complete your profile before accepting."
+    },
+    "documents": {
+      "q": "Who sees my documents?",
+      "a": "Only the Trueke team handling your sale. They're kept in private storage, with no public links."
+    },
+    "cancel": {
+      "q": "Can I change my mind?",
+      "a": "Yes. You can cancel the listing while it's in review or decline the offer. Nothing is final until you accept."
+    }
+  },
+  "newsletter": {
+    "title": "Hear it first",
+    "lead": "We'll write when we open new categories or run campaigns with better offers. That's it.",
+    "placeholder": "you@email.com",
+    "cta": "Subscribe",
+    "done": "Done! We'll only write when it's worth it.",
+    "unsubscribeTitle": "Unsubscribe",
+    "unsubscribeLead": "You'll stop receiving our emails. You can subscribe again anytime.",
+    "unsubscribeConfirm": "Confirm",
+    "unsubscribed": "Done, we won't email you anymore.",
+    "badLink": "This link isn't valid. Use the full link from the email."
+  },
+  "terms": {
+    "title": "Terms of use"
+  },
+  "footer": {
+    "tagline": "Sell us what you no longer use.",
+    "nav": "Footer links",
+    "license": "Open source project under the MIT license."
   }
 }
