@@ -14,7 +14,8 @@ export const queryKeys = {
   listingStats: ['listings', 'stats'] as const,
   listing: (id: number) => ['listings', id] as const,
   listingEvents: (id: number) => ['listings', id, 'events'] as const,
-  categories: ['categories'] as const,
+  // Los nombres vienen traducidos del backend: cada idioma es otra consulta.
+  categories: (language: string) => ['categories', language] as const,
   messages: (listingId: number) => ['listings', listingId, 'messages'] as const,
   notifications: ['notifications'] as const,
   notificationCount: ['notifications', 'count'] as const,
@@ -35,6 +36,9 @@ export function applyRealtimeEvent(queryClient: QueryClient, { event, data }: Re
       break
     case 'notification.created': {
       void queryClient.invalidateQueries({ queryKey: queryKeys.notifications })
+      // Cada notificación viene de un cambio en una publicación: así la lista del operador (que no
+      // está suscrito a cada publicación) también se actualiza en vivo.
+      void queryClient.invalidateQueries({ queryKey: queryKeys.listings })
       // Aviso breve además de la campana, salvo mensajes del chat que ya se está viendo.
       const notification = data as unknown as Notification
       const chatOpen = window.location.pathname === `/publicaciones/${notification.listing?.id}`

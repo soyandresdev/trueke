@@ -1,4 +1,5 @@
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 
 import { api } from '@/api/client'
 import type { ApiErrorBody } from '@/api/errors'
@@ -24,8 +25,9 @@ function unwrap<T>({
 export type ApiFailure = { status: number; body: ApiErrorBody }
 
 export function useCategories() {
+  const { i18n } = useTranslation()
   return useQuery({
-    queryKey: queryKeys.categories,
+    queryKey: queryKeys.categories(i18n.resolvedLanguage ?? i18n.language),
     queryFn: async () => unwrap(await api.GET('/api/categories/')),
     staleTime: 10 * 60_000, // cambian muy poco
   })

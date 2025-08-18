@@ -90,3 +90,23 @@ describe('términos', () => {
     )
   })
 })
+
+describe('idioma', () => {
+  it('al cambiar de idioma vuelve a pedir las categorías (el backend las traduce)', async () => {
+    const requests = mockApi({
+      'GET /api/categories/': (request) => [
+        category({
+          name:
+            request.headers.get('Accept-Language') === 'en'
+              ? 'Musical instruments'
+              : 'Instrumentos musicales',
+        }),
+      ],
+    })
+    await renderApp('/')
+    expect(await screen.findByRole('link', { name: 'Instrumentos musicales' })).toBeInTheDocument()
+    await act(() => i18n.changeLanguage('en'))
+    expect(await screen.findByRole('link', { name: 'Musical instruments' })).toBeInTheDocument()
+    expect(requests.map((r) => r.headers.get('Accept-Language'))).toEqual(['es', 'en'])
+  })
+})

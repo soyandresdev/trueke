@@ -88,8 +88,8 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"
-PRIVATE_MEDIA_ROOT = BASE_DIR / "private-media"
+MEDIA_ROOT = env.path("MEDIA_ROOT", default=BASE_DIR / "media")
+PRIVATE_MEDIA_ROOT = env.path("PRIVATE_MEDIA_ROOT", default=BASE_DIR / "private-media")
 PRIVATE_FILE_MAX_MB = env.int("PRIVATE_FILE_MAX_MB", default=5)
 
 # Publicaciones
@@ -188,7 +188,8 @@ else:
 CELERY_TASK_IGNORE_RESULT = True
 
 # OTP
-OTP_PROVIDER = env("OTP_PROVIDER", default="console")  # console | twilio
+OTP_PROVIDER = env("OTP_PROVIDER", default="console")  # console | twilio | outbox (solo E2E)
+OTP_OUTBOX_PATH = env("OTP_OUTBOX_PATH", default="")
 OTP_LENGTH = 6
 OTP_TTL_SECONDS = env.int("OTP_TTL_SECONDS", default=300)
 OTP_MAX_ATTEMPTS = 5

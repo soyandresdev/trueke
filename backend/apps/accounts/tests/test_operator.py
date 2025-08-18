@@ -33,3 +33,16 @@ def test_sellers_cannot_see_other_users(api, seller):
     api.force_authenticate(UserFactory())
     assert api.get(reverse("user-detail", args=[seller.pk])).status_code == 403
     assert api.get(reverse("user-document-file", args=[seller.pk, "document"])).status_code == 403
+
+
+def test_create_operator_command():
+    from io import StringIO
+
+    from django.core.management import call_command
+
+    from apps.accounts.models import User
+
+    call_command("create_operator", "3009990001", "--first-name", "Ana", stdout=StringIO())
+    call_command("create_operator", "+573009990001", "--first-name", "Ana", stdout=StringIO())
+    user = User.objects.get()
+    assert (user.phone, user.role, user.first_name) == ("+573009990001", User.Role.OPERATOR, "Ana")

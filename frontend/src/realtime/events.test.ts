@@ -49,7 +49,12 @@ describe('eventos en vivo', () => {
       event: 'notification.created',
       data: notification(),
     })
-    expect(invalid()).toEqual([queryKeys.notifications])
+    expect(invalid()).toEqual([
+      queryKeys.listings,
+      queryKeys.listing(1),
+      queryKeys.messages(1),
+      queryKeys.notifications,
+    ])
     expect(useToasts.getState().toasts.map((t) => t.message)).toEqual([
       expect.stringMatching(/^Tienes una oferta por «Teclado MIDI»/),
     ])

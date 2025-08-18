@@ -1,10 +1,10 @@
-/// <reference types="vitest/config" />
 import babel from '@rolldown/plugin-babel'
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
+import { configDefaults } from 'vitest/config'
 
 // En Docker el backend se llama `backend`; fuera de Docker, localhost.
 const backend = process.env.VITE_BACKEND_URL ?? 'http://localhost:8000'
@@ -41,5 +41,7 @@ export default defineConfig({
     css: false,
     // Los flujos completos simulan escritura tecla a tecla; con los tests en paralelo pasan de 5 s.
     testTimeout: 15_000,
+    // Las pruebas de extremo a extremo son de Playwright (pnpm e2e), no de Vitest.
+    exclude: [...configDefaults.exclude, 'e2e/**'],
   },
 })
