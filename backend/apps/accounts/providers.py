@@ -1,5 +1,6 @@
 """Envío de códigos OTP. El proveedor se elige con la variable OTP_PROVIDER."""
 
+import json
 import logging
 from base64 import b64encode
 from urllib.parse import urlencode
@@ -34,7 +35,17 @@ def send_twilio(phone: str, code: str) -> None:
         response.read()
 
 
-PROVIDERS = {"console": send_console, "twilio": send_twilio}
+def send_outbox(phone: str, code: str) -> None:
+    """Pruebas de extremo a extremo: añade {"phone", "code"} como una línea JSON a OTP_OUTBOX_PATH."""
+    if not settings.DEBUG:
+        raise ImproperlyConfigured("OTP_PROVIDER=outbox solo se permite con DEBUG=true.")
+    if not settings.OTP_OUTBOX_PATH:
+        raise ImproperlyConfigured("OTP_PROVIDER=outbox necesita OTP_OUTBOX_PATH.")
+    with open(settings.OTP_OUTBOX_PATH, "a", encoding="utf-8") as outbox:
+        outbox.write(json.dumps({"phone": phone, "code": code}) + "\n")
+
+
+PROVIDERS = {"console": send_console, "twilio": send_twilio, "outbox": send_outbox}
 
 
 def send_otp(phone: str, code: str) -> None:

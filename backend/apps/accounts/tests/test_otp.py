@@ -114,3 +114,29 @@ def test_inactive_user_cannot_log_in(api, sent_codes, django_capture_on_commit_c
     with django_capture_on_commit_callbacks(execute=True):
         request_code(api)
     assert verify(api, sent_codes[0]).status_code == 403
+
+
+def test_outbox_provider_writes_codes_for_e2e(tmp_path, settings):
+    import json
+
+    from apps.accounts.providers import send_otp
+
+    settings.DEBUG = True
+    settings.OTP_PROVIDER = "outbox"
+    settings.OTP_OUTBOX_PATH = str(tmp_path / "outbox.jsonl")
+    send_otp("+573001112233", "123456")
+    send_otp("+573001112233", "654321")
+    lines = (tmp_path / "outbox.jsonl").read_text().splitlines()
+    assert [json.loads(line)["code"] for line in lines] == ["123456", "654321"]
+
+
+def test_outbox_provider_refuses_without_debug(settings):
+    from django.core.exceptions import ImproperlyConfigured
+
+    from apps.accounts.providers import send_otp
+
+    settings.DEBUG = False
+    settings.OTP_PROVIDER = "outbox"
+    settings.OTP_OUTBOX_PATH = "/tmp/x.jsonl"  # noqa: S108
+    with pytest.raises(ImproperlyConfigured):
+        send_otp("+573001112233", "123456")

@@ -1,4 +1,4 @@
-.PHONY: messages dev down logs test test-back test-front test-redis lint lint-back lint-front format api migrate makemigrations superuser shell categories seed
+.PHONY: e2e messages dev down logs test test-back test-front test-redis lint lint-back lint-front format api migrate makemigrations superuser shell categories seed
 
 dev:            ## Levanta todo: frontend (http://localhost:5173), backend, worker, Postgres, Redis
 	docker compose up --build
@@ -16,6 +16,9 @@ test-back:      ## Tests del backend (SQLite en memoria, sin Docker)
 
 test-redis:     ## Tests del WebSocket contra el Redis de Docker (necesita `make dev` corriendo)
 	cd backend && TEST_REDIS_URL=redis://localhost:6379/1 uv run pytest apps/realtime
+
+e2e:            ## Pruebas de extremo a extremo (levanta su propio backend y frontend en 8011/5174)
+	cd frontend && pnpm e2e
 
 test-front:
 	cd frontend && pnpm test

@@ -17,6 +17,10 @@ beforeEach(async () => {
 
 function listRoutes() {
   return mockApi({
+    'GET /api/listings/13/': () => listing({ available_actions: ['offer', 'cancel'] }),
+    'GET /api/listings/13/events/': () => [],
+    'GET /api/listings/13/messages/': () => ({ next: null, previous: null, results: [] }),
+    'GET /api/users/7/': () => user(),
     'GET /api/me/': () => operator,
     'GET /api/notifications/unseen-count/': () => ({ count: 0 }),
     'GET /api/categories/': () => [category()],
@@ -115,6 +119,26 @@ describe('panel del operador', () => {
       'instrumentos',
     )
     await waitFor(() => expect(router.state.location.search).toEqual({ categoria: 'instrumentos' }))
+  })
+})
+
+describe('búsqueda pendiente', () => {
+  it('abrir un resultado antes de que termine la espera no devuelve a la lista', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    listRoutes()
+    const { router } = await renderApp('/publicaciones')
+    await screen.findByRole('table')
+    await userEvent.type(screen.getByRole('searchbox', { name: 'Buscar' }), 'mid')
+    await userEvent.click(
+      within(screen.getByRole('table')).getByRole('link', { name: 'Teclado MIDI' }),
+    )
+    await waitFor(() => expect(router.state.location.pathname).toBe('/publicaciones/13'))
+    await act(() => vi.advanceTimersByTimeAsync(1000))
+    expect(router.state.location.pathname).toBe('/publicaciones/13')
+    // La búsqueda se aplicó antes de abrir el resultado: "atrás" vuelve a la lista filtrada.
+    act(() => router.history.back())
+    await waitFor(() => expect(router.state.location.search).toEqual({ q: 'mid' }))
+    vi.useRealTimers()
   })
 })
 

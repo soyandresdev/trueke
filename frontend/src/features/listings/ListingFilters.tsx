@@ -1,5 +1,5 @@
 import { Search, X } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useCategories } from './api'
@@ -64,6 +64,7 @@ function DebouncedInput({ label, placeholder, value, icon, onCommit }: InputProp
   const { t } = useTranslation()
   const [text, setText] = useState(value)
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  useEffect(() => () => clearTimeout(timer.current), [])
 
   const commit = (next: string) => {
     clearTimeout(timer.current)
@@ -87,6 +88,9 @@ function DebouncedInput({ label, placeholder, value, icon, onCommit }: InputProp
           timer.current = setTimeout(() => commit(next), DEBOUNCE_MS)
         }}
         onKeyDown={(event) => event.key === 'Enter' && commit(text)}
+        // Al salir del campo (p. ej. para abrir un resultado) la búsqueda pendiente se aplica ya. Si se
+        // aplicara después, al cumplirse la espera, navegaría de vuelta a la lista desde el detalle.
+        onBlur={() => commit(text)}
         className={`h-11 w-full rounded-md border border-line bg-white pr-10 focus:border-blue focus:ring-2 focus:ring-blue-soft focus:outline-none [&::-webkit-search-cancel-button]:hidden ${icon ? 'pl-10' : 'pl-3.5'}`}
       />
       {text && (
