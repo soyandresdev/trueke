@@ -128,7 +128,7 @@ paths:
       - name: page
         required: false
         in: query
-        description: Un número de página dentro del conjunto de resultados paginado.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - in: query
@@ -186,7 +186,7 @@ paths:
       - name: cursor
         required: false
         in: query
-        description: El valor del cursor de paginación.
+        description: The pagination cursor value.
         schema:
           type: string
       - in: path
@@ -293,7 +293,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: Un valor de entero único que identifique este publicación.
+        description: A unique integer value identifying this listing.
         required: true
       - in: query
         name: q
@@ -323,7 +323,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: Un valor de entero único que identifique este publicación.
+        description: A unique integer value identifying this listing.
         required: true
       tags:
       - listings
@@ -350,13 +350,13 @@ paths:
   /api/listings/{id}/accept/:
     post:
       operationId: listings_accept_create
-      summary: Aceptar oferta
+      summary: Accept offer
       parameters:
       - in: path
         name: id
         schema:
           type: integer
-        description: Un valor de entero único que identifique este publicación.
+        description: A unique integer value identifying this listing.
         required: true
       tags:
       - listings
@@ -372,13 +372,13 @@ paths:
   /api/listings/{id}/cancel/:
     post:
       operationId: listings_cancel_create
-      summary: Cancelar
+      summary: Cancel
       parameters:
       - in: path
         name: id
         schema:
           type: integer
-        description: Un valor de entero único que identifique este publicación.
+        description: A unique integer value identifying this listing.
         required: true
       tags:
       - listings
@@ -405,13 +405,13 @@ paths:
   /api/listings/{id}/complete/:
     post:
       operationId: listings_complete_create
-      summary: Completar venta
+      summary: Complete sale
       parameters:
       - in: path
         name: id
         schema:
           type: integer
-        description: Un valor de entero único que identifique este publicación.
+        description: A unique integer value identifying this listing.
         required: true
       tags:
       - listings
@@ -441,7 +441,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: Un valor de entero único que identifique este publicación.
+        description: A unique integer value identifying this listing.
         required: true
       - in: query
         name: q
@@ -474,7 +474,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: Un valor de entero único que identifique este publicación.
+        description: A unique integer value identifying this listing.
         required: true
       tags:
       - listings
@@ -501,7 +501,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: Un valor de entero único que identifique este publicación.
+        description: A unique integer value identifying this listing.
         required: true
       - in: path
         name: image_id
@@ -519,13 +519,13 @@ paths:
   /api/listings/{id}/offer/:
     post:
       operationId: listings_offer_create
-      summary: Hacer oferta
+      summary: Make an offer
       parameters:
       - in: path
         name: id
         schema:
           type: integer
-        description: Un valor de entero único que identifique este publicación.
+        description: A unique integer value identifying this listing.
         required: true
       tags:
       - listings
@@ -553,13 +553,13 @@ paths:
   /api/listings/{id}/pickup/:
     post:
       operationId: listings_pickup_create
-      summary: Coordinar recogida
+      summary: Arrange pickup
       parameters:
       - in: path
         name: id
         schema:
           type: integer
-        description: Un valor de entero único que identifique este publicación.
+        description: A unique integer value identifying this listing.
         required: true
       tags:
       - listings
@@ -587,13 +587,13 @@ paths:
   /api/listings/{id}/reject/:
     post:
       operationId: listings_reject_create
-      summary: Rechazar oferta
+      summary: Decline offer
       parameters:
       - in: path
         name: id
         schema:
           type: integer
-        description: Un valor de entero único que identifique este publicación.
+        description: A unique integer value identifying this listing.
         required: true
       tags:
       - listings
@@ -779,7 +779,7 @@ paths:
       - name: page
         required: false
         in: query
-        description: Un número de página dentro del conjunto de resultados paginado.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       - in: query
@@ -806,7 +806,7 @@ paths:
         name: id
         schema:
           type: integer
-        description: Un valor de entero único que identifique este notificación.
+        description: A unique integer value identifying this notification.
         required: true
       tags:
       - notifications
@@ -942,14 +942,13 @@ components:
           readOnly: true
         code:
           type: string
-          title: Código
           maxLength: 40
           pattern: ^[-a-zA-Z0-9_]+$
         name:
           type: string
         fields_schema:
-          title: Campos extra
-          description: JSON Schema (tipo object) con los campos propios de la categoría.
+          title: Extra fields
+          description: JSON Schema (object type) with the fields specific to the category.
       required:
       - code
       - id
@@ -963,11 +962,11 @@ components:
       - for_parts
       type: string
       description: |-
-        * `new` - Nuevo
-        * `like_new` - Como nuevo
-        * `good` - Buen estado
-        * `fair` - Con detalles
-        * `for_parts` - Para repuestos
+        * `new` - New
+        * `like_new` - Like new
+        * `good` - Good condition
+        * `fair` - Some wear
+        * `for_parts` - For parts
     DocumentTypeEnum:
       enum:
       - national_id
@@ -975,9 +974,9 @@ components:
       - passport
       type: string
       description: |-
-        * `national_id` - Documento nacional
-        * `foreign_id` - Documento de extranjería
-        * `passport` - Pasaporte
+        * `national_id` - National ID
+        * `foreign_id` - Foreign ID
+        * `passport` - Passport
     KindEnum:
       enum:
       - listing.create
@@ -990,14 +989,14 @@ components:
       - message.new
       type: string
       description: |-
-        * `listing.create` - Nueva publicación
-        * `listing.offer` - Nueva oferta
-        * `listing.accept` - Oferta aceptada
-        * `listing.reject` - Oferta rechazada
-        * `listing.pickup` - Recogida coordinada
-        * `listing.complete` - Venta completada
-        * `listing.cancel` - Publicación cancelada
-        * `message.new` - Mensajes nuevos
+        * `listing.create` - New listing
+        * `listing.offer` - New offer
+        * `listing.accept` - Offer accepted
+        * `listing.reject` - Offer declined
+        * `listing.pickup` - Pickup arranged
+        * `listing.complete` - Sale completed
+        * `listing.cancel` - Listing cancelled
+        * `message.new` - New messages
     LanguageEnum:
       enum:
       - es
@@ -1020,34 +1019,29 @@ components:
           type: integer
         title:
           type: string
-          title: Nombre
+          title: Name
           maxLength: 120
         description:
           type: string
-          title: Descripción
           maxLength: 4000
         condition:
-          allOf:
-          - $ref: '#/components/schemas/ConditionEnum'
-          title: Estado del artículo
+          $ref: '#/components/schemas/ConditionEnum'
         attributes:
-          title: Campos de la categoría
+          title: Category fields
         city:
           type: string
-          title: Ciudad
           maxLength: 80
         pickup_address:
           type: string
-          title: Dirección de recogida
           maxLength: 200
         is_original:
           type: boolean
-          title: ¿es original?
+          title: Original?
         terms_accepted_at:
           type: string
           format: date-time
           readOnly: true
-          title: Términos aceptados
+          title: Terms accepted
         images:
           type: array
           items:
@@ -1057,42 +1051,40 @@ components:
           allOf:
           - $ref: '#/components/schemas/ListingStatusEnum'
           readOnly: true
-          title: Estado
         status_changed_at:
           type: string
           format: date-time
           readOnly: true
-          title: Último cambio de estado
+          title: Last status change
         offer_amount:
           type: string
           format: decimal
           pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
           readOnly: true
           nullable: true
-          title: Oferta
+          title: Offer
         offer_currency:
           type: string
           readOnly: true
-          title: Moneda
+          title: Currency
         pickup_by:
           allOf:
           - $ref: '#/components/schemas/ListingPickupByEnum'
           readOnly: true
-          title: Responsable de la recogida
+          title: Pickup handled by
         pickup_date:
           type: string
           format: date
           readOnly: true
           nullable: true
-          title: Fecha de recogida
         pickup_notes:
           type: string
           readOnly: true
-          title: Indicaciones de recogida
+          title: Pickup instructions
         cancel_reason:
           type: string
           readOnly: true
-          title: Motivo de cancelación
+          title: Cancellation reason
         available_actions:
           type: array
           items:
@@ -1140,7 +1132,6 @@ components:
           readOnly: true
         action:
           type: string
-          title: Acción
           maxLength: 20
         from_status:
           oneOf:
@@ -1172,13 +1163,12 @@ components:
         image:
           type: string
           format: uri
-          title: Imagen
         position:
           type: integer
           maximum: 9223372036854775807
           minimum: 0
           format: int64
-          title: Orden
+          title: Order
       required:
       - id
       - image
@@ -1188,13 +1178,12 @@ components:
         image:
           type: string
           format: binary
-          title: Imagen
         position:
           type: integer
           maximum: 9223372036854775807
           minimum: 0
           format: int64
-          title: Orden
+          title: Order
       required:
       - image
     ListingPickupByEnum:
@@ -1203,8 +1192,8 @@ components:
       - platform
       type: string
       description: |-
-        * `seller` - El vendedor lo envía
-        * `platform` - Trueke lo recoge
+        * `seller` - The seller ships it
+        * `platform` - Trueke picks it up
     ListingRequest:
       type: object
       properties:
@@ -1213,32 +1202,27 @@ components:
         title:
           type: string
           minLength: 1
-          title: Nombre
+          title: Name
           maxLength: 120
         description:
           type: string
           minLength: 1
-          title: Descripción
           maxLength: 4000
         condition:
-          allOf:
-          - $ref: '#/components/schemas/ConditionEnum'
-          title: Estado del artículo
+          $ref: '#/components/schemas/ConditionEnum'
         attributes:
-          title: Campos de la categoría
+          title: Category fields
         city:
           type: string
           minLength: 1
-          title: Ciudad
           maxLength: 80
         pickup_address:
           type: string
           minLength: 1
-          title: Dirección de recogida
           maxLength: 200
         is_original:
           type: boolean
-          title: ¿es original?
+          title: Original?
         terms_accepted:
           type: boolean
           writeOnly: true
@@ -1281,12 +1265,12 @@ components:
       - cancelled
       type: string
       description: |-
-        * `in_review` - En revisión
-        * `offered` - Con oferta
-        * `accepted` - Aceptada
-        * `pickup_sent` - Recogida enviada
-        * `completed` - Completada
-        * `cancelled` - Cancelada
+        * `in_review` - In review
+        * `offered` - Offer made
+        * `accepted` - Accepted
+        * `pickup_sent` - Pickup scheduled
+        * `completed` - Completed
+        * `cancelled` - Cancelled
     MarkRead:
       type: object
       properties:
@@ -1311,10 +1295,9 @@ components:
         from_platform:
           type: boolean
           readOnly: true
-          title: Enviado por la plataforma
+          title: Sent by the platform
         text:
           type: string
-          title: Texto
           maxLength: 4000
         attachment_kind:
           type: string
@@ -1334,7 +1317,7 @@ components:
           format: date-time
           readOnly: true
           nullable: true
-          title: Leído
+          title: Read
       required:
       - attachment_kind
       - attachment_url
@@ -1349,13 +1332,11 @@ components:
       properties:
         text:
           type: string
-          title: Texto
           maxLength: 4000
         attachment:
           type: string
           format: binary
           writeOnly: true
-          title: Adjunto
     Notification:
       type: object
       properties:
@@ -1365,7 +1346,7 @@ components:
         kind:
           allOf:
           - $ref: '#/components/schemas/KindEnum'
-          title: Tipo
+          title: Type
         listing:
           allOf:
           - $ref: '#/components/schemas/NotificationListing'
@@ -1384,7 +1365,7 @@ components:
           type: string
           format: date-time
           nullable: true
-          title: Vista
+          title: Seen
       required:
       - actor
       - created_at
@@ -1566,12 +1547,11 @@ components:
           type: string
           format: binary
           writeOnly: true
-          title: Documento
+          title: ID document
         bank_certificate:
           type: string
           format: binary
           writeOnly: true
-          title: Certificado bancario
     PatchedListingRequest:
       type: object
       properties:
@@ -1580,32 +1560,27 @@ components:
         title:
           type: string
           minLength: 1
-          title: Nombre
+          title: Name
           maxLength: 120
         description:
           type: string
           minLength: 1
-          title: Descripción
           maxLength: 4000
         condition:
-          allOf:
-          - $ref: '#/components/schemas/ConditionEnum'
-          title: Estado del artículo
+          $ref: '#/components/schemas/ConditionEnum'
         attributes:
-          title: Campos de la categoría
+          title: Category fields
         city:
           type: string
           minLength: 1
-          title: Ciudad
           maxLength: 80
         pickup_address:
           type: string
           minLength: 1
-          title: Dirección de recogida
           maxLength: 200
         is_original:
           type: boolean
-          title: ¿es original?
+          title: Original?
         terms_accepted:
           type: boolean
           writeOnly: true
@@ -1614,11 +1589,10 @@ components:
       properties:
         first_name:
           type: string
-          title: Nombre
+          title: Name
           maxLength: 80
         last_name:
           type: string
-          title: Apellido
           maxLength: 80
         email:
           oneOf:
@@ -1630,19 +1604,16 @@ components:
         photo:
           type: string
           format: binary
-          title: Foto
         language:
-          allOf:
-          - $ref: '#/components/schemas/LanguageEnum'
-          title: Idioma
+          $ref: '#/components/schemas/LanguageEnum'
         document_type:
-          title: Tipo de documento
+          title: ID type
           oneOf:
           - $ref: '#/components/schemas/DocumentTypeEnum'
           - $ref: '#/components/schemas/BlankEnum'
         document_number:
           type: string
-          title: Número de documento
+          title: ID number
           maxLength: 30
     PickupPickupByEnum:
       enum:
@@ -1678,8 +1649,8 @@ components:
       - operator
       type: string
       description: |-
-        * `seller` - Vendedor
-        * `operator` - Operador
+        * `seller` - Seller
+        * `operator` - Operator
     Seller:
       type: object
       properties:
@@ -1747,14 +1718,12 @@ components:
         phone:
           type: string
           readOnly: true
-          title: Teléfono
         first_name:
           type: string
-          title: Nombre
+          title: Name
           maxLength: 80
         last_name:
           type: string
-          title: Apellido
           maxLength: 80
         email:
           oneOf:
@@ -1767,24 +1736,20 @@ components:
           type: string
           format: uri
           nullable: true
-          title: Foto
         language:
-          allOf:
-          - $ref: '#/components/schemas/LanguageEnum'
-          title: Idioma
+          $ref: '#/components/schemas/LanguageEnum'
         role:
           allOf:
           - $ref: '#/components/schemas/RoleEnum'
           readOnly: true
-          title: Rol
         document_type:
-          title: Tipo de documento
+          title: ID type
           oneOf:
           - $ref: '#/components/schemas/DocumentTypeEnum'
           - $ref: '#/components/schemas/BlankEnum'
         document_number:
           type: string
-          title: Número de documento
+          title: ID number
           maxLength: 30
         has_document_file:
           type: boolean

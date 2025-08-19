@@ -1,0 +1,39 @@
+name: Bug
+description: Something doesn't work as it should
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, what you expected and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to reproduce it
+      placeholder: |
+        1. Log in as the seller (300 000 0002)
+        2. Open a listing with an offer
+        3. …
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [Frontend, Backend / API, Real time (WebSocket), Docker / installation, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, operating system, Trueke version or commit, `make dev` or without Docker.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Errors from the browser console or from `docker compose logs`. Don't include personal data or real login codes.
+      render: text

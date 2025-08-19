@@ -1,10 +1,12 @@
+<p><strong>English</strong> · <a href="es/api.md">Español</a></p>
+
 # API
 
-La referencia completa, generada desde el código, está en **`/api/docs/`** (Swagger) y el esquema OpenAPI en `/api/schema/`. Esta guía explica lo que el esquema no cuenta: cómo se entra, cómo son los errores y el WebSocket.
+The full reference, generated from the code, is at **`/api/docs/`** (Swagger). The OpenAPI schema is at `/api/schema/`. This guide explains what the schema doesn't: how to log in, what errors look like, and the WebSocket.
 
-## Autenticación
+## Login
 
-Sin contraseñas: teléfono y código de un solo uso.
+There are no passwords: you use a phone number and a one-time code.
 
 ```http
 POST /api/auth/otp/request/      {"phone": "300 123 4567"}
@@ -14,76 +16,76 @@ POST /api/auth/otp/verify/       {"phone": "300 123 4567", "code": "123456"}
 → 200 {"access": "…", "refresh": "…", "created": true, "user": {…}}
 ```
 
-- El teléfono se normaliza a E.164 con la región por defecto (`PHONE_DEFAULT_REGION`, `CO`).
-- Si el teléfono no tiene cuenta, `verify` la crea (`created: true`).
-- Los códigos vencen a los 5 minutos, admiten 5 intentos y son de un solo uso. No se puede pedir otro antes de 60 s: responde `429 {"code": "resend_too_soon", "wait": 42}`.
-- En el resto de peticiones: `Authorization: Bearer <access>`. El access dura 15 minutos. Con `POST /api/auth/token/refresh/ {"refresh": "…"}` se obtiene otro, y el refresh rota en cada uso.
+- The phone number is changed to E.164 format with the default region (`PHONE_DEFAULT_REGION`, `CO`).
+- If the phone number has no account, `verify` creates one (`created: true`).
+- Codes expire after 5 minutes, allow 5 tries and work only once. You can't ask for a new code within 60 seconds: the API answers `429 {"code": "resend_too_soon", "wait": 42}`.
+- For all other requests, send `Authorization: Bearer <access>`. The access token lasts 15 minutes. Get a new one with `POST /api/auth/token/refresh/ {"refresh": "…"}`. The refresh token changes each time you use it.
 
-## Idioma
+## Language
 
-Se responde en el idioma de `Accept-Language` (`es` por defecto, o `en`): mensajes de error, nombres de categorías y etiquetas.
+The API answers in the language of `Accept-Language`: `en` by default, or `es`. This covers error messages, category names, labels and the SMS with the code.
 
-## Errores
+## Errors
 
-| Código | Cuándo | Cuerpo |
+| Code | When | Body |
 |---|---|---|
-| 400 | Datos inválidos | `{"campo": ["mensaje"]}` (formato de DRF). En `attributes` de una publicación los errores van por campo de la categoría. |
-| 401 | Sin sesión o token vencido | `{"detail": "…"}` |
-| 403 | Sin permiso para esa acción | `{"code": "not_allowed", "detail": "…"}` en transiciones |
-| 404 | No existe **o no es tuyo**: una publicación ajena responde igual que una inexistente | `{"detail": "…"}` |
-| 409 | La acción no toca en este estado | `{"code": "invalid_state" \| "profile_incomplete", "detail": "…"}` |
-| 429 | Demasiadas peticiones (OTP, newsletter) | `{"detail": "…"}` |
+| 400 | Invalid data | `{"field": ["message"]}` (DRF format). For `attributes` of a listing, errors are per category field. |
+| 401 | No session or expired token | `{"detail": "…"}` |
+| 403 | You can't do this action | `{"code": "not_allowed", "detail": "…"}` for transitions |
+| 404 | It doesn't exist **or it isn't yours**: another person's listing answers the same as a missing one | `{"detail": "…"}` |
+| 409 | The action isn't possible in this status | `{"code": "invalid_state" \| "profile_incomplete", "detail": "…"}` |
+| 429 | Too many requests (OTP, newsletter) | `{"detail": "…"}` |
 
 ## Endpoints
 
-| Método y ruta | Quién | Qué |
+| Method and path | Who | What |
 |---|---|---|
-| `GET /api/me/` · `PATCH` | cualquiera | Mi perfil (nombre, email, idioma, documento). `profile_complete` indica si ya se le puede pagar. |
-| `PATCH /api/me/documents/` | cualquiera | Sube `document_file` y/o `bank_certificate` (multipart; PDF/JPG/PNG, 5 MB) |
-| `GET /api/me/documents/{document\|bank-certificate}/` | cualquiera | Descarga mi documento (en S3, redirige a una URL firmada) |
-| `GET /api/categories/` | público | Categorías activas con su `fields_schema` (JSON Schema) |
-| `GET /api/listings/` | vendedor: las suyas; operador: todas | Filtros: `status` (uno o varios separados por coma), `category` (código), `city`, `q`, `page` |
-| `POST /api/listings/` | vendedor | Crear. Exige `terms_accepted: true` y valida `attributes` con el esquema de la categoría |
-| `GET /api/listings/stats/` | ídem lista | Cuántas hay en cada estado |
-| `GET /api/listings/{id}/` · `PATCH` | vendedor (editar solo en revisión) | Detalle con `available_actions` |
-| `POST /api/listings/{id}/images/` · `DELETE …/images/{image_id}/` | vendedor, en revisión | Fotos (JPG/PNG/WebP, 8 MB, hasta 10) |
-| `POST /api/listings/{id}/{acción}/` | según la acción | `offer {amount, currency}`, `accept`, `reject {reason}`, `pickup {pickup_by, pickup_date, notes}`, `complete`, `cancel {reason}` |
-| `GET /api/listings/{id}/events/` | quien la ve | Historial de la publicación |
-| `GET /api/listings/{id}/messages/` · `POST` | vendedor y operadores | Chat. Paginado por cursor, del más nuevo al más viejo. Envío JSON o multipart con `attachment`. |
-| `POST /api/listings/{id}/messages/read/` | ídem | Marca leídos los mensajes del otro lado |
-| `GET /api/listings/{id}/messages/{mid}/attachment/` | ídem | Descarga un adjunto (privado) |
-| `GET /api/notifications/` | cualquiera | Mis notificaciones (`?unseen=true`) |
-| `GET /api/notifications/unseen-count/` | cualquiera | Contador de la campana |
-| `POST /api/notifications/seen-all/` · `POST …/{id}/seen/` | cualquiera | Marcar vistas |
-| `GET /api/users/{id}/` · `…/documents/{kind}/` | operador | Perfil y documentos de un vendedor |
-| `POST /api/newsletter/subscribe/` · `unsubscribe/` | público | Alta (responde igual exista o no) y baja por token |
+| `GET /api/me/` · `PATCH` | anyone | My profile (name, email, language, ID). `profile_complete` says if the person can be paid. |
+| `PATCH /api/me/documents/` | anyone | Uploads `document_file` and/or `bank_certificate` (multipart; PDF/JPG/PNG, 5 MB) |
+| `GET /api/me/documents/{document\|bank-certificate}/` | anyone | Downloads my document (on S3, it redirects to a signed URL) |
+| `GET /api/categories/` | public | Active categories with their `fields_schema` (JSON Schema) |
+| `GET /api/listings/` | seller: own listings; operator: all | Filters: `status` (one or more, comma-separated), `category` (code), `city`, `q`, `page` |
+| `POST /api/listings/` | seller | Create. Needs `terms_accepted: true` and checks `attributes` against the category schema |
+| `GET /api/listings/stats/` | same as the list | How many listings are in each status |
+| `GET /api/listings/{id}/` · `PATCH` | seller (edit only in review) | Detail with `available_actions` |
+| `POST /api/listings/{id}/images/` · `DELETE …/images/{image_id}/` | seller, in review | Photos (JPG/PNG/WebP, 8 MB, up to 10) |
+| `POST /api/listings/{id}/{action}/` | depends on the action | `offer {amount, currency}`, `accept`, `reject {reason}`, `pickup {pickup_by, pickup_date, notes}`, `complete`, `cancel {reason}` |
+| `GET /api/listings/{id}/events/` | whoever can see it | History of the listing |
+| `GET /api/listings/{id}/messages/` · `POST` | seller and operators | Chat. Cursor pagination, newest first. Send JSON, or multipart with `attachment`. |
+| `POST /api/listings/{id}/messages/read/` | same | Marks the other side's messages as read |
+| `GET /api/listings/{id}/messages/{mid}/attachment/` | same | Downloads an attachment (private) |
+| `GET /api/notifications/` | anyone | My notifications (`?unseen=true`) |
+| `GET /api/notifications/unseen-count/` | anyone | Number for the bell |
+| `POST /api/notifications/seen-all/` · `POST …/{id}/seen/` | anyone | Mark as seen |
+| `GET /api/users/{id}/` · `…/documents/{kind}/` | operator | A seller's profile and documents |
+| `POST /api/newsletter/subscribe/` · `unsubscribe/` | public | Sign up (same answer whether the email exists or not) and unsubscribe with a token |
 
 ## WebSocket
 
-Una sola conexión en `/ws/` para todo. Mensajes JSON:
+One connection at `/ws/` for everything. Messages are JSON:
 
 ```jsonc
-// 1. Lo primero, en menos de 10 s (si no, se cierra con 4401)
+// 1. The first message, within 10 s (if not, the server closes with 4401)
 → {"type": "auth", "token": "<access JWT>"}
-← {"type": "auth.ok", "user": 7}          // ya estás suscrito a "user.7"
+← {"type": "auth.ok", "user": 7}          // you are now in "user.7"
 
-// 2. Suscribirse a una publicación (solo si la puedes ver)
+// 2. Join a listing (only if you can see it)
 → {"type": "subscribe", "channel": "listing.12"}
 ← {"type": "subscribed", "channel": "listing.12"}
 → {"type": "unsubscribe", "channel": "listing.12"}
 
-// 3. Eventos
+// 3. Events
 ← {"type": "event", "channel": "listing.12", "event": "listing.status", "data": {"status": "offered", …}}
-← {"type": "event", "channel": "listing.12", "event": "message.created", "data": {<mensaje>}}
+← {"type": "event", "channel": "listing.12", "event": "message.created", "data": {<message>}}
 ← {"type": "event", "channel": "listing.12", "event": "message.read", "data": {…}}
-← {"type": "event", "channel": "user.7", "event": "notification.created", "data": {<notificación>}}
+← {"type": "event", "channel": "user.7", "event": "notification.created", "data": {<notification>}}
 ← {"type": "event", "channel": "user.7", "event": "notification.seen", "data": {"ids": […]}}
 
-// Otros
+// Other messages
 → {"type": "ping"}   ← {"type": "pong"}
 ← {"type": "error", "code": "forbidden" | "too_many" | "unknown_type", "detail": "…"}
 ```
 
-- Si el token vence, el servidor cierra con **4401**: renueva el token y reconecta.
-- Solo se aceptan conexiones desde los orígenes de `CORS_ALLOWED_ORIGINS`.
-- El cliente de referencia está en `frontend/src/realtime/client.ts`: reconexión con espera creciente, suscripciones con contador y renovación del token.
+- If the token expires, the server closes with **4401**. Refresh the token and connect again.
+- The server only accepts connections from the origins in `CORS_ALLOWED_ORIGINS`.
+- The reference client is `frontend/src/realtime/client.ts`: it reconnects with a growing wait, counts subscriptions and refreshes the token.

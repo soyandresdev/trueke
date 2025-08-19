@@ -36,8 +36,10 @@ format:
 	cd frontend && pnpm format
 
 messages:       ## Actualiza y compila las traducciones del backend (necesita gettext)
-	cd backend && SECRET_KEY=x uv run python manage.py makemessages -l en --ignore=.venv --ignore="*/tests/*" --ignore="*/migrations/*"
-	cd backend && SECRET_KEY=x uv run python manage.py compilemessages -l en --ignore=.venv
+	cd backend && SECRET_KEY=x uv run python manage.py makemessages -l en -l es --no-location --ignore=.venv --ignore="*/tests/*" --ignore="*/migrations/*"
+	@# Los textos fuente ya están en español: en el catálogo es, cada traducción es el propio texto.
+	cd backend && msgen -o locale/es/LC_MESSAGES/django.po locale/es/LC_MESSAGES/django.po
+	cd backend && SECRET_KEY=x uv run python manage.py compilemessages --ignore=.venv
 
 api:            ## Regenera frontend/src/api/schema.d.ts desde el esquema OpenAPI del backend
 	cd frontend && pnpm api:generate

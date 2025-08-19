@@ -1,4 +1,4 @@
-"""El backend responde en el idioma de Accept-Language (español por defecto, inglés si se pide)."""
+"""El backend responde en el idioma de Accept-Language (inglés por defecto, español si se pide)."""
 
 import pytest
 from django.urls import reverse
@@ -18,12 +18,33 @@ def verify_wrong_code(api, language):
     )
 
 
-def test_errors_in_spanish_by_default(api):
-    assert verify_wrong_code(api, "es").data["detail"] == "El código es incorrecto o ya venció."
+def test_errors_in_english_by_default(api):
+    assert verify_wrong_code(api, "").data["detail"] == "The code is wrong or has expired."
+    assert verify_wrong_code(api, "fr").data["detail"] == "The code is wrong or has expired."
 
 
-def test_errors_in_english(api):
-    assert verify_wrong_code(api, "en").data["detail"] == "The code is wrong or has expired."
+def test_errors_in_spanish_when_asked(api):
+    assert verify_wrong_code(api, "es-CO").data["detail"] == "El código es incorrecto o ya venció."
+
+
+def test_otp_sms_in_the_language_of_the_request(api, django_capture_on_commit_callbacks):
+    from unittest import mock
+
+    sent = []
+
+    def capture(phone, code):
+        from apps.accounts.providers import _message
+
+        sent.append(_message(code))
+
+    with (
+        mock.patch("apps.accounts.tasks.send_otp", side_effect=capture),
+        django_capture_on_commit_callbacks(execute=True),
+    ):
+        api.post(reverse("otp-request"), {"phone": "+573001110001"}, format="json", HTTP_ACCEPT_LANGUAGE="es")
+        api.post(reverse("otp-request"), {"phone": "+573001110002"}, format="json", HTTP_ACCEPT_LANGUAGE="en")
+    assert sent[0].startswith("Tu código de Trueke es")
+    assert sent[1].startswith("Your Trueke code is")
 
 
 def test_transition_errors_and_labels_in_english(api):
@@ -54,11 +75,13 @@ def test_compiled_translations_match_the_po_file():
     import polib
     from django.conf import settings
 
-    folder = Path(settings.BASE_DIR) / "locale" / "en" / "LC_MESSAGES"
-    compiled = gettext.GNUTranslations((folder / "django.mo").open("rb"))
-    stale = [
-        entry.msgid
-        for entry in polib.pofile(str(folder / "django.po")).translated_entries()
-        if compiled.gettext(entry.msgid) != entry.msgstr
-    ]
+    stale = []
+    for language in ("en", "es"):
+        folder = Path(settings.BASE_DIR) / "locale" / language / "LC_MESSAGES"
+        compiled = gettext.GNUTranslations((folder / "django.mo").open("rb"))
+        stale += [
+            f"{language}: {entry.msgid}"
+            for entry in polib.pofile(str(folder / "django.po")).translated_entries()
+            if compiled.gettext(entry.msgid) != entry.msgstr
+        ]
     assert stale == []

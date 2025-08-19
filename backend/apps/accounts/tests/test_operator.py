@@ -43,6 +43,13 @@ def test_create_operator_command():
     from apps.accounts.models import User
 
     call_command("create_operator", "3009990001", "--first-name", "Ana", stdout=StringIO())
-    call_command("create_operator", "+573009990001", "--first-name", "Ana", stdout=StringIO())
+    call_command(
+        "create_operator", "+573009990001", "--first-name", "Ana", "--language", "es", stdout=StringIO()
+    )
     user = User.objects.get()
-    assert (user.phone, user.role, user.first_name) == ("+573009990001", User.Role.OPERATOR, "Ana")
+    assert (user.phone, user.role, user.first_name, user.language) == (
+        "+573009990001",
+        "operator",
+        "Ana",
+        "es",
+    )

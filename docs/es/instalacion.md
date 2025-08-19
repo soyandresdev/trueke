@@ -1,3 +1,5 @@
+<p><a href="../installation.md">English</a> · <strong>Español</strong></p>
+
 # Instalación
 
 Hay dos formas de levantar Trueke en tu máquina: con Docker (un comando) o sin Docker (más rápido para trabajar en el código).
@@ -8,7 +10,7 @@ Requisitos: Docker con Compose.
 
 ```sh
 make dev     # frontend, backend, worker de Celery, Postgres y Redis
-make seed    # en otra terminal: datos de demo
+make seed    # en otra terminal: datos de demo (ARGS="--language es" para español)
 ```
 
 | Qué | Dónde |
@@ -35,7 +37,7 @@ docker compose logs -f backend worker | grep OTP
 | `300 000 0002` | Laura, vendedora con perfil completo | Sus publicaciones en todos los estados, aceptar ofertas, chat |
 | `300 000 0003` | Mateo, vendedor sin documentos | El aviso de perfil incompleto |
 
-Para volver a los datos de demo originales: `make seed ARGS=--reset`.
+Para volver a los datos de demo originales: `make seed ARGS=--reset` (en español: `make seed ARGS="--reset --language es"`). La app sale en inglés por defecto; el selector de la cabecera la cambia a español, y el idioma del perfil de cada cuenta se aplica al entrar.
 
 Para probar como operadora y como vendedora a la vez en el mismo navegador, usa `http://localhost:5173` para una y `http://127.0.0.1:5173` para la otra: son orígenes distintos y cada uno guarda su propia sesión.
 
@@ -48,7 +50,7 @@ Requisitos: [uv](https://docs.astral.sh/uv/), Node 24 con pnpm. Sin `DATABASE_UR
 cd backend
 cp .env.example .env
 uv run python manage.py migrate
-uv run python manage.py seed_demo
+uv run python manage.py seed_demo            # --language es para datos en español
 uv run python manage.py runserver
 
 # Terminal 2: frontend en http://localhost:5173
@@ -70,17 +72,17 @@ Vite hace de proxy de `/api`, `/media` y `/ws` hacia el backend, así que no hay
 | `make api` | Regenera los tipos del frontend desde el esquema OpenAPI |
 | `make messages` | Actualiza y compila las traducciones del backend (necesita gettext) |
 | `make categories` | Carga o actualiza las 4 categorías de demo |
-| `make seed` | Datos de demo (`ARGS=--reset` para rehacerlos) |
+| `make seed` | Datos de demo en inglés (`ARGS=--reset` para rehacerlos, `ARGS="--language es"` para español) |
 | `make superuser` | Crea un usuario con contraseña para el admin |
 
-Para regenerar las capturas y el GIF de la documentación: `cd frontend && pnpm capturas` (necesita ffmpeg).
+Para regenerar las capturas y el GIF de la documentación, en inglés y en español: `cd frontend && pnpm screenshots` (necesita ffmpeg).
 
 ## Crear un operador
 
 Los operadores entran por OTP igual que los vendedores. Para dar ese rol a un teléfono:
 
 ```sh
-cd backend && uv run python manage.py create_operator 3001234567 --first-name Ana --last-name Pérez
+cd backend && uv run python manage.py create_operator 3001234567 --first-name Ana --last-name Pérez --language es
 ```
 
 Con Docker: `docker compose run --rm backend python manage.py create_operator …`.

@@ -1,394 +1,398 @@
-# Traducciones al inglés del backend de Trueke.
-# Se generan con `make messages` (makemessages + compilemessages).
+# Español del backend de Trueke. Los textos fuente ya están en español, así que cada
+# traducción es igual al original; hace falta porque el idioma por defecto es el inglés
+# (Django usaría el catálogo inglés para cualquier texto sin traducción).
+# Se generan con `make messages`.
 msgid ""
 msgstr ""
 "Project-Id-Version: Trueke\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-19 09:23-0500\n"
-"PO-Revision-Date: 2026-09-19 08:50-0500\n"
+"PO-Revision-Date: 2026-09-20 09:00-0500\n"
 "Last-Translator: \n"
-"Language-Team: English\n"
-"Language: en\n"
+"Language-Team: Español\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
 
 msgid "Perfil"
-msgstr "Profile"
+msgstr "Perfil"
 
 msgid "Documentos"
-msgstr "Documents"
+msgstr "Documentos"
 
 msgid "Permisos"
-msgstr "Permissions"
+msgstr "Permisos"
 
 msgid "Fechas"
-msgstr "Dates"
+msgstr "Fechas"
 
 msgid "perfil completo"
-msgstr "profile complete"
+msgstr "perfil completo"
 
 msgid "Formato no permitido. Usa PDF, JPG o PNG."
-msgstr "Format not allowed. Use PDF, JPG or PNG."
+msgstr "Formato no permitido. Usa PDF, JPG o PNG."
 
 #, python-format
 msgid "El archivo supera los %(mb)s MB."
-msgstr "The file is larger than %(mb)s MB."
+msgstr "El archivo supera los %(mb)s MB."
 
 msgid "Vendedor"
-msgstr "Seller"
+msgstr "Vendedor"
 
 msgid "Operador"
-msgstr "Operator"
+msgstr "Operador"
 
 msgid "Documento nacional"
-msgstr "National ID"
+msgstr "Documento nacional"
 
 msgid "Documento de extranjería"
-msgstr "Foreign ID"
+msgstr "Documento de extranjería"
 
 msgid "Pasaporte"
-msgstr "Passport"
+msgstr "Pasaporte"
 
 msgid "teléfono"
-msgstr "phone"
+msgstr "teléfono"
 
 msgid "nombre"
-msgstr "name"
+msgstr "nombre"
 
 msgid "apellido"
-msgstr "last name"
+msgstr "apellido"
 
 msgid "email"
 msgstr "email"
 
 msgid "foto"
-msgstr "photo"
+msgstr "foto"
 
 msgid "idioma"
-msgstr "language"
+msgstr "idioma"
 
 msgid "rol"
-msgstr "role"
+msgstr "rol"
 
 msgid "tipo de documento"
-msgstr "ID type"
+msgstr "tipo de documento"
 
 msgid "número de documento"
-msgstr "ID number"
+msgstr "número de documento"
 
 msgid "documento"
-msgstr "ID document"
+msgstr "documento"
 
 msgid "certificado bancario"
-msgstr "bank certificate"
+msgstr "certificado bancario"
 
 msgid "usuario"
-msgstr "user"
+msgstr "usuario"
 
 msgid "usuarios"
-msgstr "users"
+msgstr "usuarios"
 
 msgid "Número de teléfono inválido."
-msgstr "Invalid phone number."
+msgstr "Número de teléfono inválido."
 
 #, python-format
 msgid "Tu código de Trueke es %(code)s. No lo compartas con nadie."
-msgstr "Your Trueke code is %(code)s. Do not share it with anyone."
+msgstr "Tu código de Trueke es %(code)s. No lo compartas con nadie."
 
 msgid "Código inválido."
-msgstr "Invalid code."
+msgstr "Código inválido."
 
 msgid "Espera antes de pedir otro código."
-msgstr "Please wait before requesting another code."
+msgstr "Espera antes de pedir otro código."
 
 msgid "El código es incorrecto o ya venció."
-msgstr "The code is wrong or has expired."
+msgstr "El código es incorrecto o ya venció."
 
 msgid "Esta cuenta está desactivada."
-msgstr "This account is disabled."
+msgstr "Esta cuenta está desactivada."
 
 msgid "Chat"
 msgstr "Chat"
 
 msgid "Formato no permitido. Usa PDF, JPG, PNG o WebP."
-msgstr "Format not allowed. Use PDF, JPG, PNG or WebP."
+msgstr "Formato no permitido. Usa PDF, JPG, PNG o WebP."
 
 msgid "enviado por la plataforma"
-msgstr "sent by the platform"
+msgstr "enviado por la plataforma"
 
 msgid "texto"
-msgstr "text"
+msgstr "texto"
 
 msgid "adjunto"
-msgstr "attachment"
+msgstr "adjunto"
 
 msgid "leído"
-msgstr "read"
+msgstr "leído"
 
 msgid "mensaje"
-msgstr "message"
+msgstr "mensaje"
 
 msgid "mensajes"
-msgstr "messages"
+msgstr "mensajes"
 
 msgid "Escribe un mensaje o adjunta un archivo."
-msgstr "Write a message or attach a file."
+msgstr "Escribe un mensaje o adjunta un archivo."
 
 msgid "Publicaciones"
-msgstr "Listings"
+msgstr "Publicaciones"
 
 msgid "código"
-msgstr "code"
+msgstr "código"
 
 msgid "nombre en inglés"
-msgstr "English name"
+msgstr "nombre en inglés"
 
 msgid "campos extra"
-msgstr "extra fields"
+msgstr "campos extra"
 
 msgid "JSON Schema (tipo object) con los campos propios de la categoría."
-msgstr "JSON Schema (object type) with the fields specific to the category."
+msgstr "JSON Schema (tipo object) con los campos propios de la categoría."
 
 msgid "orden"
-msgstr "order"
+msgstr "orden"
 
 msgid "activa"
-msgstr "active"
+msgstr "activa"
 
 msgid "categoría"
-msgstr "category"
+msgstr "categoría"
 
 msgid "categorías"
-msgstr "categories"
+msgstr "categorías"
 
 msgid "En revisión"
-msgstr "In review"
+msgstr "En revisión"
 
 msgid "Con oferta"
-msgstr "Offer made"
+msgstr "Con oferta"
 
 msgid "Aceptada"
-msgstr "Accepted"
+msgstr "Aceptada"
 
 msgid "Recogida enviada"
-msgstr "Pickup scheduled"
+msgstr "Recogida enviada"
 
 msgid "Completada"
-msgstr "Completed"
+msgstr "Completada"
 
 msgid "Cancelada"
-msgstr "Cancelled"
+msgstr "Cancelada"
 
 msgid "Nuevo"
-msgstr "New"
+msgstr "Nuevo"
 
 msgid "Como nuevo"
-msgstr "Like new"
+msgstr "Como nuevo"
 
 msgid "Buen estado"
-msgstr "Good condition"
+msgstr "Buen estado"
 
 msgid "Con detalles"
-msgstr "Some wear"
+msgstr "Con detalles"
 
 msgid "Para repuestos"
-msgstr "For parts"
+msgstr "Para repuestos"
 
 msgid "El vendedor lo envía"
-msgstr "The seller ships it"
+msgstr "El vendedor lo envía"
 
 msgid "Trueke lo recoge"
-msgstr "Trueke picks it up"
+msgstr "Trueke lo recoge"
 
 msgid "vendedor"
-msgstr "seller"
+msgstr "vendedor"
 
 msgid "descripción"
-msgstr "description"
+msgstr "descripción"
 
 msgid "estado del artículo"
-msgstr "condition"
+msgstr "estado del artículo"
 
 msgid "campos de la categoría"
-msgstr "category fields"
+msgstr "campos de la categoría"
 
 msgid "ciudad"
-msgstr "city"
+msgstr "ciudad"
 
 msgid "dirección de recogida"
-msgstr "pickup address"
+msgstr "dirección de recogida"
 
 msgid "¿es original?"
-msgstr "original?"
+msgstr "¿es original?"
 
 msgid "términos aceptados"
-msgstr "terms accepted"
+msgstr "términos aceptados"
 
 msgid "estado"
-msgstr "status"
+msgstr "estado"
 
 msgid "último cambio de estado"
-msgstr "last status change"
+msgstr "último cambio de estado"
 
 msgid "oferta"
-msgstr "offer"
+msgstr "oferta"
 
 msgid "moneda"
-msgstr "currency"
+msgstr "moneda"
 
 msgid "responsable de la recogida"
-msgstr "pickup handled by"
+msgstr "responsable de la recogida"
 
 msgid "fecha de recogida"
-msgstr "pickup date"
+msgstr "fecha de recogida"
 
 msgid "indicaciones de recogida"
-msgstr "pickup instructions"
+msgstr "indicaciones de recogida"
 
 msgid "motivo de cancelación"
-msgstr "cancellation reason"
+msgstr "motivo de cancelación"
 
 msgid "publicación"
-msgstr "listing"
+msgstr "publicación"
 
 msgid "publicaciones"
-msgstr "listings"
+msgstr "publicaciones"
 
 msgid "Formato no permitido. Usa JPG, PNG o WebP."
-msgstr "Format not allowed. Use JPG, PNG or WebP."
+msgstr "Formato no permitido. Usa JPG, PNG o WebP."
 
 #, python-format
 msgid "La imagen supera los %(mb)s MB."
-msgstr "The image is larger than %(mb)s MB."
+msgstr "La imagen supera los %(mb)s MB."
 
 msgid "imagen"
-msgstr "image"
+msgstr "imagen"
 
 msgid "imágenes"
-msgstr "images"
+msgstr "imágenes"
 
 msgid "acción"
-msgstr "action"
+msgstr "acción"
 
 msgid "evento"
-msgstr "event"
+msgstr "evento"
 
 msgid "eventos"
-msgstr "events"
+msgstr "eventos"
 
 msgid "El esquema debe ser un objeto con \"type\": \"object\"."
-msgstr "The schema must be an object with \"type\": \"object\"."
+msgstr "El esquema debe ser un objeto con \"type\": \"object\"."
 
 #, python-format
 msgid "Esquema JSON inválido: %(error)s"
-msgstr "Invalid JSON Schema: %(error)s"
+msgstr "Esquema JSON inválido: %(error)s"
 
 msgid "Este campo es obligatorio."
-msgstr "This field is required."
+msgstr "Este campo es obligatorio."
 
 #, python-format
 msgid "Campos no permitidos en esta categoría: %(detail)s"
-msgstr "Fields not allowed in this category: %(detail)s"
+msgstr "Campos no permitidos en esta categoría: %(detail)s"
 
 msgid "Valor no permitido."
-msgstr "Value not allowed."
+msgstr "Valor no permitido."
 
 msgid "Debes aceptar los términos."
-msgstr "You must accept the terms."
+msgstr "Debes aceptar los términos."
 
 msgid "Hacer oferta"
-msgstr "Make an offer"
+msgstr "Hacer oferta"
 
 msgid "Aceptar oferta"
-msgstr "Accept offer"
+msgstr "Aceptar oferta"
 
 msgid "Rechazar oferta"
-msgstr "Decline offer"
+msgstr "Rechazar oferta"
 
 msgid "Coordinar recogida"
-msgstr "Arrange pickup"
+msgstr "Coordinar recogida"
 
 msgid "Completar venta"
-msgstr "Complete sale"
+msgstr "Completar venta"
 
 msgid "Cancelar"
-msgstr "Cancel"
+msgstr "Cancelar"
 
 msgid "No puedes hacer esta acción en esta publicación."
-msgstr "You can't do this on this listing."
+msgstr "No puedes hacer esta acción en esta publicación."
 
 #, python-format
 msgid "No se puede «%(action)s» una publicación %(status)s."
-msgstr "Can’t “%(action)s” a listing that is %(status)s."
+msgstr "No se puede «%(action)s» una publicación %(status)s."
 
 msgid ""
 "Completa tu perfil (datos, documento y certificado bancario) para aceptar la "
 "oferta."
 msgstr ""
-"Complete your profile (details, ID and bank certificate) to accept the offer."
+"Completa tu perfil (datos, documento y certificado bancario) para aceptar la "
+"oferta."
 
 msgid "Solo el vendedor puede editar la publicación."
-msgstr "Only the seller can edit the listing."
+msgstr "Solo el vendedor puede editar la publicación."
 
 msgid "La publicación ya no se puede editar."
-msgstr "The listing can no longer be edited."
+msgstr "La publicación ya no se puede editar."
 
 #, python-format
 msgid "Máximo %(n)s imágenes por publicación."
-msgstr "At most %(n)s images per listing."
+msgstr "Máximo %(n)s imágenes por publicación."
 
 msgid "Exportar activos a CSV"
-msgstr "Export active ones to CSV"
+msgstr "Exportar activos a CSV"
 
 msgid "Newsletter"
 msgstr "Newsletter"
 
 msgid "dado de baja"
-msgstr "unsubscribed"
+msgstr "dado de baja"
 
 msgid "suscriptor"
-msgstr "subscriber"
+msgstr "suscriptor"
 
 msgid "suscriptores"
-msgstr "subscribers"
+msgstr "suscriptores"
 
 msgid "Notificaciones"
-msgstr "Notifications"
+msgstr "Notificaciones"
 
 msgid "Nueva publicación"
-msgstr "New listing"
+msgstr "Nueva publicación"
 
 msgid "Nueva oferta"
-msgstr "New offer"
+msgstr "Nueva oferta"
 
 msgid "Oferta aceptada"
-msgstr "Offer accepted"
+msgstr "Oferta aceptada"
 
 msgid "Oferta rechazada"
-msgstr "Offer declined"
+msgstr "Oferta rechazada"
 
 msgid "Recogida coordinada"
-msgstr "Pickup arranged"
+msgstr "Recogida coordinada"
 
 msgid "Venta completada"
-msgstr "Sale completed"
+msgstr "Venta completada"
 
 msgid "Publicación cancelada"
-msgstr "Listing cancelled"
+msgstr "Publicación cancelada"
 
 msgid "Mensajes nuevos"
-msgstr "New messages"
+msgstr "Mensajes nuevos"
 
 msgid "tipo"
-msgstr "type"
+msgstr "tipo"
 
 msgid "vista"
-msgstr "seen"
+msgstr "vista"
 
 msgid "notificación"
-msgstr "notification"
+msgstr "notificación"
 
 msgid "notificaciones"
-msgstr "notifications"
+msgstr "notificaciones"

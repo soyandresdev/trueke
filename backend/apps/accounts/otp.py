@@ -35,7 +35,8 @@ class IssuedCode:
     resend_in: int
 
 
-def issue_code(phone: str) -> IssuedCode:
+def issue_code(phone: str, language: str | None = None) -> IssuedCode:
+    """`language`: idioma del SMS (el de quien lo pide); sin él, el idioma por defecto."""
     now = timezone.now()
     last = OtpCode.objects.filter(phone=phone).first()
     if last:
@@ -52,7 +53,7 @@ def issue_code(phone: str) -> IssuedCode:
             code_hash=make_password(code),
             expires_at=now + timedelta(seconds=settings.OTP_TTL_SECONDS),
         )
-        transaction.on_commit(lambda: send_otp_task.delay(phone, code))
+        transaction.on_commit(lambda: send_otp_task.delay(phone, code, language))
     return IssuedCode(expires_in=settings.OTP_TTL_SECONDS, resend_in=settings.OTP_RESEND_SECONDS)
 
 

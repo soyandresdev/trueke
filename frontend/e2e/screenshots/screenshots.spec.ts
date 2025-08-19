@@ -1,15 +1,54 @@
-/** Genera las capturas de docs/capturas. No comprueba nada: para eso están los otros specs. */
+/**
+ * Capturas y GIF de la documentación: `pnpm screenshots` → docs/screenshots/{en,es}/.
+ * El idioma sale de SCREENSHOTS_LANG. No comprueba nada: para eso están los otros specs.
+ */
 import { expect, test, type Browser, type BrowserContextOptions, type Page } from '@playwright/test'
 import { execFileSync } from 'node:child_process'
 import { mkdirSync, readdirSync, renameSync, rmSync } from 'node:fs'
 
 import { login } from '../support.ts'
 
-const OUT = new URL('../../../docs/capturas/', import.meta.url).pathname
+const LANG = process.env.SCREENSHOTS_LANG === 'es' ? 'es' : 'en'
+const OUT = new URL(`../../../docs/screenshots/${LANG}/`, import.meta.url).pathname
+const LOCALE = LANG === 'es' ? 'es-CO' : 'en-US'
 const LAURA = '+573000000002'
 const SARA = '+573000000001'
 
+// Textos de la interfaz que usa el script, en cada idioma.
+const ui = {
+  en: {
+    photography: 'Photography',
+    phone: '128 GB phone',
+    camera: 'Mirrorless camera with kit lens',
+    chat: 'Chat with Trueke',
+    inReview: 'In review',
+    offered: 'Offer made',
+    accepted: 'Accepted',
+    makeOffer: 'Make an offer',
+    amount: 'Amount (COP)',
+    sendOffer: 'Send offer',
+    acceptOffer: 'Accept offer',
+    accept: 'Accept',
+  },
+  es: {
+    photography: 'Fotografía',
+    phone: 'Celular de 128 GB',
+    camera: 'Cámara mirrorless con lente kit',
+    chat: 'Chat con Trueke',
+    inReview: 'En revisión',
+    offered: 'Con oferta',
+    accepted: 'Aceptada',
+    makeOffer: 'Hacer oferta',
+    amount: 'Monto (COP)',
+    sendOffer: 'Enviar oferta',
+    acceptOffer: 'Aceptar oferta',
+    accept: 'Aceptar',
+  },
+}[LANG]
+
 test.describe.configure({ mode: 'serial' })
+test.use({ locale: LOCALE })
+test.beforeAll(() => mkdirSync(OUT, { recursive: true }))
 
 // Los códigos OTP son de un solo uso y no se puede pedir otro antes de un minuto: cada persona entra
 // una vez y los demás navegadores reutilizan su sesión.
@@ -17,18 +56,21 @@ const sessions = new Map<string, BrowserContextOptions['storageState']>()
 
 async function signedIn(browser: Browser, phone: string, options: BrowserContextOptions = {}) {
   const context = await browser.newContext({
-    locale: 'es-CO',
+    locale: LOCALE,
     ...options,
     storageState: sessions.get(phone),
   })
   const page = await context.newPage()
   if (!sessions.has(phone)) {
+    // El login lo escribe `support.ts` en español: se entra en español y luego se elige el idioma.
+    await page.goto('/')
+    await page.locator('header select').selectOption('es')
     await login(page, phone)
+    await page.locator('header select').selectOption(LANG)
     sessions.set(phone, await context.storageState())
   }
   return page
 }
-test.beforeAll(() => mkdirSync(OUT, { recursive: true }))
 
 async function shot(page: Page, name: string, fullPage = false) {
   // Chrome no carga imágenes lazy fuera de pantalla en capturas de página completa.
@@ -42,46 +84,46 @@ async function shot(page: Page, name: string, fullPage = false) {
 test('landing', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('/')
-  await expect(page.getByRole('link', { name: 'Fotografía' })).toBeVisible()
+  await expect(page.getByRole('link', { name: ui.photography })).toBeVisible()
   await shot(page, 'landing')
 })
 
-test('landing en móvil', async ({ browser }) => {
+test('landing on mobile', async ({ browser }) => {
   const page = await browser.newPage({
     viewport: { width: 390, height: 844 },
     deviceScaleFactor: 2,
-    locale: 'es-CO',
+    locale: LOCALE,
   })
   await page.goto('/')
-  await shot(page, 'landing-movil')
+  await shot(page, 'landing-mobile')
   await page.close()
 })
 
-test('vendedora: publicaciones, detalle con oferta y chat, asistente', async ({ browser }) => {
+test('seller: listings, offer with chat, new listing', async ({ browser }) => {
   const page = await signedIn(browser, LAURA, { viewport: { width: 1440, height: 900 } })
   await page.goto('/publicaciones')
-  await expect(page.getByText('Celular de 128 GB')).toBeVisible()
-  await shot(page, 'mis-publicaciones')
+  await expect(page.getByText(ui.phone)).toBeVisible()
+  await shot(page, 'my-listings')
 
-  await page.getByText('Celular de 128 GB').click()
-  await expect(page.getByRole('region', { name: 'Chat con Trueke' })).toBeVisible()
+  await page.getByText(ui.phone).click()
+  await expect(page.getByRole('region', { name: ui.chat })).toBeVisible()
   await page.setViewportSize({ width: 1440, height: 1300 })
-  await shot(page, 'detalle-oferta')
+  await shot(page, 'listing-offer')
 
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('/publicaciones/nueva')
-  await expect(page.getByRole('button', { name: 'Fotografía' })).toBeVisible()
-  await shot(page, 'nueva-publicacion')
+  await expect(page.getByRole('button', { name: ui.photography })).toBeVisible()
+  await shot(page, 'new-listing')
 })
 
-test('operadora: panel y ficha del vendedor', async ({ browser }) => {
+test('operator panel', async ({ browser }) => {
   const page = await signedIn(browser, SARA, { viewport: { width: 1440, height: 900 } })
   await page.goto('/publicaciones')
   await expect(page.getByRole('table')).toBeVisible()
-  await shot(page, 'panel-operador')
+  await shot(page, 'operator-panel')
 })
 
-test('GIF: la oferta llega en vivo y la vendedora la acepta', async ({ browser }) => {
+test('GIF: the offer arrives live and the seller accepts it', async ({ browser }) => {
   const videoDir = `${OUT}.video`
   const sara = await signedIn(browser, SARA)
   const page = await signedIn(browser, LAURA, {
@@ -89,24 +131,24 @@ test('GIF: la oferta llega en vivo y la vendedora la acepta', async ({ browser }
     recordVideo: { dir: videoDir, size: { width: 1280, height: 800 } },
   })
   const laura = page.context()
-  // "Cámara mirrorless con lente kit" está en revisión en los datos de demo.
+  // La cámara mirrorless está en revisión en los datos de demo.
   await page.goto('/publicaciones')
-  await page.getByText('Cámara mirrorless con lente kit').click()
-  await expect(page.getByText('En revisión', { exact: true })).toBeVisible()
+  await page.getByText(ui.camera).click()
+  await expect(page.getByText(ui.inReview, { exact: true })).toBeVisible()
   await page.waitForTimeout(1200)
 
   // Sara oferta desde su navegador (no sale en el vídeo).
   await sara.goto(page.url())
-  await sara.getByRole('button', { name: 'Hacer oferta' }).click()
-  await sara.getByLabel('Monto (COP)').fill('2300000')
-  await sara.getByRole('button', { name: 'Enviar oferta' }).click()
+  await sara.getByRole('button', { name: ui.makeOffer }).click()
+  await sara.getByLabel(ui.amount).fill('2300000')
+  await sara.getByRole('button', { name: ui.sendOffer }).click()
 
-  await expect(page.getByText('Con oferta', { exact: true })).toBeVisible()
+  await expect(page.getByText(ui.offered, { exact: true })).toBeVisible()
   await page.waitForTimeout(1500)
-  await page.getByRole('button', { name: 'Aceptar oferta' }).click()
+  await page.getByRole('button', { name: ui.acceptOffer }).click()
   await page.waitForTimeout(1200)
-  await page.getByRole('dialog').getByRole('button', { name: 'Aceptar' }).click()
-  await expect(page.getByText('Aceptada', { exact: true })).toBeVisible()
+  await page.getByRole('dialog').getByRole('button', { name: ui.accept, exact: true }).click()
+  await expect(page.getByText(ui.accepted, { exact: true })).toBeVisible()
   await page.waitForTimeout(1500)
   await laura.close()
   await sara.context().close()
@@ -122,7 +164,7 @@ test('GIF: la oferta llega en vivo y la vendedora la acepta', async ({ browser }
     `${videoDir}/demo.webm`,
     '-vf',
     'fps=12,scale=960:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128[p];[b][p]paletteuse=dither=bayer',
-    `${OUT}demo-oferta.gif`,
+    `${OUT}demo-offer.gif`,
   ])
   rmSync(videoDir, { recursive: true })
 })

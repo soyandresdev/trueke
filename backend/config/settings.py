@@ -79,8 +79,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Idioma
-LANGUAGE_CODE = "es"
-LANGUAGES = [("es", "Español"), ("en", "English")]
+# Inglés por defecto; español si el navegador o la app lo piden (Accept-Language).
+LANGUAGE_CODE = "en"
+LANGUAGES = [("en", "English"), ("es", "Español")]
 LOCALE_PATHS = [BASE_DIR / "locale"]
 TIME_ZONE = env("TIME_ZONE", default="America/Bogota")
 USE_I18N = True

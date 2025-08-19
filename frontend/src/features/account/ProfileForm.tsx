@@ -19,7 +19,7 @@ const schema = z.object({
   first_name: z.string().trim().min(1, 'validation.required').max(80),
   last_name: z.string().trim().min(1, 'validation.required').max(80),
   email: z.union([z.literal(''), z.email('validation.email')]),
-  language: z.enum(['es', 'en']),
+  language: z.enum(['en', 'es']),
   document_type: z.enum(['', 'national_id', 'foreign_id', 'passport']),
   document_number: z.string().trim().max(30),
 })
@@ -30,7 +30,7 @@ const toValues = (user: User): Values => ({
   first_name: user.first_name ?? '',
   last_name: user.last_name ?? '',
   email: user.email ?? '',
-  language: user.language === 'en' ? 'en' : 'es',
+  language: user.language === 'es' ? 'es' : 'en',
   document_type: user.document_type ?? '',
   document_number: user.document_number ?? '',
 })
@@ -53,7 +53,7 @@ export function ProfileForm({ user }: { user: User }) {
       queryClient.setQueryData(queryKeys.me, saved)
       // El aviso se traduce después de cambiar el idioma, para que salga en el nuevo.
       void i18n
-        .changeLanguage(saved.language ?? 'es')
+        .changeLanguage(saved.language ?? 'en')
         .then(() => toast.success(i18n.t('account.saved')))
     },
     onError: (body: ApiErrorBody) =>
@@ -90,8 +90,8 @@ export function ProfileForm({ user }: { user: User }) {
         {...form.register('email')}
       />
       <SelectField label={t('language.label')} {...form.register('language')}>
-        <option value="es">{t('language.es')}</option>
         <option value="en">{t('language.en')}</option>
+        <option value="es">{t('language.es')}</option>
       </SelectField>
       <SelectField
         label={t('account.documentType')}

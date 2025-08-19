@@ -7,7 +7,7 @@ export const Route = createFileRoute('/terminos')({ component: Terms })
 
 function Terms() {
   const { t, i18n } = useTranslation()
-  const content = terms[i18n.resolvedLanguage === 'en' ? 'en' : 'es']
+  const content = terms[i18n.resolvedLanguage === 'es' ? 'es' : 'en']
   return (
     <article className="mx-auto max-w-3xl px-4 py-12">
       <h1 className="text-5xl font-extrabold">{t('terms.title')}</h1>

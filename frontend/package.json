@@ -14,7 +14,7 @@
     "api:generate": "cd ../backend && SECRET_KEY=schema uv run python manage.py spectacular --file ../frontend/src/api/openapi.yaml && cd ../frontend && openapi-typescript src/api/openapi.yaml -o src/api/schema.d.ts",
     "preview": "vite preview",
     "e2e": "playwright test",
-    "capturas": "playwright test -c playwright.capturas.config.ts"
+    "screenshots": "SCREENSHOTS_LANG=en playwright test -c playwright.screenshots.config.ts && SCREENSHOTS_LANG=es playwright test -c playwright.screenshots.config.ts"
   },
   "dependencies": {
     "@fontsource-variable/gabarito": "^5.3.0",
