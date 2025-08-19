@@ -1,0 +1,24 @@
+name: Improvement
+description: An idea for Trueke
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does it solve
+      description: For whom (seller, operator, the person who deploys it) and what is hard for them today.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: How you would solve it. If there are other options, tell us.
+    validations:
+      required: true
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Do you want to help?
+      options:
+        - label: I would like to open the pull request

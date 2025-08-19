@@ -21,7 +21,7 @@ export function servers(setup: string[] = []): Server[] {
         `rm -rf ${tmp} && mkdir -p ${tmp}`,
         'uv run python manage.py migrate -v0',
         'uv run python manage.py load_demo_categories',
-        'uv run python manage.py create_operator 3009990001 --first-name Ana --last-name Operadora',
+        'uv run python manage.py create_operator 3009990001 --first-name Ana --last-name Operadora --language es',
         ...setup,
         'uv run python manage.py runserver 127.0.0.1:8011 --noreload',
       ].join(' && '),
@@ -55,7 +55,7 @@ export function servers(setup: string[] = []): Server[] {
 
 export default defineConfig({
   testDir: 'e2e',
-  testIgnore: 'capturas/**',
+  testIgnore: 'screenshots/**',
   fullyParallel: false,
   workers: 1, // comparten base de datos
   retries: process.env.CI ? 1 : 0,

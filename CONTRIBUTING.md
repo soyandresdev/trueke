@@ -1,55 +1,58 @@
-# Cómo contribuir
+<p><strong>English</strong> · <a href="CONTRIBUTING.es.md">Español</a></p>
 
-¡Gracias por querer mejorar Trueke! Esta guía resume cómo trabajamos.
+# Contributing
 
-## Antes de empezar
+Thank you for helping to make Trueke better! This guide explains how we work.
 
-- Para errores y mejoras pequeñas, abre directamente un pull request.
-- Para algo grande (una pantalla nueva, un cambio de modelo, una dependencia nueva), abre antes un issue y lo hablamos.
-- Levanta el proyecto con [`docs/instalacion.md`](docs/instalacion.md) y lee [`docs/arquitectura.md`](docs/arquitectura.md).
+## Before you start
 
-## Ramas (git flow)
+- For bugs and small improvements, open a pull request directly.
+- For something big (a new screen, a model change, a new dependency), open an issue first so we can talk about it.
+- Set up the project with [`docs/installation.md`](docs/installation.md) and read [`docs/architecture.md`](docs/architecture.md).
 
-- `main`: versiones publicadas. Solo recibe merges de `release/*` y `hotfix/*`, con tag `vX.Y.Z`.
-- `develop`: integración.
-- Tu trabajo va en `feature/<nombre>` (o `fix/<nombre>`), creada desde `develop`. El pull request va contra `develop`.
+## Branches (git flow)
 
-## Antes de abrir el pull request
+- `main`: released versions. It only gets merges from `release/*` and `hotfix/*`, with a `vX.Y.Z` tag.
+- `develop`: integration.
+- Your work goes in `feature/<name>` (or `fix/<name>`), created from `develop`. Open the pull request against `develop`.
+
+## Before you open the pull request
 
 ```sh
 make lint     # ruff, oxlint, oxfmt, TypeScript
-make test     # pytest y Vitest
-make e2e      # si tocaste un flujo de punta a punta
+make test     # pytest and Vitest
+make e2e      # if you changed a flow from start to end
 ```
 
-El CI corre todo eso y además comprueba que:
+CI runs all of that. It also checks that:
 
-- no falten migraciones (`makemigrations --check`);
-- los tipos del frontend estén al día con la API (`make api` y commitea `frontend/src/api/`);
-- las traducciones del backend estén al día y completas (`make messages`, necesita gettext).
+- no migrations are missing (`makemigrations --check`);
+- the frontend types match the API (run `make api` and commit `frontend/src/api/`);
+- the backend translations are up to date and complete (run `make messages`, needs gettext).
 
-## Criterios
+## Guidelines
 
-- **Tests con cada cambio.** Backend: pytest en `apps/<app>/tests/`. Frontend: Vitest junto al código (`*.test.tsx`). Un permiso nuevo o una transición nueva van con su test de "quién sí y quién no".
-- **Estados de una publicación**: solo por `apps/listings/transitions.py`. Nunca `listing.status = …` en otro sitio.
+- **Tests with every change.** Backend: pytest in `apps/<app>/tests/`. Frontend: Vitest next to the code (`*.test.tsx`). A new permission or a new transition comes with a test of who can and who can't.
+- **Listing status** changes only through `apps/listings/transitions.py`. Never write `listing.status = …` anywhere else.
 - **Frontend**:
-  - Los datos del servidor viven en TanStack Query, no en `useState` ni en efectos.
-  - Un `useEffect` solo sirve para sincronizar con algo externo (DOM, WebSocket, temporizadores).
-  - El lint lo vigila, y `src/test/renders.test.tsx` detecta re-renders de más.
-- **Textos visibles**:
-  - En el frontend, siempre por i18n (`src/i18n/locales/es.json` y `en.json`).
-  - En el backend, con `gettext`, y después `make messages` para traducirlos en `backend/locale/en`.
-- **Accesibilidad**:
-  - Cada campo con su etiqueta.
-  - Botones de solo icono con `aria-label`.
-  - Nada que funcione solo con el ratón.
-- **Marca**: colores, tipografías y componentes del sistema de diseño (`frontend/src/components/ui`, catálogo en `/dev/ui`). Nada de colores sueltos.
-- **Comentarios**: explican el porqué, no el qué.
+  - Server data lives in TanStack Query, not in `useState` or effects.
+  - Use a `useEffect` only to sync with something outside React (DOM, WebSocket, timers).
+  - The linter checks this, and `src/test/renders.test.tsx` catches extra renders.
+- **Visible text**:
+  - Frontend: always through i18n (`src/i18n/locales/en.json` and `es.json`).
+  - Backend: with `gettext`, then `make messages` and the English translation in `backend/locale/en`.
+- **Documentation**: the English version is the main one. If you change a doc, update the Spanish copy too (`docs/es/`, `README.es.md`, `CONTRIBUTING.es.md`), or say in the pull request that it is missing.
+- **Accessibility**:
+  - Every field has a label.
+  - Icon-only buttons have an `aria-label`.
+  - Nothing works only with a mouse.
+- **Brand**: colors, fonts and components come from the design system (`frontend/src/components/ui`, catalog at `/dev/ui`). No one-off colors.
+- **Comments** explain why, not what.
 
-## Mensajes de commit
+## Commit messages
 
-En español, en imperativo o como título corto: `Chat: marcar leídos al abrir`, `Backend: traducciones al inglés`. Si hace falta, un párrafo con el porqué.
+A short title, like `Chat: mark as read on open`. If needed, add a paragraph that explains why.
 
-## Licencia
+## License
 
-Al contribuir aceptas que tu aporte se publique con la licencia [MIT](LICENSE) del proyecto.
+By contributing, you agree that your work is published under the project's [MIT](LICENSE) license.

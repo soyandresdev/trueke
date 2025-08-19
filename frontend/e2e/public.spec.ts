@@ -34,3 +34,23 @@ test('el idioma se puede cambiar a inglés', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toContainText('What you no longer use')
   await expect(page.getByRole('link', { name: 'Bikes & mobility' })).toBeVisible() // también lo que viene del backend
 })
+
+test.describe('navegador en inglés', () => {
+  test.use({ locale: 'en-US' })
+
+  test('la app y los datos del backend salen en inglés', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('What you no longer use')
+    await expect(page.getByRole('link', { name: 'Musical instruments' })).toBeVisible()
+  })
+})
+
+test.describe('navegador en un idioma que no tenemos', () => {
+  test.use({ locale: 'fr-FR' })
+
+  test('usa el inglés', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('What you no longer use')
+  })
+})

@@ -1,15 +1,16 @@
-## Qué cambia
+## What changes
 
-<!-- Qué hace y por qué. Si cierra un issue: Closes #123 -->
+<!-- What it does and why. If it closes an issue: Closes #123 -->
 
-## Cómo probarlo
+## How to test it
 
-<!-- Pasos para verlo en `make dev` (con qué usuario de demo, en qué pantalla). -->
+<!-- Steps to see it in `make dev` (which demo user, which screen). -->
 
-## Revisión
+## Checklist
 
-- [ ] Tests nuevos o actualizados
-- [ ] `make lint` y `make test` en verde
-- [ ] Si cambió la API: `make api` y los tipos commiteados
-- [ ] Si hay textos nuevos: i18n en el frontend y `make messages` en el backend
-- [ ] Si cambió la interfaz: capturas en este PR
+- [ ] New or updated tests
+- [ ] `make lint` and `make test` pass
+- [ ] If the API changed: `make api` and the types are committed
+- [ ] If there is new text: i18n in the frontend and `make messages` in the backend
+- [ ] If a doc changed: the Spanish copy is updated too (or noted as missing)
+- [ ] If the UI changed: screenshots in this pull request

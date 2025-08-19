@@ -167,7 +167,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Aceptar oferta */
+        /** Accept offer */
         post: operations["listings_accept_create"];
         delete?: never;
         options?: never;
@@ -184,7 +184,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Cancelar */
+        /** Cancel */
         post: operations["listings_cancel_create"];
         delete?: never;
         options?: never;
@@ -201,7 +201,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Completar venta */
+        /** Complete sale */
         post: operations["listings_complete_create"];
         delete?: never;
         options?: never;
@@ -266,7 +266,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Hacer oferta */
+        /** Make an offer */
         post: operations["listings_offer_create"];
         delete?: never;
         options?: never;
@@ -283,7 +283,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Coordinar recogida */
+        /** Arrange pickup */
         post: operations["listings_pickup_create"];
         delete?: never;
         options?: never;
@@ -300,7 +300,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Rechazar oferta */
+        /** Decline offer */
         post: operations["listings_reject_create"];
         delete?: never;
         options?: never;
@@ -529,40 +529,39 @@ export interface components {
         BlankEnum: "";
         Category: {
             readonly id: number;
-            /** Código */
             code: string;
             name: string;
             /**
-             * Campos extra
-             * @description JSON Schema (tipo object) con los campos propios de la categoría.
+             * Extra fields
+             * @description JSON Schema (object type) with the fields specific to the category.
              */
             fields_schema?: unknown;
         };
         /**
-         * @description * `new` - Nuevo
-         *     * `like_new` - Como nuevo
-         *     * `good` - Buen estado
-         *     * `fair` - Con detalles
-         *     * `for_parts` - Para repuestos
+         * @description * `new` - New
+         *     * `like_new` - Like new
+         *     * `good` - Good condition
+         *     * `fair` - Some wear
+         *     * `for_parts` - For parts
          * @enum {string}
          */
         ConditionEnum: "new" | "like_new" | "good" | "fair" | "for_parts";
         /**
-         * @description * `national_id` - Documento nacional
-         *     * `foreign_id` - Documento de extranjería
-         *     * `passport` - Pasaporte
+         * @description * `national_id` - National ID
+         *     * `foreign_id` - Foreign ID
+         *     * `passport` - Passport
          * @enum {string}
          */
         DocumentTypeEnum: "national_id" | "foreign_id" | "passport";
         /**
-         * @description * `listing.create` - Nueva publicación
-         *     * `listing.offer` - Nueva oferta
-         *     * `listing.accept` - Oferta aceptada
-         *     * `listing.reject` - Oferta rechazada
-         *     * `listing.pickup` - Recogida coordinada
-         *     * `listing.complete` - Venta completada
-         *     * `listing.cancel` - Publicación cancelada
-         *     * `message.new` - Mensajes nuevos
+         * @description * `listing.create` - New listing
+         *     * `listing.offer` - New offer
+         *     * `listing.accept` - Offer accepted
+         *     * `listing.reject` - Offer declined
+         *     * `listing.pickup` - Pickup arranged
+         *     * `listing.complete` - Sale completed
+         *     * `listing.cancel` - Listing cancelled
+         *     * `message.new` - New messages
          * @enum {string}
          */
         KindEnum: "listing.create" | "listing.offer" | "listing.accept" | "listing.reject" | "listing.pickup" | "listing.complete" | "listing.cancel" | "message.new";
@@ -576,50 +575,42 @@ export interface components {
             readonly id: number;
             readonly seller: components["schemas"]["Seller"];
             category: number;
-            /** Nombre */
+            /** Name */
             title: string;
-            /** Descripción */
             description: string;
-            /** Estado del artículo */
             condition: components["schemas"]["ConditionEnum"];
-            /** Campos de la categoría */
+            /** Category fields */
             attributes?: unknown;
-            /** Ciudad */
             city: string;
-            /** Dirección de recogida */
             pickup_address: string;
-            /** ¿es original? */
+            /** Original? */
             is_original?: boolean;
             /**
-             * Términos aceptados
+             * Terms accepted
              * Format: date-time
              */
             readonly terms_accepted_at: string;
             readonly images: components["schemas"]["ListingImage"][];
-            /** Estado */
             readonly status: components["schemas"]["ListingStatusEnum"];
             /**
-             * Último cambio de estado
+             * Last status change
              * Format: date-time
              */
             readonly status_changed_at: string;
             /**
-             * Oferta
+             * Offer
              * Format: decimal
              */
             readonly offer_amount: string | null;
-            /** Moneda */
+            /** Currency */
             readonly offer_currency: string;
-            /** Responsable de la recogida */
+            /** Pickup handled by */
             readonly pickup_by: components["schemas"]["ListingPickupByEnum"];
-            /**
-             * Fecha de recogida
-             * Format: date
-             */
+            /** Format: date */
             readonly pickup_date: string | null;
-            /** Indicaciones de recogida */
+            /** Pickup instructions */
             readonly pickup_notes: string;
-            /** Motivo de cancelación */
+            /** Cancellation reason */
             readonly cancel_reason: string;
             readonly available_actions: components["schemas"]["AvailableActionsEnum"][];
             readonly unread_messages: number;
@@ -630,7 +621,6 @@ export interface components {
         };
         ListingEvent: {
             readonly id: number;
-            /** Acción */
             action: string;
             from_status?: components["schemas"]["ListingStatusEnum"] | components["schemas"]["BlankEnum"];
             to_status: components["schemas"]["ListingStatusEnum"];
@@ -641,50 +631,40 @@ export interface components {
         };
         ListingImage: {
             readonly id: number;
-            /**
-             * Imagen
-             * Format: uri
-             */
+            /** Format: uri */
             image: string;
             /**
-             * Orden
+             * Order
              * Format: int64
              */
             position?: number;
         };
         ListingImageRequest: {
-            /**
-             * Imagen
-             * Format: binary
-             */
+            /** Format: binary */
             image: string;
             /**
-             * Orden
+             * Order
              * Format: int64
              */
             position?: number;
         };
         /**
-         * @description * `seller` - El vendedor lo envía
-         *     * `platform` - Trueke lo recoge
+         * @description * `seller` - The seller ships it
+         *     * `platform` - Trueke picks it up
          * @enum {string}
          */
         ListingPickupByEnum: "seller" | "platform";
         ListingRequest: {
             category: number;
-            /** Nombre */
+            /** Name */
             title: string;
-            /** Descripción */
             description: string;
-            /** Estado del artículo */
             condition: components["schemas"]["ConditionEnum"];
-            /** Campos de la categoría */
+            /** Category fields */
             attributes?: unknown;
-            /** Ciudad */
             city: string;
-            /** Dirección de recogida */
             pickup_address: string;
-            /** ¿es original? */
+            /** Original? */
             is_original?: boolean;
             terms_accepted?: boolean;
         };
@@ -697,12 +677,12 @@ export interface components {
             cancelled: number;
         };
         /**
-         * @description * `in_review` - En revisión
-         *     * `offered` - Con oferta
-         *     * `accepted` - Aceptada
-         *     * `pickup_sent` - Recogida enviada
-         *     * `completed` - Completada
-         *     * `cancelled` - Cancelada
+         * @description * `in_review` - In review
+         *     * `offered` - Offer made
+         *     * `accepted` - Accepted
+         *     * `pickup_sent` - Pickup scheduled
+         *     * `completed` - Completed
+         *     * `cancelled` - Cancelled
          * @enum {string}
          */
         ListingStatusEnum: "in_review" | "offered" | "accepted" | "pickup_sent" | "completed" | "cancelled";
@@ -713,9 +693,8 @@ export interface components {
             readonly id: number;
             readonly listing: number;
             readonly sender: components["schemas"]["Seller"] | null;
-            /** Enviado por la plataforma */
+            /** Sent by the platform */
             readonly from_platform: boolean;
-            /** Texto */
             text?: string;
             /** @description `pdf` o `image`; el nombre original no se guarda (puede tener datos personales). */
             readonly attachment_kind: string;
@@ -723,23 +702,19 @@ export interface components {
             /** Format: date-time */
             readonly created_at: string;
             /**
-             * Leído
+             * Read
              * Format: date-time
              */
             readonly read_at: string | null;
         };
         MessageRequest: {
-            /** Texto */
             text?: string;
-            /**
-             * Adjunto
-             * Format: binary
-             */
+            /** Format: binary */
             attachment?: string;
         };
         Notification: {
             readonly id: number;
-            /** Tipo */
+            /** Type */
             kind: components["schemas"]["KindEnum"];
             readonly listing: components["schemas"]["NotificationListing"] | null;
             readonly actor: components["schemas"]["Seller"] | null;
@@ -747,7 +722,7 @@ export interface components {
             /** Format: date-time */
             created_at: string;
             /**
-             * Vista
+             * Seen
              * Format: date-time
              */
             seen_at?: string | null;
@@ -840,50 +815,38 @@ export interface components {
         };
         PatchedDocumentsRequest: {
             /**
-             * Documento
+             * ID document
              * Format: binary
              */
             document_file?: string;
-            /**
-             * Certificado bancario
-             * Format: binary
-             */
+            /** Format: binary */
             bank_certificate?: string;
         };
         PatchedListingRequest: {
             category?: number;
-            /** Nombre */
+            /** Name */
             title?: string;
-            /** Descripción */
             description?: string;
-            /** Estado del artículo */
             condition?: components["schemas"]["ConditionEnum"];
-            /** Campos de la categoría */
+            /** Category fields */
             attributes?: unknown;
-            /** Ciudad */
             city?: string;
-            /** Dirección de recogida */
             pickup_address?: string;
-            /** ¿es original? */
+            /** Original? */
             is_original?: boolean;
             terms_accepted?: boolean;
         };
         PatchedUserRequest: {
-            /** Nombre */
+            /** Name */
             first_name?: string;
-            /** Apellido */
             last_name?: string;
             email?: string;
-            /**
-             * Foto
-             * Format: binary
-             */
+            /** Format: binary */
             photo?: string;
-            /** Idioma */
             language?: components["schemas"]["LanguageEnum"];
-            /** Tipo de documento */
+            /** ID type */
             document_type?: components["schemas"]["DocumentTypeEnum"] | components["schemas"]["BlankEnum"];
-            /** Número de documento */
+            /** ID number */
             document_number?: string;
         };
         /**
@@ -902,8 +865,8 @@ export interface components {
             reason?: string;
         };
         /**
-         * @description * `seller` - Vendedor
-         *     * `operator` - Operador
+         * @description * `seller` - Seller
+         *     * `operator` - Operator
          * @enum {string}
          */
         RoleEnum: "seller" | "operator";
@@ -932,25 +895,18 @@ export interface components {
         };
         User: {
             readonly id: number;
-            /** Teléfono */
             readonly phone: string;
-            /** Nombre */
+            /** Name */
             first_name?: string;
-            /** Apellido */
             last_name?: string;
             email?: string;
-            /**
-             * Foto
-             * Format: uri
-             */
+            /** Format: uri */
             photo?: string | null;
-            /** Idioma */
             language?: components["schemas"]["LanguageEnum"];
-            /** Rol */
             readonly role: components["schemas"]["RoleEnum"];
-            /** Tipo de documento */
+            /** ID type */
             document_type?: components["schemas"]["DocumentTypeEnum"] | components["schemas"]["BlankEnum"];
-            /** Número de documento */
+            /** ID number */
             document_number?: string;
             readonly has_document_file: boolean;
             readonly has_bank_certificate: boolean;
@@ -1076,7 +1032,7 @@ export interface operations {
                 /** @description Código de la categoría */
                 category?: string;
                 city?: string;
-                /** @description Un número de página dentro del conjunto de resultados paginado. */
+                /** @description A page number within the paginated result set. */
                 page?: number;
                 /** @description Busca en nombre, descripción y vendedor */
                 q?: string;
@@ -1127,7 +1083,7 @@ export interface operations {
     listings_messages_list: {
         parameters: {
             query?: {
-                /** @description El valor del cursor de paginación. */
+                /** @description The pagination cursor value. */
                 cursor?: string;
             };
             header?: never;
@@ -1229,7 +1185,7 @@ export interface operations {
             };
             header?: never;
             path: {
-                /** @description Un valor de entero único que identifique este publicación. */
+                /** @description A unique integer value identifying this listing. */
                 id: number;
             };
             cookie?: never;
@@ -1251,7 +1207,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Un valor de entero único que identifique este publicación. */
+                /** @description A unique integer value identifying this listing. */
                 id: number;
             };
             cookie?: never;
@@ -1279,7 +1235,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Un valor de entero único que identifique este publicación. */
+                /** @description A unique integer value identifying this listing. */
                 id: number;
             };
             cookie?: never;
@@ -1301,7 +1257,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Un valor de entero único que identifique este publicación. */
+                /** @description A unique integer value identifying this listing. */
                 id: number;
             };
             cookie?: never;
@@ -1329,7 +1285,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Un valor de entero único que identifique este publicación. */
+                /** @description A unique integer value identifying this listing. */
                 id: number;
             };
             cookie?: never;
@@ -1359,7 +1315,7 @@ export interface operations {
             };
             header?: never;
             path: {
-                /** @description Un valor de entero único que identifique este publicación. */
+                /** @description A unique integer value identifying this listing. */
                 id: number;
             };
             cookie?: never;
@@ -1381,7 +1337,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Un valor de entero único que identifique este publicación. */
+                /** @description A unique integer value identifying this listing. */
                 id: number;
             };
             cookie?: never;
@@ -1407,7 +1363,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Un valor de entero único que identifique este publicación. */
+                /** @description A unique integer value identifying this listing. */
                 id: number;
                 image_id: string;
             };
@@ -1429,7 +1385,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Un valor de entero único que identifique este publicación. */
+                /** @description A unique integer value identifying this listing. */
                 id: number;
             };
             cookie?: never;
@@ -1457,7 +1413,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Un valor de entero único que identifique este publicación. */
+                /** @description A unique integer value identifying this listing. */
                 id: number;
             };
             cookie?: never;
@@ -1485,7 +1441,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Un valor de entero único que identifique este publicación. */
+                /** @description A unique integer value identifying this listing. */
                 id: number;
             };
             cookie?: never;
@@ -1673,7 +1629,7 @@ export interface operations {
     notifications_list: {
         parameters: {
             query?: {
-                /** @description Un número de página dentro del conjunto de resultados paginado. */
+                /** @description A page number within the paginated result set. */
                 page?: number;
                 /** @description Solo las no vistas */
                 unseen?: boolean;
@@ -1699,7 +1655,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description Un valor de entero único que identifique este notificación. */
+                /** @description A unique integer value identifying this notification. */
                 id: number;
             };
             cookie?: never;

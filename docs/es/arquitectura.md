@@ -1,3 +1,5 @@
+<p><a href="../architecture.md">English</a> · <strong>Español</strong></p>
+
 # Arquitectura
 
 ```mermaid
@@ -98,6 +100,13 @@ frontend/src/
 ```
 
 Los tipos de la API se generan con `make api` desde el esquema OpenAPI del backend. El CI falla si no están al día, así que un cambio en el backend que rompa el frontend no pasa.
+
+### Idiomas
+
+El inglés es el idioma por defecto en la app y en la API; el español es el segundo:
+
+- **Frontend**: `src/i18n/locales/en.json` y `es.json`. La app usa el idioma del navegador si es español; si no, inglés. Al entrar se aplica el idioma del perfil.
+- **Backend**: los textos fuente están en español. `backend/locale/en` tiene las traducciones al inglés. `backend/locale/es` repite los textos en español, porque sin él Django usaría el inglés como respaldo. `make messages` mantiene los dos catálogos al día.
 
 ## Pruebas
 

@@ -1,39 +1,39 @@
-# Trueke · marca
+<p><strong>English</strong> · <a href="README.es.md">Español</a></p>
 
-**Estilo**: limpio con carácter + color vivo, alegre y joven. Fondo blanco, el producto como protagonista y tres colores saturados. El detalle propio es el **ticket**: la oferta se muestra como un ticket con talón troquelado y código de barras, y es también el símbolo del logo.
+# Trueke · brand
 
-Referencias: grupos 4 y 5 de `inspiracion/index.html` (Dribbble).
+**Style**: clean with character and bright color, cheerful and young. A white background, the product in the spotlight and three saturated colors. The special detail is the **ticket**: the offer looks like a ticket with a perforated stub and a barcode, and the ticket is also the logo symbol.
 
 ## Logo (`logo/`)
-| Archivo | Uso |
+| File | Use |
 |---|---|
-| `trueke-logo.svg` | Principal, sobre fondos claros |
-| `trueke-logo-inverso.svg` | Sobre tinta `#14141A` |
-| `trueke-logo-mono.svg` | Una tinta (`currentColor`) |
-| `trueke-simbolo.svg` / `-mono.svg` | Solo el ticket (avatar, app icon) |
-| `trueke-wordmark.svg` | Solo la palabra |
+| `trueke-logo.svg` | Main logo, on light backgrounds |
+| `trueke-logo-inverso.svg` | On ink `#14141A` |
+| `trueke-logo-mono.svg` | One color (`currentColor`) |
+| `trueke-simbolo.svg` / `-mono.svg` | Only the ticket (avatar, app icon) |
+| `trueke-wordmark.svg` | Only the word |
 | `favicon.svg` | Favicon |
 
-Ticket de intercambio (dos flechas = trueque) con el talón en lima. La palabra es Gabarito ExtraBold convertida a trazos, así que no depende de la fuente. Espacio libre mínimo alrededor del logo: la mitad del alto del ticket.
+An exchange ticket (two arrows = trade) with a lime stub. The word is Gabarito ExtraBold turned into outlines, so it doesn't depend on the font. Minimum free space around the logo: half the height of the ticket.
 
 ## Color
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |---|---|---|
-| `ink` | `#14141A` | Texto, fondos oscuros |
-| `paper` | `#F6F6F3` | Fondo de secciones |
-| `blue` | `#2B4BFF` | Primario: botones, enlaces, ticket |
-| `lime` | `#C6F432` | Acento sobre tinta o azul; nunca texto lima sobre blanco (usar `lime-dark`) |
-| `pink` | `#FF7AC6` | Acento alegre, etiquetas |
-| `tomato` | `#FF5A36` | Errores, cancelado |
+| `ink` | `#14141A` | Text, dark backgrounds |
+| `paper` | `#F6F6F3` | Section backgrounds |
+| `blue` | `#2B4BFF` | Primary: buttons, links, ticket |
+| `lime` | `#C6F432` | Accent on ink or blue; never lime text on white (use `lime-dark`) |
+| `pink` | `#FF7AC6` | Cheerful accent, tags |
+| `tomato` | `#FF5A36` | Errors, cancelled |
 
-## Tipografía
-- **Gabarito** 700–800: títulos y cifras grandes.
-- **Instrument Sans** 400–600: interfaz y texto.
-- **Geist Mono**: números de ticket, códigos, fechas.
+## Fonts
+- **Gabarito** 700–800: headings and big numbers.
+- **Instrument Sans** 400–600: interface and text.
+- **Geist Mono**: ticket numbers, codes, dates.
 
-Las tres se sirven desde la app con Fontsource (`@fontsource-variable/*`), no desde Google Fonts.
+The app serves all three with Fontsource (`@fontsource-variable/*`), not from Google Fonts.
 
-## Imágenes
-Fotos de objetos reales, de estudio, sobre fondos planos de color de la marca, con luz suave y sombra corta. Archivos finales en `images/`.
+## Images
+Photos of real objects, studio style, on flat backgrounds in brand colors, with soft light and a short shadow. Final files are in `images/`.
 
-Tokens de Tailwind: `tokens.css`.
+Tailwind tokens: `tokens.css`.

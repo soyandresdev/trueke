@@ -1,3 +1,5 @@
+<p><a href="../deployment.md">English</a> · <strong>Español</strong></p>
+
 # Despliegue
 
 Trueke en producción son cuatro piezas:
@@ -11,7 +13,7 @@ Trueke en producción son cuatro piezas:
 
 ## Recomendado: todo en un mismo dominio
 
-Un proxy (nginx, Caddy…) sirve el frontend y reenvía al backend `/api`, `/ws`, `/admin` y `/static`. Así no hace falta CORS, el WebSocket va por el mismo origen y las cookies del admin funcionan sin configuración extra. Hay un ejemplo completo en [`nginx.conf.example`](nginx.conf.example).
+Un proxy (nginx, Caddy…) sirve el frontend y reenvía al backend `/api`, `/ws`, `/admin` y `/static`. Así no hace falta CORS, el WebSocket va por el mismo origen y las cookies del admin funcionan sin configuración extra. Hay un ejemplo completo en [`nginx.conf.example`](../nginx.conf.example).
 
 ```sh
 # Frontend: sin variables, la app usa su propio origen para /api y /ws

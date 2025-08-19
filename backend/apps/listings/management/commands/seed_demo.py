@@ -33,7 +33,7 @@ PATHS = {
     "pickup_sent": [
         OFFER,
         ("accept", "seller", {}),
-        ("pickup", "operator", {"pickup_by": "platform", "notes": "Dejar en portería si no hay nadie."}),
+        ("pickup", "operator", {"pickup_by": "platform", "notes": "pickup_notes"}),
     ],
     "completed": [
         OFFER,
@@ -41,8 +41,8 @@ PATHS = {
         ("pickup", "operator", {"pickup_by": "seller"}),
         ("complete", "operator", {}),
     ],
-    "rejected": [OFFER, ("reject", "seller", {"reason": "Esperaba un poco más."})],
-    "cancelled": [("cancel", "seller", {"reason": "Al final me lo quedo."})],
+    "rejected": [OFFER, ("reject", "seller", {"reason": "reject_reason"})],
+    "cancelled": [("cancel", "seller", {"reason": "cancel_reason"})],
 }
 
 LISTINGS = [
@@ -78,16 +78,65 @@ LISTINGS = [
      {"kind": "camera", "brand": "Pentax", "mount": "K"}),
 ]  # fmt: skip
 
+# Textos de las acciones: en PATHS van como claves y aquí en cada idioma.
+TEXTS = {
+    "es": {
+        "pickup_notes": "Dejar en portería si no hay nadie.",
+        "reject_reason": "Esperaba un poco más.",
+        "cancel_reason": "Al final me lo quedo.",
+    },
+    "en": {
+        "pickup_notes": "Leave it at the front desk if nobody is home.",
+        "reject_reason": "I was hoping for a bit more.",
+        "cancel_reason": "I decided to keep it.",
+    },
+}
+
+# Título y descripción en inglés de cada publicación de LISTINGS (por su imagen).
+ENGLISH = {
+    "demo-celular": (
+        "128 GB phone",
+        "No scratches on the screen, battery at 89%. I upgraded to a newer one.",
+    ),
+    "demo-consola": (
+        "Handheld console with two controllers",
+        "Works perfectly. Comes with a case and three games.",
+    ),
+    "demo-audifonos": ("Wireless headphones", "Noise cancelling, ear pads replaced recently."),
+    "demo-guitarra": ("Acoustic guitar", "New strings, comes with a soft case."),
+    "demo-teclado": ("49-key MIDI controller", "Great for making music at home. Connects by USB."),
+    "demo-ukulele": ("Soprano ukulele", "I used it for one semester. It has a small dent on the back."),
+    "demo-bici-ruta": ("Road bike, size M", "Shimano 105 groupset, serviced in August."),
+    "demo-bici-montana": ("Mountain bike, 29-inch wheels", "Front suspension, hydraulic disc brakes."),
+    "demo-patineta": ("Electric scooter", "About 20 km of range. Charger included."),
+    "demo-mirrorless": ("Mirrorless camera with kit lens", "Fewer than 5,000 shots. Two batteries."),
+    "demo-lente": ("50 mm f/1.8 lens", "No fungus or scratches. Caps included."),
+    "demo-camara-pelicula": ("35 mm film camera", "Light meter works. Tested with a roll this year."),
+}
+
 CHATS = {
-    "demo-celular": [
-        ("seller", "Hola, ¿la oferta incluye el envío?"),
-        ("operator", "Sí, nosotros pasamos a recogerlo sin costo."),
-    ],
-    "demo-bici-ruta": [
-        ("operator", "¡Gracias por aceptar! ¿Qué día te queda bien para la recogida?"),
-        ("seller", "Entre semana después de las 6 p. m."),
-    ],
-    "demo-consola": [("seller", "Puedo mandar más fotos de los controles si hace falta.")],
+    "es": {
+        "demo-celular": [
+            ("seller", "Hola, ¿la oferta incluye el envío?"),
+            ("operator", "Sí, nosotros pasamos a recogerlo sin costo."),
+        ],
+        "demo-bici-ruta": [
+            ("operator", "¡Gracias por aceptar! ¿Qué día te queda bien para la recogida?"),
+            ("seller", "Entre semana después de las 6 p. m."),
+        ],
+        "demo-consola": [("seller", "Puedo mandar más fotos de los controles si hace falta.")],
+    },
+    "en": {
+        "demo-celular": [
+            ("seller", "Hi, does the offer include shipping?"),
+            ("operator", "Yes, we pick it up at no cost."),
+        ],
+        "demo-bici-ruta": [
+            ("operator", "Thanks for accepting! Which day works for the pickup?"),
+            ("seller", "Weekdays after 6 p.m."),
+        ],
+        "demo-consola": [("seller", "I can send more photos of the controllers if you need them.")],
+    },
 }
 
 
@@ -98,8 +147,12 @@ class Command(BaseCommand):
         parser.add_argument("--reset", action="store_true", help="Borra antes las publicaciones de demo.")
         parser.add_argument("--images", default=str(settings.BASE_DIR.parent / "brand" / "images"))
         parser.add_argument("--force", action="store_true", help="Permite correrlo con DEBUG=false.")
+        parser.add_argument(
+            "--language", choices=["en", "es"], default="en", help="Idioma de los textos y de los usuarios."
+        )
 
-    def handle(self, *args, reset, images, force, **options):
+    def handle(self, *args, reset, images, force, language, **options):
+        self.language = language
         if not settings.DEBUG and not force:
             raise CommandError("Esto crea usuarios de demo. Úsalo con DEBUG=true o pasa --force.")
         images_dir = Path(images)
@@ -126,22 +179,27 @@ class Command(BaseCommand):
             self.stdout.write(f"  {label:<10} {data['phone']}")
 
     def users(self):
+        language = {"language": self.language}
         operator, _ = User.objects.update_or_create(
-            phone=OPERATOR["phone"], defaults={**OPERATOR, "role": User.Role.OPERATOR, "is_staff": True}
+            phone=OPERATOR["phone"],
+            defaults={**OPERATOR, **language, "role": User.Role.OPERATOR, "is_staff": True},
         )
-        laura, _ = User.objects.update_or_create(phone=LAURA["phone"], defaults=LAURA)
+        laura, _ = User.objects.update_or_create(phone=LAURA["phone"], defaults={**LAURA, **language})
         if not laura.profile_complete:
             laura.document_type = User.DocumentType.NATIONAL_ID
             laura.document_number = "1020304050"
             laura.document_file.save("documento.pdf", ContentFile(b"%PDF-1.4 demo"), save=False)
             laura.bank_certificate.save("banco.pdf", ContentFile(b"%PDF-1.4 demo"), save=False)
             laura.save()
-        mateo, _ = User.objects.update_or_create(phone=MATEO["phone"], defaults=MATEO)
+        mateo, _ = User.objects.update_or_create(phone=MATEO["phone"], defaults={**MATEO, **language})
         return {"operator": operator, "laura": laura, "mateo": mateo}
 
     @transaction.atomic
     def listing(self, people, images_dir, row):
         image, category, seller, path, amount, title, description, condition, attributes = row
+        if self.language == "en":
+            title, description = ENGLISH[image]
+        texts = TEXTS[self.language]
         seller = people[seller]
         listing = Listing.objects.create(
             seller=seller,
@@ -162,9 +220,14 @@ class Command(BaseCommand):
         for action, who, data in PATHS[path]:
             if action == "offer":
                 data = {"amount": amount, "currency": settings.LISTING_CURRENCY}
+            # Los textos de las acciones (motivo, indicaciones) van como claves de TEXTS.
+            data = {
+                key: texts.get(value, value) if isinstance(value, str) else value
+                for key, value in data.items()
+            }
             transitions.apply(listing, actors[who], action, **data)
 
-        for who, text in CHATS.get(image, []):
+        for who, text in CHATS[self.language].get(image, []):
             Message.objects.create(
                 listing=listing, sender=actors[who], from_platform=who == "operator", text=text
             )

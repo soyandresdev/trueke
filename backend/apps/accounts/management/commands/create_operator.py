@@ -10,12 +10,20 @@ class Command(BaseCommand):
         parser.add_argument("phone")
         parser.add_argument("--first-name", default="")
         parser.add_argument("--last-name", default="")
+        parser.add_argument(
+            "--language", choices=[code for code, _ in User.Language.choices], default=User.Language.EN
+        )
 
-    def handle(self, *args, phone, first_name, last_name, **options):
+    def handle(self, *args, phone, first_name, last_name, language, **options):
         from apps.accounts.phone import normalize_phone
 
         user, created = User.objects.update_or_create(
             phone=normalize_phone(phone),
-            defaults={"role": User.Role.OPERATOR, "first_name": first_name, "last_name": last_name},
+            defaults={
+                "role": User.Role.OPERATOR,
+                "first_name": first_name,
+                "last_name": last_name,
+                "language": language,
+            },
         )
         self.stdout.write(f"{'Creado' if created else 'Actualizado'}: {user.phone} (operador)")

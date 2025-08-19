@@ -41,3 +41,16 @@ def test_seed_refuses_without_debug(settings):
     settings.DEBUG = False
     with pytest.raises(CommandError):
         seed()
+
+
+def test_seed_in_english_by_default_and_spanish_on_request(settings):
+    from apps.accounts.models import User
+
+    settings.DEBUG = True
+    seed()
+    assert Listing.objects.filter(title="128 GB phone").exists()
+    assert set(User.objects.values_list("language", flat=True)) == {"en"}
+    seed("--reset", "--language", "es")
+    assert Listing.objects.filter(title="Celular de 128 GB").exists()
+    assert Message.objects.filter(text__startswith="Hola").exists()
+    assert set(User.objects.values_list("language", flat=True)) == {"es"}
