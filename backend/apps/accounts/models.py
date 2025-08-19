@@ -26,7 +26,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(_("apellido"), max_length=80, blank=True)
     email = models.EmailField(_("email"), blank=True)
     photo = models.ImageField(_("foto"), upload_to=user_photo_path, blank=True)
-    language = models.CharField(_("idioma"), max_length=2, choices=Language, default=Language.ES)
+    language = models.CharField(_("idioma"), max_length=2, choices=Language, default=Language.EN)
     role = models.CharField(_("rol"), max_length=10, choices=Role, default=Role.SELLER)
 
     document_type = models.CharField(_("tipo de documento"), max_length=20, choices=DocumentType, blank=True)

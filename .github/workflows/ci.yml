@@ -35,9 +35,10 @@ jobs:
       # (Que el .mo corresponde al .po lo comprueba apps/accounts/tests/test_i18n.py.)
       - run: sudo apt-get install -y -qq gettext
       - run: |
-          uv run python manage.py makemessages -l en --ignore=.venv --ignore="*/tests/*" --ignore="*/migrations/*"
+          uv run python manage.py makemessages -l en -l es --no-location --ignore=.venv --ignore="*/tests/*" --ignore="*/migrations/*"
           git diff --exit-code -I 'POT-Creation-Date' -- locale
           test -z "$(msgattrib --untranslated --no-obsolete locale/en/LC_MESSAGES/django.po)"
+          test -z "$(msgattrib --untranslated --no-obsolete locale/es/LC_MESSAGES/django.po)"
         env: { SECRET_KEY: ci, DEBUG: "false" }
 
   frontend:

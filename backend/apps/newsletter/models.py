@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 class Subscriber(models.Model):
     email = models.EmailField(_("email"), unique=True)
-    language = models.CharField(_("idioma"), max_length=2, default="es")
+    language = models.CharField(_("idioma"), max_length=2, default="en")
     # Va en el enlace de baja de cada correo; no se puede adivinar a partir del email.
     token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)

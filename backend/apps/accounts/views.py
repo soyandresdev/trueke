@@ -47,7 +47,7 @@ class OtpRequestView(APIView):
         serializer = OtpRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
-            issued = otp.issue_code(serializer.validated_data["phone"])
+            issued = otp.issue_code(serializer.validated_data["phone"], request.LANGUAGE_CODE)
         except otp.ResendTooSoon as exc:
             return Response(
                 {
