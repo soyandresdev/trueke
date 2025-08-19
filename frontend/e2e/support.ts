@@ -16,14 +16,15 @@ function codesFor(phone: string): string[] {
 
 /** Entra con OTP por la interfaz, como lo haría una persona. `phone` en formato E.164. */
 export async function login(page: Page, phone: string) {
-  const before = codesFor(phone).length
   // Si una página privada ya nos trajo a /entrar?redirect=…, se entra desde ahí para conservar el destino.
   if (!new URL(page.url(), 'http://x').pathname.startsWith('/entrar')) await page.goto('/entrar')
   await page.getByLabel('Teléfono').fill(phone)
   await page.getByRole('button', { name: 'Enviar código' }).click()
+  // Si ya se pidió un código hace menos de un minuto, el backend no manda otro: vale el anterior.
+  await expect(page.getByRole('heading', { name: 'Escribe el código' })).toBeVisible()
   await expect
     .poll(() => codesFor(phone).length, { message: 'no llegó el código OTP' })
-    .toBeGreaterThan(before)
+    .toBeGreaterThan(0)
   // Con los 6 dígitos el formulario se envía solo.
   await page.getByLabel('Código').fill(codesFor(phone).at(-1)!)
   await expect(page).not.toHaveURL(/\/entrar/)

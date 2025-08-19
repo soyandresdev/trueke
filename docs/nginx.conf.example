@@ -1,0 +1,59 @@
+# Trueke detrás de nginx, todo en un mismo dominio (ver docs/despliegue.md).
+# El frontend compilado está en /srv/trueke/dist y el backend (daphne) en 127.0.0.1:8000.
+
+upstream trueke_backend {
+    server 127.0.0.1:8000;
+}
+
+server {
+    listen 80;
+    server_name trueke.example;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name trueke.example;
+
+    ssl_certificate     /etc/letsencrypt/live/trueke.example/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/trueke.example/privkey.pem;
+
+    # Fotos y documentos: el backend valida el tamaño; esto solo evita cortar subidas válidas.
+    client_max_body_size 20m;
+
+    # API, admin y estáticos del admin (WhiteNoise) → Django
+    location ~ ^/(api|admin|static)/ {
+        proxy_pass http://trueke_backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # WebSocket único
+    location /ws/ {
+        proxy_pass http://trueke_backend;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 1h;
+    }
+
+    # Solo sin S3: fotos públicas desde MEDIA_ROOT. PRIVATE_MEDIA_ROOT nunca se publica.
+    location /media/ {
+        alias /srv/trueke/media/;
+        expires 30d;
+    }
+
+    # Frontend: archivos con hash cacheados para siempre; el resto de rutas son de la app.
+    root /srv/trueke/dist;
+    location /assets/ {
+        expires max;
+        add_header Cache-Control "public, immutable";
+    }
+    location / {
+        try_files $uri /index.html;
+    }
+}

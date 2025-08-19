@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test'
+import { defineConfig, devices, type PlaywrightTestConfig } from '@playwright/test'
 import { fileURLToPath } from 'node:url'
 
 /**
@@ -10,22 +10,11 @@ export const OTP_OUTBOX = `${tmp}/otp.jsonl`
 const BACKEND = 'http://127.0.0.1:8011'
 const FRONTEND = 'http://localhost:5174'
 
-export default defineConfig({
-  testDir: 'e2e',
-  fullyParallel: false,
-  workers: 1, // comparten base de datos
-  retries: process.env.CI ? 1 : 0,
-  timeout: 90_000,
-  expect: { timeout: 10_000 },
-  reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
-  use: {
-    baseURL: FRONTEND,
-    locale: 'es-CO',
-    trace: 'retain-on-failure',
-    screenshot: 'only-on-failure',
-  },
-  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
-  webServer: [
+type Server = Extract<NonNullable<PlaywrightTestConfig['webServer']>, readonly unknown[]>[number]
+
+/** Backend y frontend para las pruebas. `setup` añade comandos antes de arrancar (p. ej. datos de demo). */
+export function servers(setup: string[] = []): Server[] {
+  return [
     {
       cwd: '../backend',
       command: [
@@ -33,6 +22,7 @@ export default defineConfig({
         'uv run python manage.py migrate -v0',
         'uv run python manage.py load_demo_categories',
         'uv run python manage.py create_operator 3009990001 --first-name Ana --last-name Operadora',
+        ...setup,
         'uv run python manage.py runserver 127.0.0.1:8011 --noreload',
       ].join(' && '),
       url: `${BACKEND}/api/categories/`,
@@ -60,5 +50,24 @@ export default defineConfig({
       timeout: 120_000,
       env: { VITE_BACKEND_URL: BACKEND },
     },
-  ],
+  ]
+}
+
+export default defineConfig({
+  testDir: 'e2e',
+  testIgnore: 'capturas/**',
+  fullyParallel: false,
+  workers: 1, // comparten base de datos
+  retries: process.env.CI ? 1 : 0,
+  timeout: 90_000,
+  expect: { timeout: 10_000 },
+  reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
+  use: {
+    baseURL: FRONTEND,
+    locale: 'es-CO',
+    trace: 'retain-on-failure',
+    screenshot: 'only-on-failure',
+  },
+  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+  webServer: servers(),
 })

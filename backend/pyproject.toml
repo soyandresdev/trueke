@@ -20,6 +20,7 @@ dependencies = [
     "pillow>=12.3.0",
     "psycopg[binary]>=3.3.6",
     "redis>=8.1.0",
+    "whitenoise>=6.12.0",
 ]
 
 [dependency-groups]
@@ -38,6 +39,8 @@ dev = [
 DJANGO_SETTINGS_MODULE = "config.settings"
 python_files = ["test_*.py"]
 addopts = "-q"
+# WhiteNoise avisa si no existe STATIC_ROOT; en producción lo crea `collectstatic` (Dockerfile).
+filterwarnings = ["ignore:No directory at:UserWarning:django.core.handlers.base"]
 env = [
     "D:SECRET_KEY=test-secret-key-that-is-long-enough-for-hs256",
     "DEBUG=false",
