@@ -46,14 +46,21 @@ services:
     command: sh -c "corepack enable && pnpm install --frozen-lockfile && pnpm dev --host 0.0.0.0"
     environment:
       VITE_BACKEND_URL: http://backend:8000
+      # La caché de pnpm va a su volumen; si no, pnpm la crea dentro de ./frontend (la carpeta montada).
+      npm_config_store_dir: /pnpm-store
       COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
       CI: "true"
     # node_modules en un volumen propio: los binarios de macOS no sirven dentro de Linux.
     # brand/ se monta en /brand porque el frontend importa los tokens y el logo desde ../brand.
-    volumes: ["./frontend:/app", "frontend_modules:/app/node_modules", "./brand:/brand:ro"]
+    volumes:
+      - ./frontend:/app
+      - frontend_modules:/app/node_modules
+      - pnpm_store:/pnpm-store
+      - ./brand:/brand:ro
     ports: ["5173:5173"]
     depends_on: [backend]
 
 volumes:
   pgdata:
   frontend_modules:
+  pnpm_store:

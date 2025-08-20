@@ -27,3 +27,10 @@ brand/.tmp/
 # Backend local
 backend/private-media/
 backend/db.sqlite3
+
+# Documentos internos de planificación (no se publican)
+/PLAN.md
+/CLAUDE.md
+
+# Caché de pnpm (si se crea dentro del proyecto)
+.pnpm-store/

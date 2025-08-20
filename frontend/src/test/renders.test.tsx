@@ -1,6 +1,6 @@
 /**
- * Conteo de renders en páginas clave (PLAN.md: "re-renders múltiples por useEffect" en el proyecto
- * anterior). Dos garantías:
+ * Conteo de renders en páginas clave: evita volver a los re-renders en cascada por `useEffect`.
+ * Dos garantías:
  * - Una página cargada y quieta no se vuelve a pintar sola (sin efectos en bucle ni sondeos).
  * - Cargar e interactuar no pasa de un número de commits razonable. Los límites tienen margen:
  *   si un cambio los supera, hay que mirar por qué antes de subirlos.
