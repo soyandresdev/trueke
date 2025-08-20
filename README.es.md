@@ -47,6 +47,7 @@ Entra con `300 000 0002` (vendedora) o `300 000 0001` (operadora). El código ap
 - [API](docs/es/api.md): autenticación, errores, endpoints y protocolo del WebSocket (referencia completa en `/api/docs/`)
 - [Despliegue](docs/es/despliegue.md): variables, S3, nginx y la lista para abrir al público
 - [Cómo contribuir](CONTRIBUTING.es.md)
+- [Cambios](CHANGELOG.es.md)
 - [Marca](brand/README.es.md): logo, color, tipografía e imágenes
 
 ## Stack
