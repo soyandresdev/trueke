@@ -47,6 +47,7 @@ Log in with `300 000 0002` (seller) or `300 000 0001` (operator). The code is in
 - [API](docs/api.md): login, errors, endpoints and the WebSocket protocol (full reference at `/api/docs/`)
 - [Deployment](docs/deployment.md): settings, S3, nginx and a checklist before going live
 - [Contributing](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
 - [Brand](brand/README.md): logo, colors, fonts and images
 
 ## Stack
