@@ -80,7 +80,7 @@ Los nombres de archivo se reemplazan por uno aleatorio: el nombre original puede
 
 ## Frontend
 
-React 19 con el React Compiler, Vite y TypeScript estricto. Las reglas de estado se tomaron de los problemas del proyecto anterior:
+React 19 con el React Compiler, Vite y TypeScript estricto. Las reglas de estado evitan problemas típicos de las apps de React (renders de más, datos del servidor copiados):
 
 - **Datos del servidor, solo en TanStack Query.** Nada de copiarlos a `useState` con un efecto. Los formularios usan `values` de React Hook Form para seguir a los datos.
 - **Estado de cliente, en Zustand, y poco**: los tokens de sesión y los avisos emergentes.

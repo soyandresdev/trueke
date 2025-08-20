@@ -80,7 +80,7 @@ File names are replaced with random ones, because the original name can include 
 
 ## Frontend
 
-React 19 with the React Compiler, Vite and strict TypeScript. The state rules come from the problems of the previous project:
+React 19 with the React Compiler, Vite and strict TypeScript. The state rules avoid common problems in React apps (extra renders, copied server data):
 
 - **Server data lives only in TanStack Query.** It is never copied into `useState` with an effect. Forms use React Hook Form's `values` to follow the server data.
 - **Client state lives in Zustand, and there is little of it**: the session tokens and the pop-up messages.

@@ -1,4 +1,4 @@
-"""Categorías de demo (ver PLAN.md). Se cargan con `python manage.py load_demo_categories`."""
+"""Categorías de demo. Se cargan con `python manage.py load_demo_categories`."""
 
 
 def _enum(title, title_en, options):
