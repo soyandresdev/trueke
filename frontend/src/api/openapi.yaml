@@ -369,6 +369,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/Listing'
           description: ''
+  /api/listings/{id}/accept-counter/:
+    post:
+      operationId: listings_accept_counter_create
+      summary: Accept counteroffer
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this listing.
+        required: true
+      tags:
+      - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+          description: ''
   /api/listings/{id}/cancel/:
     post:
       operationId: listings_cancel_create
@@ -415,6 +437,40 @@ paths:
         required: true
       tags:
       - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+          description: ''
+  /api/listings/{id}/counter/:
+    post:
+      operationId: listings_counter_create
+      summary: Make a counteroffer
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this listing.
+        required: true
+      tags:
+      - listings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CounterRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CounterRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CounterRequest'
+        required: true
       security:
       - jwtAuth: []
       responses:
@@ -990,6 +1046,8 @@ components:
       enum:
       - offer
       - accept
+      - counter
+      - accept_counter
       - reject
       - pickup
       - complete
@@ -999,6 +1057,8 @@ components:
       description: |-
         * `offer` - offer
         * `accept` - accept
+        * `counter` - counter
+        * `accept_counter` - accept_counter
         * `reject` - reject
         * `pickup` - pickup
         * `complete` - complete
@@ -1040,6 +1100,15 @@ components:
         * `good` - Good condition
         * `fair` - Some wear
         * `for_parts` - For parts
+    CounterRequest:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+      required:
+      - amount
     DocumentTypeEnum:
       enum:
       - national_id
@@ -1056,6 +1125,8 @@ components:
       - listing.offer
       - listing.accept
       - listing.reject
+      - listing.counter
+      - listing.accept_counter
       - listing.pickup
       - listing.complete
       - listing.pay
@@ -1067,6 +1138,8 @@ components:
         * `listing.offer` - New offer
         * `listing.accept` - Offer accepted
         * `listing.reject` - Offer declined
+        * `listing.counter` - Counteroffer
+        * `listing.accept_counter` - Counteroffer accepted
         * `listing.pickup` - Pickup arranged
         * `listing.complete` - Sale completed
         * `listing.pay` - Payment recorded
@@ -1142,6 +1215,16 @@ components:
           type: string
           readOnly: true
           title: Currency
+        counter_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+          nullable: true
+          title: Counteroffer
+        counters_left:
+          type: integer
+          readOnly: true
         pickup_by:
           allOf:
           - $ref: '#/components/schemas/ListingPickupByEnum'
@@ -1201,6 +1284,8 @@ components:
       - category
       - city
       - condition
+      - counter_amount
+      - counters_left
       - created_at
       - description
       - has_payment_receipt
@@ -1338,6 +1423,8 @@ components:
           type: integer
         offered:
           type: integer
+        countered:
+          type: integer
         accepted:
           type: integer
         pickup_sent:
@@ -1352,6 +1439,7 @@ components:
       - accepted
       - cancelled
       - completed
+      - countered
       - in_review
       - offered
       - paid
@@ -1360,6 +1448,7 @@ components:
       enum:
       - in_review
       - offered
+      - countered
       - accepted
       - pickup_sent
       - completed
@@ -1369,6 +1458,7 @@ components:
       description: |-
         * `in_review` - In review
         * `offered` - Offer made
+        * `countered` - Counteroffer
         * `accepted` - Accepted
         * `pickup_sent` - Pickup scheduled
         * `completed` - Completed
@@ -1499,6 +1589,7 @@ components:
       enum:
       - in_review
       - offered
+      - countered
       - accepted
       - pickup_sent
       - completed
@@ -1508,6 +1599,7 @@ components:
       description: |-
         * `in_review` - in_review
         * `offered` - offered
+        * `countered` - countered
         * `accepted` - accepted
         * `pickup_sent` - pickup_sent
         * `completed` - completed

@@ -15,6 +15,7 @@ import { cn } from '@/lib/cn'
 const statuses: ListingStatus[] = [
   'in_review',
   'offered',
+  'countered',
   'accepted',
   'pickup_sent',
   'completed',

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Trueke\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 09:52-0500\n"
+"POT-Creation-Date: 2026-09-19 10:02-0500\n"
 "PO-Revision-Date: 2026-09-20 09:00-0500\n"
 "Last-Translator: \n"
 "Language-Team: Español\n"
@@ -14,8 +14,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
-"1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 msgid "Perfil"
 msgstr "Perfil"
@@ -172,6 +171,9 @@ msgstr "En revisión"
 msgid "Con oferta"
 msgstr "Con oferta"
 
+msgid "Contraoferta"
+msgstr "Contraoferta"
+
 msgid "Aceptada"
 msgstr "Aceptada"
 
@@ -244,6 +246,9 @@ msgstr "oferta"
 msgid "moneda"
 msgstr "moneda"
 
+msgid "contraoferta"
+msgstr "contraoferta"
+
 msgid "responsable de la recogida"
 msgstr "responsable de la recogida"
 
@@ -259,10 +264,8 @@ msgstr "motivo de cancelación"
 msgid "monto pagado"
 msgstr "monto pagado"
 
-#, fuzzy
-#| msgid "fecha de recogida"
 msgid "fecha de pago"
-msgstr "fecha de recogida"
+msgstr "fecha de pago"
 
 msgid "referencia del pago"
 msgstr "referencia del pago"
@@ -324,6 +327,12 @@ msgstr "Hacer oferta"
 msgid "Aceptar oferta"
 msgstr "Aceptar oferta"
 
+msgid "Contraofertar"
+msgstr "Contraofertar"
+
+msgid "Aceptar contraoferta"
+msgstr "Aceptar contraoferta"
+
 msgid "Rechazar oferta"
 msgstr "Rechazar oferta"
 
@@ -347,11 +356,14 @@ msgid "No se puede «%(action)s» una publicación %(status)s."
 msgstr "No se puede «%(action)s» una publicación %(status)s."
 
 msgid ""
-"Completa tu perfil (datos, documento y certificado bancario) para aceptar la "
-"oferta."
+"Completa tu perfil (datos, documento y certificado bancario) para aceptar la"
+" oferta."
 msgstr ""
-"Completa tu perfil (datos, documento y certificado bancario) para aceptar la "
-"oferta."
+"Completa tu perfil (datos, documento y certificado bancario) para aceptar la"
+" oferta."
+
+msgid "Ya no puedes hacer más contraofertas en esta publicación."
+msgstr "Ya no puedes hacer más contraofertas en esta publicación."
 
 msgid "Solo el vendedor puede editar la publicación."
 msgstr "Solo el vendedor puede editar la publicación."
@@ -392,6 +404,9 @@ msgstr "Oferta aceptada"
 
 msgid "Oferta rechazada"
 msgstr "Oferta rechazada"
+
+msgid "Contraoferta aceptada"
+msgstr "Contraoferta aceptada"
 
 msgid "Recogida coordinada"
 msgstr "Recogida coordinada"

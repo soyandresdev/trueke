@@ -18,6 +18,8 @@ DATA = {
     "offer": {"amount": "450000"},
     "accept": {},
     "reject": {"reason": "Muy poco"},
+    "counter": {"amount": "500000"},
+    "accept_counter": {},
     "pickup": {"pickup_by": "platform", "pickup_date": "2026-10-01", "notes": "Portería"},
     "complete": {},
     "pay": {"amount": "450000", "reference": "TRF-001"},
@@ -27,6 +29,9 @@ DATA = {
 # (acción, estado inicial, actor que puede hacerla, estado final)
 ALLOWED = [
     ("offer", S.IN_REVIEW, "operator", S.OFFERED),
+    ("offer", S.COUNTERED, "operator", S.OFFERED),
+    ("counter", S.OFFERED, "seller", S.COUNTERED),
+    ("accept_counter", S.COUNTERED, "operator", S.ACCEPTED),
     ("accept", S.OFFERED, "seller", S.ACCEPTED),
     ("reject", S.OFFERED, "seller", S.CANCELLED),
     ("pickup", S.ACCEPTED, "operator", S.PICKUP_SENT),
@@ -36,6 +41,8 @@ ALLOWED = [
     ("cancel", S.IN_REVIEW, "operator", S.CANCELLED),
     ("cancel", S.OFFERED, "seller", S.CANCELLED),
     ("cancel", S.OFFERED, "operator", S.CANCELLED),
+    ("cancel", S.COUNTERED, "seller", S.CANCELLED),
+    ("cancel", S.COUNTERED, "operator", S.CANCELLED),
 ]
 ALLOWED_KEYS = {(action, source, actor) for action, source, actor, _ in ALLOWED}
 
@@ -48,7 +55,9 @@ def people(complete_profile):
 
 def post(api, listing, action, user):
     api.force_authenticate(user)
-    return api.post(reverse(f"listing-{action}", args=[listing.pk]), DATA[action], format="json")
+    return api.post(
+        reverse(f"listing-{action.replace('_', '-')}", args=[listing.pk]), DATA[action], format="json"
+    )
 
 
 @pytest.mark.parametrize(("action", "source", "actor", "target"), ALLOWED)
@@ -149,7 +158,7 @@ def test_operator_acts_as_seller_on_own_listing(api):
 
 def test_available_actions_per_user(api, people):
     listing = ListingFactory(seller=people["seller"], status=S.OFFERED)
-    assert transitions.available(listing, people["seller"]) == ["accept", "reject", "cancel"]
+    assert transitions.available(listing, people["seller"]) == ["accept", "counter", "reject", "cancel"]
     assert transitions.available(listing, people["operator"]) == ["cancel"]
     assert transitions.available(listing, people["stranger"]) == []
 
@@ -244,3 +253,51 @@ def test_pay_without_date_uses_today_and_rejects_bad_files(api, people):
     response = api.post(reverse("listing-pay", args=[listing.pk]), {"amount": "1000"}, format="json")
     assert response.data["paid_at"] == str(timezone.localdate())
     assert response.data["has_payment_receipt"] is False
+
+
+def test_counter_offer_round_trip(api, people):
+    listing = ListingFactory(seller=people["seller"], status=S.OFFERED, offer_amount="400000")
+    post(api, listing, "counter", people["seller"])
+    listing.refresh_from_db()
+    assert (listing.status, str(listing.counter_amount)) == (S.COUNTERED, "500000.00")
+    assert transitions.available(listing, people["operator"]) == ["offer", "accept_counter", "cancel"]
+
+    # El operador hace otra oferta: la contraoferta queda atrás.
+    api.force_authenticate(people["operator"])
+    api.post(reverse("listing-offer", args=[listing.pk]), {"amount": "450000"}, format="json")
+    listing.refresh_from_db()
+    assert (listing.status, str(listing.offer_amount), listing.counter_amount) == (
+        S.OFFERED,
+        "450000.00",
+        None,
+    )
+
+    # Segunda contraoferta y el operador la acepta: el monto aceptado es el que pidió el vendedor.
+    api.force_authenticate(people["seller"])
+    api.post(reverse("listing-counter", args=[listing.pk]), {"amount": "470000"}, format="json")
+    response = post(api, listing, "accept_counter", people["operator"])
+    assert response.status_code == 200
+    listing.refresh_from_db()
+    assert (listing.status, str(listing.offer_amount)) == (S.ACCEPTED, "470000.00")
+    assert listing.events.get(action="accept_counter").data["amount"] == "470000.00"
+
+
+def test_counter_offers_are_limited(api, people, settings):
+    settings.LISTING_MAX_COUNTEROFFERS = 1
+    listing = ListingFactory(seller=people["seller"], status=S.OFFERED, offer_amount="400000")
+    assert post(api, listing, "counter", people["seller"]).data["counters_left"] == 0
+    post(api, listing, "offer", people["operator"])
+    listing.refresh_from_db()
+    # Sin rondas: el botón desaparece y la API lo rechaza.
+    assert "counter" not in transitions.available(listing, people["seller"])
+    response = post(api, listing, "counter", people["seller"])
+    assert (response.status_code, response.data["code"]) == (409, "counter_limit")
+
+
+def test_counter_needs_complete_profile_and_positive_amount(api):
+    listing = ListingFactory(status=S.OFFERED)
+    response = post(api, listing, "counter", listing.seller)
+    assert (response.status_code, response.data["code"]) == (409, "profile_incomplete")
+    api.force_authenticate(listing.seller)
+    response = api.post(reverse("listing-counter", args=[listing.pk]), {"amount": "0"}, format="json")
+    assert response.status_code == 400

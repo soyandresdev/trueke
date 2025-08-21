@@ -43,6 +43,10 @@ stateDiagram-v2
   [*] --> in_review: the seller publishes
   in_review --> offered: offer (operator)
   offered --> accepted: accept (seller, with a complete profile)
+  offered --> countered: counter (seller, limited rounds)
+  countered --> accepted: accept_counter (operator)
+  countered --> offered: offer (operator, a new offer)
+  countered --> cancelled: cancel (seller or operator)
   accepted --> pickup_sent: pickup (operator)
   pickup_sent --> completed: complete (operator)
   completed --> paid: pay (operator, with amount, date and receipt)

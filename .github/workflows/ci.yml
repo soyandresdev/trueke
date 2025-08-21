@@ -41,6 +41,7 @@ jobs:
           test -z "$(msgattrib --untranslated --no-obsolete locale/es/LC_MESSAGES/django.po)"
           # "fuzzy": gettext adivinó la traducción por parecido (p. ej. "fecha de pago" → "pickup date").
           test -z "$(msgattrib --only-fuzzy --no-obsolete locale/en/LC_MESSAGES/django.po)"
+          test -z "$(msgattrib --only-fuzzy --no-obsolete locale/es/LC_MESSAGES/django.po)"
         env: { SECRET_KEY: ci, DEBUG: "false" }
 
   frontend:

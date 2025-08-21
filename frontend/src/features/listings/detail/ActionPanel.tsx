@@ -11,15 +11,28 @@ import { SelectField, TextArea, TextField } from '@/components/ui/fields'
 import { Modal } from '@/components/ui/Modal'
 import { Ticket } from '@/components/ui/Ticket'
 import { toast } from '@/components/ui/toast'
+import { formatMoney } from '@/lib/format'
 import { useFieldError } from '@/lib/useFieldError'
 
 import { useTransition, type ApiFailure } from '../api'
 
 // Orden y estilo de los botones: la acción que hace avanzar la venta va primero y destacada.
-const order: ListingAction[] = ['offer', 'accept', 'pickup', 'complete', 'pay', 'reject', 'cancel']
+const order: ListingAction[] = [
+  'offer',
+  'accept',
+  'accept_counter',
+  'counter',
+  'pickup',
+  'complete',
+  'pay',
+  'reject',
+  'cancel',
+]
 const variants = {
   offer: 'pop',
   accept: 'pop',
+  accept_counter: 'pop',
+  counter: 'secondary',
   pickup: 'primary',
   complete: 'primary',
   pay: 'pop',
@@ -76,8 +89,11 @@ function ActionModal({
       {action === 'offer' && <OfferForm {...props} />}
       {action === 'pickup' && <PickupForm {...props} />}
       {action === 'pay' && <PayForm {...props} />}
+      {action === 'counter' && <CounterForm {...props} />}
       {(action === 'reject' || action === 'cancel') && <ReasonForm {...props} action={action} />}
-      {(action === 'accept' || action === 'complete') && <Confirm {...props} action={action} />}
+      {(action === 'accept' || action === 'accept_counter' || action === 'complete') && (
+        <Confirm {...props} action={action} />
+      )}
     </Modal>
   )
 }
@@ -275,6 +291,35 @@ function PayForm({ listing, run, pending, error, onClose }: FormProps) {
   )
 }
 
+function CounterForm({ listing, run, pending, error, onClose }: FormProps) {
+  const { t } = useTranslation()
+  const fieldError = useFieldError()
+  const form = useForm({ resolver: zodResolver(offerSchema), defaultValues: { amount: '' } })
+  return (
+    <form
+      noValidate
+      className="flex flex-col gap-4"
+      onSubmit={form.handleSubmit(({ amount }) => run({ amount }))}
+    >
+      <p className="text-ink-soft">
+        {t('actions.counter.lead', {
+          offer: formatMoney(listing.offer_amount ?? 0, listing.offer_currency || undefined),
+        })}
+      </p>
+      <TextField
+        label={t('actions.counter.amount')}
+        inputMode="decimal"
+        autoFocus
+        hint={t('actions.counter.left', { count: listing.counters_left })}
+        error={fieldError(form.formState.errors.amount?.message)}
+        {...form.register('amount')}
+      />
+      {error}
+      <Footer pending={pending} onClose={onClose} label={t('actions.counter.confirm')} />
+    </form>
+  )
+}
+
 function ReasonForm({
   run,
   pending,
@@ -311,7 +356,7 @@ function Confirm({
   error,
   onClose,
   action,
-}: FormProps & { action: 'accept' | 'complete' }) {
+}: FormProps & { action: 'accept' | 'accept_counter' | 'complete' }) {
   const { t } = useTranslation()
   return (
     <form
@@ -327,6 +372,15 @@ function Confirm({
           title={listing.title}
           amount={listing.offer_amount}
           currency={listing.offer_currency || undefined}
+        />
+      )}
+      {action === 'accept_counter' && listing.counter_amount && (
+        <Ticket
+          listingId={listing.id}
+          title={listing.title}
+          amount={listing.counter_amount}
+          currency={listing.offer_currency || undefined}
+          label={t('counter.sellerAsks')}
         />
       )}
       <p className="text-ink-soft">{t(`actions.${action}.lead`)}</p>

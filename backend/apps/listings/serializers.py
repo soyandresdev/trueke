@@ -41,6 +41,7 @@ class ListingSerializer(serializers.ModelSerializer):
     available_actions = serializers.SerializerMethodField()
     unread_messages = serializers.SerializerMethodField()
     has_payment_receipt = serializers.SerializerMethodField()
+    counters_left = serializers.SerializerMethodField()
 
     class Meta:
         model = Listing
@@ -62,6 +63,8 @@ class ListingSerializer(serializers.ModelSerializer):
             "status_changed_at",
             "offer_amount",
             "offer_currency",
+            "counter_amount",
+            "counters_left",
             "pickup_by",
             "pickup_date",
             "pickup_notes",
@@ -81,6 +84,7 @@ class ListingSerializer(serializers.ModelSerializer):
             "status_changed_at",
             "offer_amount",
             "offer_currency",
+            "counter_amount",
             "pickup_by",
             "pickup_date",
             "pickup_notes",
@@ -95,6 +99,9 @@ class ListingSerializer(serializers.ModelSerializer):
     @extend_schema_field(serializers.ListField(child=serializers.ChoiceField(list(transitions.TRANSITIONS))))
     def get_available_actions(self, listing):
         return transitions.available(listing, self.context["request"].user)
+
+    def get_counters_left(self, listing) -> int:
+        return transitions.counters_left(listing)
 
     def get_has_payment_receipt(self, listing) -> bool:
         return bool(listing.payment_receipt)
@@ -146,6 +153,10 @@ class PickupSerializer(serializers.Serializer):
     pickup_by = serializers.ChoiceField(Listing.PickupBy)
     pickup_date = serializers.DateField(required=False, allow_null=True)
     notes = serializers.CharField(max_length=500, required=False, allow_blank=True)
+
+
+class CounterSerializer(serializers.Serializer):
+    amount = serializers.DecimalField(max_digits=12, decimal_places=2, min_value=1)
 
 
 class PaySerializer(serializers.Serializer):

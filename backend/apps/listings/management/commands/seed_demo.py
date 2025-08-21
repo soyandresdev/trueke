@@ -29,6 +29,7 @@ OFFER = ("offer", "operator", {})  # el monto sale de LISTINGS
 PATHS = {
     "in_review": [],
     "offered": [OFFER],
+    "countered": [OFFER, ("counter", "seller", {})],  # la contraoferta pide un 10 % más
     "accepted": [OFFER, ("accept", "seller", {})],
     "pickup_sent": [
         OFFER,
@@ -54,7 +55,7 @@ PATHS = {
 
 LISTINGS = [
     # (imagen, categoría, vendedor, camino en PATHS, oferta, título, descripción, condición, campos)
-    ("demo-celular", "tecnologia", "laura", "offered", 650_000, "Celular de 128 GB",
+    ("demo-celular", "tecnologia", "laura", "countered", 650_000, "Celular de 128 GB",
      "Pantalla sin rayones, batería al 89 %. Lo cambié por uno más nuevo.", "like_new",
      {"brand": "Samsung", "model": "Galaxy S21", "storage_gb": 128, "includes_box": True}),
     ("demo-consola", "tecnologia", "mateo", "in_review", 0, "Consola portátil con dos controles",
@@ -229,6 +230,8 @@ class Command(BaseCommand):
                 data = {"amount": amount, "currency": settings.LISTING_CURRENCY}
             elif action == "pay":
                 data = {**data, "amount": amount}
+            elif action == "counter":
+                data = {"amount": round(amount * 1.1)}
             # Los textos de las acciones (motivo, indicaciones) van como claves de TEXTS.
             data = {
                 key: texts.get(value, value) if isinstance(value, str) else value

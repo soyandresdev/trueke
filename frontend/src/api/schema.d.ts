@@ -175,6 +175,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/listings/{id}/accept-counter/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Accept counteroffer */
+        post: operations["listings_accept_counter_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/listings/{id}/cancel/": {
         parameters: {
             query?: never;
@@ -203,6 +220,23 @@ export interface paths {
         put?: never;
         /** Complete sale */
         post: operations["listings_complete_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/listings/{id}/counter/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Make a counteroffer */
+        post: operations["listings_counter_create"];
         delete?: never;
         options?: never;
         head?: never;
@@ -552,6 +586,8 @@ export interface components {
         /**
          * @description * `offer` - offer
          *     * `accept` - accept
+         *     * `counter` - counter
+         *     * `accept_counter` - accept_counter
          *     * `reject` - reject
          *     * `pickup` - pickup
          *     * `complete` - complete
@@ -559,7 +595,7 @@ export interface components {
          *     * `cancel` - cancel
          * @enum {string}
          */
-        AvailableActionsEnum: "offer" | "accept" | "reject" | "pickup" | "complete" | "pay" | "cancel";
+        AvailableActionsEnum: "offer" | "accept" | "counter" | "accept_counter" | "reject" | "pickup" | "complete" | "pay" | "cancel";
         /** @enum {unknown} */
         BlankEnum: "";
         Category: {
@@ -581,6 +617,10 @@ export interface components {
          * @enum {string}
          */
         ConditionEnum: "new" | "like_new" | "good" | "fair" | "for_parts";
+        CounterRequest: {
+            /** Format: decimal */
+            amount: string;
+        };
         /**
          * @description * `national_id` - National ID
          *     * `foreign_id` - Foreign ID
@@ -593,6 +633,8 @@ export interface components {
          *     * `listing.offer` - New offer
          *     * `listing.accept` - Offer accepted
          *     * `listing.reject` - Offer declined
+         *     * `listing.counter` - Counteroffer
+         *     * `listing.accept_counter` - Counteroffer accepted
          *     * `listing.pickup` - Pickup arranged
          *     * `listing.complete` - Sale completed
          *     * `listing.pay` - Payment recorded
@@ -600,7 +642,7 @@ export interface components {
          *     * `message.new` - New messages
          * @enum {string}
          */
-        KindEnum: "listing.create" | "listing.offer" | "listing.accept" | "listing.reject" | "listing.pickup" | "listing.complete" | "listing.pay" | "listing.cancel" | "message.new";
+        KindEnum: "listing.create" | "listing.offer" | "listing.accept" | "listing.reject" | "listing.counter" | "listing.accept_counter" | "listing.pickup" | "listing.complete" | "listing.pay" | "listing.cancel" | "message.new";
         /**
          * @description * `es` - Español
          *     * `en` - English
@@ -640,6 +682,12 @@ export interface components {
             readonly offer_amount: string | null;
             /** Currency */
             readonly offer_currency: string;
+            /**
+             * Counteroffer
+             * Format: decimal
+             */
+            readonly counter_amount: string | null;
+            readonly counters_left: number;
             /** Pickup handled by */
             readonly pickup_by: components["schemas"]["ListingPickupByEnum"];
             /** Format: date */
@@ -719,6 +767,7 @@ export interface components {
         ListingStats: {
             in_review: number;
             offered: number;
+            countered: number;
             accepted: number;
             pickup_sent: number;
             completed: number;
@@ -728,6 +777,7 @@ export interface components {
         /**
          * @description * `in_review` - In review
          *     * `offered` - Offer made
+         *     * `countered` - Counteroffer
          *     * `accepted` - Accepted
          *     * `pickup_sent` - Pickup scheduled
          *     * `completed` - Completed
@@ -735,7 +785,7 @@ export interface components {
          *     * `cancelled` - Cancelled
          * @enum {string}
          */
-        ListingStatusEnum: "in_review" | "offered" | "accepted" | "pickup_sent" | "completed" | "paid" | "cancelled";
+        ListingStatusEnum: "in_review" | "offered" | "countered" | "accepted" | "pickup_sent" | "completed" | "paid" | "cancelled";
         MarkRead: {
             updated: number;
         };
@@ -788,6 +838,7 @@ export interface components {
         /**
          * @description * `in_review` - in_review
          *     * `offered` - offered
+         *     * `countered` - countered
          *     * `accepted` - accepted
          *     * `pickup_sent` - pickup_sent
          *     * `completed` - completed
@@ -795,7 +846,7 @@ export interface components {
          *     * `cancelled` - cancelled
          * @enum {string}
          */
-        NotificationListingStatusEnum: "in_review" | "offered" | "accepted" | "pickup_sent" | "completed" | "paid" | "cancelled";
+        NotificationListingStatusEnum: "in_review" | "offered" | "countered" | "accepted" | "pickup_sent" | "completed" | "paid" | "cancelled";
         NotificationsSeen: {
             updated: number;
         };
@@ -1312,6 +1363,28 @@ export interface operations {
             };
         };
     };
+    listings_accept_counter_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this listing. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Listing"];
+                };
+            };
+        };
+    };
     listings_cancel_create: {
         parameters: {
             query?: never;
@@ -1351,6 +1424,34 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Listing"];
+                };
+            };
+        };
+    };
+    listings_counter_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this listing. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CounterRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["CounterRequest"];
+                "multipart/form-data": components["schemas"]["CounterRequest"];
+            };
+        };
         responses: {
             200: {
                 headers: {

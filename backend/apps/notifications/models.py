@@ -11,6 +11,8 @@ class Notification(models.Model):
         LISTING_OFFER = "listing.offer", _("Nueva oferta")
         LISTING_ACCEPT = "listing.accept", _("Oferta aceptada")
         LISTING_REJECT = "listing.reject", _("Oferta rechazada")
+        LISTING_COUNTER = "listing.counter", _("Contraoferta")
+        LISTING_ACCEPT_COUNTER = "listing.accept_counter", _("Contraoferta aceptada")
         LISTING_PICKUP = "listing.pickup", _("Recogida coordinada")
         LISTING_COMPLETE = "listing.complete", _("Venta completada")
         LISTING_PAY = "listing.pay", _("Pago registrado")
@@ -18,7 +20,7 @@ class Notification(models.Model):
         MESSAGE_NEW = "message.new", _("Mensajes nuevos")
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="notifications")
-    kind = models.CharField(_("tipo"), max_length=20, choices=Kind)
+    kind = models.CharField(_("tipo"), max_length=30, choices=Kind)
     listing = models.ForeignKey(
         "listings.Listing", on_delete=models.CASCADE, null=True, blank=True, related_name="notifications"
     )

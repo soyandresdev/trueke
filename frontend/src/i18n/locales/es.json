@@ -30,7 +30,8 @@
     "pickup_sent": "Recogida enviada",
     "completed": "Completada",
     "cancelled": "Cancelada",
-    "paid": "Pagada"
+    "paid": "Pagada",
+    "countered": "Contraoferta"
   },
   "ticket": {
     "label": "Te ofrecemos",
@@ -55,7 +56,9 @@
         "pickup": "La recogida de «{{title}}» está coordinada.",
         "complete": "Venta completada: «{{title}}».",
         "cancel": "«{{title}}» fue cancelada.",
-        "pay": "Te pagamos {{amount}} por «{{title}}»."
+        "pay": "Te pagamos {{amount}} por «{{title}}».",
+        "counter": "{{actor}} pide {{amount}} por «{{title}}».",
+        "accept_counter": "Aceptamos tu contraoferta de {{amount}} por «{{title}}»."
       },
       "message": {
         "new_one": "Mensaje nuevo de {{actor}} en «{{title}}».",
@@ -201,7 +204,9 @@
     "pickup": "Recogida coordinada",
     "complete": "Venta completada",
     "cancel": "Publicación cancelada",
-    "pay": "Pago registrado"
+    "pay": "Pago registrado",
+    "counter": "Contraoferta del vendedor",
+    "accept_counter": "Contraoferta aceptada"
   },
   "statusNote": {
     "seller": {
@@ -211,7 +216,8 @@
       "pickup_sent": "La recogida está coordinada. Cuando recibamos el artículo, te pagamos.",
       "completed": "Recibimos tu artículo. Estamos preparando tu pago.",
       "cancelled": "Esta publicación está cancelada.",
-      "paid": "¡Listo! Te pagamos por este artículo. Gracias por vender con Trueke."
+      "paid": "¡Listo! Te pagamos por este artículo. Gracias por vender con Trueke.",
+      "countered": "Enviaste una contraoferta. El equipo puede aceptarla o hacerte otra oferta."
     },
     "operator": {
       "in_review": "Pendiente de revisión: revisa las fotos y haz una oferta.",
@@ -220,7 +226,8 @@
       "pickup_sent": "Recogida en curso. Complétala cuando llegue el artículo.",
       "completed": "Artículo recibido: registra el pago al vendedor.",
       "cancelled": "Publicación cancelada.",
-      "paid": "Venta pagada y cerrada."
+      "paid": "Venta pagada y cerrada.",
+      "countered": "El vendedor hizo una contraoferta: acéptala o haz otra oferta."
     }
   },
   "actions": {
@@ -283,6 +290,23 @@
       "receiptHint": "PDF, JPG o PNG de hasta 5 MB. Solo lo ven el vendedor y el equipo.",
       "confirm": "Registrar pago",
       "done": "Pago registrado."
+    },
+    "counter": {
+      "button": "Contraofertar",
+      "title": "Hacer una contraoferta",
+      "lead": "Te ofrecimos {{offer}}. ¿Cuánto pides?",
+      "amount": "Tu precio (COP)",
+      "left_one": "Te queda {{count}} contraoferta.",
+      "left_other": "Te quedan {{count}} contraofertas.",
+      "confirm": "Enviar contraoferta",
+      "done": "Contraoferta enviada."
+    },
+    "accept_counter": {
+      "button": "Aceptar contraoferta",
+      "title": "¿Aceptas la contraoferta?",
+      "lead": "La venta queda aceptada por el monto que pidió el vendedor.",
+      "confirm": "Aceptar",
+      "done": "Contraoferta aceptada."
     }
   },
   "chat": {
@@ -426,5 +450,10 @@
     "paid": "Te pagamos {{amount}}",
     "reference": "Referencia",
     "receipt": "Ver comprobante"
+  },
+  "counter": {
+    "sellerAsks": "El vendedor pide",
+    "sellerAsksAmount": "El vendedor pide {{amount}}.",
+    "youAsked": "Pediste {{amount}}. Te avisaremos cuando la revisemos."
   }
 }

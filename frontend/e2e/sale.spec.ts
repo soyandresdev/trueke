@@ -96,19 +96,29 @@ test('la operadora la encuentra en su panel y hace una oferta', async () => {
   await expect(operator.getByText('Oferta enviada.')).toBeVisible()
 })
 
-test('a la vendedora le llega la oferta en vivo y la acepta', async () => {
+test('a la vendedora le llega la oferta en vivo y hace una contraoferta', async () => {
   // La vendedora sigue en el detalle, sin recargar.
   await expect(seller.getByText('Con oferta', { exact: true })).toBeVisible()
   await expect(seller.getByRole('figure')).toContainText('380.000')
   await expect(seller.getByText(/Tienes una oferta por «Teclado/)).toBeVisible() // aviso emergente
 
-  await seller.getByRole('button', { name: 'Aceptar oferta' }).click()
-  await seller
-    .getByRole('dialog', { name: '¿Aceptas la oferta?' })
+  await seller.getByRole('button', { name: 'Contraofertar' }).click()
+  const dialog = seller.getByRole('dialog', { name: 'Hacer una contraoferta' })
+  await dialog.getByLabel('Tu precio (COP)').fill('420000')
+  await dialog.getByRole('button', { name: 'Enviar contraoferta' }).click()
+  await expect(seller.getByText(/Pediste \$\s?420\.000/)).toBeVisible()
+})
+
+test('la operadora ve la contraoferta en vivo y la acepta', async () => {
+  await expect(operator.getByText(/El vendedor pide \$\s?420\.000/)).toBeVisible()
+  await operator.getByRole('button', { name: 'Aceptar contraoferta' }).click()
+  await operator
+    .getByRole('dialog', { name: '¿Aceptas la contraoferta?' })
     .getByRole('button', { name: 'Aceptar' })
     .click()
-  await expect(seller.getByText('Aceptada', { exact: true })).toBeVisible()
   await expect(operator.getByText('Aceptada', { exact: true })).toBeVisible()
+  await expect(seller.getByText('Aceptada', { exact: true })).toBeVisible()
+  await expect(seller.getByRole('figure')).toContainText('420.000')
 })
 
 test('chatean y los mensajes llegan en vivo con su doble check', async () => {
@@ -149,13 +159,13 @@ test('la operadora coordina la recogida y completa la venta', async () => {
 test('la operadora registra el pago y la vendedora lo ve con su comprobante', async () => {
   await operator.getByRole('button', { name: 'Registrar pago' }).click()
   const dialog = operator.getByRole('dialog', { name: 'Registrar el pago' })
-  await expect(dialog.getByLabel('Monto pagado (COP)')).toHaveValue('380000')
+  await expect(dialog.getByLabel('Monto pagado (COP)')).toHaveValue('420000')
   await dialog.getByLabel('Referencia de la transferencia').fill('TRF-E2E-001')
   await dialog.getByLabel('Comprobante').setInputFiles(fixture('documento.pdf'))
   await dialog.getByRole('button', { name: 'Registrar pago' }).click()
 
   await expect(seller.getByText('Pagada', { exact: true })).toBeVisible()
-  await expect(seller.getByText(/Te pagamos \$\s?380\.000/).first()).toBeVisible()
+  await expect(seller.getByText(/Te pagamos \$\s?420\.000/).first()).toBeVisible()
   await expect(seller.getByText(/Referencia: TRF-E2E-001/)).toBeVisible()
   await expect(seller.getByRole('button', { name: 'Ver comprobante' })).toBeVisible()
 })
@@ -165,7 +175,8 @@ test('la vendedora ve todo el historial y sus notificaciones', async () => {
   for (const step of [
     'Publicación creada',
     'Oferta enviada',
-    'Oferta aceptada',
+    'Contraoferta del vendedor',
+    'Contraoferta aceptada',
     'Recogida coordinada',
     'Venta completada',
     'Pago registrado',
@@ -174,6 +185,6 @@ test('la vendedora ve todo el historial y sus notificaciones', async () => {
   }
   await seller.getByRole('button', { name: /^Notificaciones/ }).click()
   await expect(
-    seller.getByText(/Te pagamos \$\s?380\.000 por «Teclado controlador MIDI 49 teclas»/),
+    seller.getByText(/Te pagamos \$\s?420\.000 por «Teclado controlador MIDI 49 teclas»/),
   ).toBeVisible()
 })

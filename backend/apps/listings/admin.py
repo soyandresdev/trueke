@@ -37,6 +37,7 @@ class ListingAdmin(admin.ModelAdmin):
         "status_changed_at",
         "offer_amount",
         "offer_currency",
+        "counter_amount",
         "pickup_by",
         "pickup_date",
         "pickup_notes",

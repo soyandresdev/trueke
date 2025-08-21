@@ -17,7 +17,7 @@ Todo pasa en tiempo real: ofertas, cambios de estado, chat y notificaciones.
 
 - **Login sin contraseñas**, por teléfono y código de un solo uso (SMS con Twilio; en desarrollo, en los logs).
 - **Publicaciones con campos por categoría**: cada categoría define los suyos con un JSON Schema desde el admin.
-- **Máquina de estados** (en revisión → con oferta → aceptada → recogida → completada → pagada, o cancelada), con permisos por acción y el historial completo.
+- **Máquina de estados** (en revisión → con oferta, con contraoferta posible → aceptada → recogida → completada → pagada, o cancelada), con permisos por acción y el historial completo.
 - **Chat en vivo** por publicación, con adjuntos privados y leídos.
 - **Notificaciones en vivo** (campana y avisos) por un único WebSocket autenticado.
 - **Panel del operador**: búsqueda, filtros, ficha del vendedor con sus documentos, ofertas y recogidas.

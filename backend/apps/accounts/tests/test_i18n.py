@@ -85,3 +85,32 @@ def test_compiled_translations_match_the_po_file():
             if compiled.gettext(entry.msgid) != entry.msgstr
         ]
     assert stale == []
+
+
+def test_spanish_catalog_is_the_source_text():
+    """En es cada traducción debe ser el propio texto: si no, alguien dejó una conjetura de msgmerge."""
+    from pathlib import Path
+
+    import polib
+    from django.conf import settings
+
+    po = polib.pofile(str(Path(settings.BASE_DIR) / "locale" / "es" / "LC_MESSAGES" / "django.po"))
+    wrong = [entry.msgid for entry in po if not entry.obsolete and entry.msgstr != entry.msgid]
+    assert wrong == []
+    assert po.fuzzy_entries() == []
+
+
+def test_new_messages_in_spanish(api, settings):
+    from apps.listings.tests.factories import ListingFactory as Factory
+
+    settings.LISTING_MAX_COUNTEROFFERS = 0
+    listing = Factory(status="offered")
+    listing.seller.document_type = "national_id"
+    api.force_authenticate(listing.seller)
+    response = api.post(
+        reverse("listing-counter", args=[listing.pk]),
+        {"amount": "10"},
+        format="json",
+        HTTP_ACCEPT_LANGUAGE="es",
+    )
+    assert response.data["detail"].startswith("Completa tu perfil")  # perfil incompleto va primero

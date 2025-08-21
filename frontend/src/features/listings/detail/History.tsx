@@ -37,7 +37,7 @@ function Detail({ event }: { event: ListingEvent }) {
   const { t } = useTranslation()
   const data = (event.data ?? {}) as Record<string, string | null | undefined>
   const text =
-    (event.action === 'offer' || event.action === 'pay') && data.amount
+    ['offer', 'pay', 'counter', 'accept_counter'].includes(event.action) && data.amount
       ? formatMoney(data.amount, data.currency ?? undefined)
       : event.action === 'pickup' && data.pickup_by
         ? [

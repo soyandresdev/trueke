@@ -7,6 +7,7 @@ import { cn } from '@/lib/cn'
 const styles: Record<ListingStatus, string> = {
   in_review: 'bg-status-review text-ink',
   offered: 'bg-status-offer text-white',
+  countered: 'bg-blue-soft text-blue-dark',
   accepted: 'bg-status-accepted text-ink',
   pickup_sent: 'bg-status-pickup text-ink',
   completed: 'bg-status-done text-white',
