@@ -43,11 +43,10 @@ services:
   frontend:
     image: node:24-alpine
     working_dir: /app
-    command: sh -c "corepack enable && pnpm install --frozen-lockfile && pnpm dev --host 0.0.0.0"
+    # --store-dir: la caché de pnpm va a su volumen; si no, pnpm la crea dentro de ./frontend.
+    command: sh -c "corepack enable && pnpm install --frozen-lockfile --store-dir /pnpm-store && pnpm dev --host 0.0.0.0"
     environment:
       VITE_BACKEND_URL: http://backend:8000
-      # La caché de pnpm va a su volumen; si no, pnpm la crea dentro de ./frontend (la carpeta montada).
-      npm_config_store_dir: /pnpm-store
       COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
       CI: "true"
     # node_modules en un volumen propio: los binarios de macOS no sirven dentro de Linux.
