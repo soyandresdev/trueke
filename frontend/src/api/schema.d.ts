@@ -274,6 +274,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/listings/{id}/pay/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Record payment */
+        post: operations["listings_pay_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/listings/{id}/pickup/": {
         parameters: {
             query?: never;
@@ -285,6 +302,23 @@ export interface paths {
         put?: never;
         /** Arrange pickup */
         post: operations["listings_pickup_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/listings/{id}/receipt/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Comprobante de pago: lo ven el vendedor y los operadores. */
+        get: operations["listings_receipt_retrieve"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -521,10 +555,11 @@ export interface components {
          *     * `reject` - reject
          *     * `pickup` - pickup
          *     * `complete` - complete
+         *     * `pay` - pay
          *     * `cancel` - cancel
          * @enum {string}
          */
-        AvailableActionsEnum: "offer" | "accept" | "reject" | "pickup" | "complete" | "cancel";
+        AvailableActionsEnum: "offer" | "accept" | "reject" | "pickup" | "complete" | "pay" | "cancel";
         /** @enum {unknown} */
         BlankEnum: "";
         Category: {
@@ -560,11 +595,12 @@ export interface components {
          *     * `listing.reject` - Offer declined
          *     * `listing.pickup` - Pickup arranged
          *     * `listing.complete` - Sale completed
+         *     * `listing.pay` - Payment recorded
          *     * `listing.cancel` - Listing cancelled
          *     * `message.new` - New messages
          * @enum {string}
          */
-        KindEnum: "listing.create" | "listing.offer" | "listing.accept" | "listing.reject" | "listing.pickup" | "listing.complete" | "listing.cancel" | "message.new";
+        KindEnum: "listing.create" | "listing.offer" | "listing.accept" | "listing.reject" | "listing.pickup" | "listing.complete" | "listing.pay" | "listing.cancel" | "message.new";
         /**
          * @description * `es` - Español
          *     * `en` - English
@@ -612,6 +648,18 @@ export interface components {
             readonly pickup_notes: string;
             /** Cancellation reason */
             readonly cancel_reason: string;
+            /**
+             * Amount paid
+             * Format: decimal
+             */
+            readonly paid_amount: string | null;
+            /**
+             * Payment date
+             * Format: date
+             */
+            readonly paid_at: string | null;
+            readonly payment_reference: string;
+            readonly has_payment_receipt: boolean;
             readonly available_actions: components["schemas"]["AvailableActionsEnum"][];
             readonly unread_messages: number;
             /** Format: date-time */
@@ -674,6 +722,7 @@ export interface components {
             accepted: number;
             pickup_sent: number;
             completed: number;
+            paid: number;
             cancelled: number;
         };
         /**
@@ -682,10 +731,11 @@ export interface components {
          *     * `accepted` - Accepted
          *     * `pickup_sent` - Pickup scheduled
          *     * `completed` - Completed
+         *     * `paid` - Paid
          *     * `cancelled` - Cancelled
          * @enum {string}
          */
-        ListingStatusEnum: "in_review" | "offered" | "accepted" | "pickup_sent" | "completed" | "cancelled";
+        ListingStatusEnum: "in_review" | "offered" | "accepted" | "pickup_sent" | "completed" | "paid" | "cancelled";
         MarkRead: {
             updated: number;
         };
@@ -741,10 +791,11 @@ export interface components {
          *     * `accepted` - accepted
          *     * `pickup_sent` - pickup_sent
          *     * `completed` - completed
+         *     * `paid` - paid
          *     * `cancelled` - cancelled
          * @enum {string}
          */
-        NotificationListingStatusEnum: "in_review" | "offered" | "accepted" | "pickup_sent" | "completed" | "cancelled";
+        NotificationListingStatusEnum: "in_review" | "offered" | "accepted" | "pickup_sent" | "completed" | "paid" | "cancelled";
         NotificationsSeen: {
             updated: number;
         };
@@ -848,6 +899,15 @@ export interface components {
             document_type?: components["schemas"]["DocumentTypeEnum"] | components["schemas"]["BlankEnum"];
             /** ID number */
             document_number?: string;
+        };
+        PayRequest: {
+            /** Format: decimal */
+            amount: string;
+            /** Format: date */
+            paid_at?: string | null;
+            reference?: string;
+            /** Format: binary */
+            receipt?: string;
         };
         /**
          * @description * `seller` - seller
@@ -1408,6 +1468,34 @@ export interface operations {
             };
         };
     };
+    listings_pay_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this listing. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PayRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PayRequest"];
+                "multipart/form-data": components["schemas"]["PayRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Listing"];
+                };
+            };
+        };
+    };
     listings_pickup_create: {
         parameters: {
             query?: never;
@@ -1433,6 +1521,35 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["Listing"];
                 };
+            };
+        };
+    };
+    listings_receipt_retrieve: {
+        parameters: {
+            query?: {
+                /** @description Código de la categoría */
+                category?: string;
+                city?: string;
+                /** @description Busca en nombre, descripción y vendedor */
+                q?: string;
+                /** @description Uno o varios estados separados por coma */
+                status?: string;
+            };
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this listing. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Archivo */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

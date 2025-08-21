@@ -2,6 +2,10 @@
 
 # Cambios
 
+## Sin publicar
+
+- **Registro del pago.** Tras completar la venta, el operador registra el pago (monto, fecha, referencia de la transferencia y un comprobante privado). La publicación pasa al estado nuevo "pagada" y el vendedor lo ve en vivo y puede descargar el comprobante.
+
 ## 0.1.0 · 2026-09-20
 
 La primera versión de Trueke.

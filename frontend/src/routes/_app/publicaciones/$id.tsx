@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from '@tanstack/react-router'
-import { ArrowLeft, MapPin, Pencil, Truck } from 'lucide-react'
+import { ArrowLeft, Banknote, MapPin, Pencil, Truck } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import type { Listing } from '@/api/types'
@@ -8,13 +8,18 @@ import { Spinner } from '@/components/ui/Spinner'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 import { Ticket } from '@/components/ui/Ticket'
 import { Chat } from '@/features/chat/Chat'
-import { useCategories, useListing, type ApiFailure } from '@/features/listings/api'
+import {
+  openPaymentReceipt,
+  useCategories,
+  useListing,
+  type ApiFailure,
+} from '@/features/listings/api'
 import { ActionPanel } from '@/features/listings/detail/ActionPanel'
 import { Gallery } from '@/features/listings/detail/Gallery'
 import { History } from '@/features/listings/detail/History'
 import { SellerCard } from '@/features/listings/detail/SellerCard'
 import { displayAttribute, fieldsFromSchema } from '@/features/listings/schemaFields'
-import { formatDate, ticketCode } from '@/lib/format'
+import { formatDate, formatMoney, ticketCode } from '@/lib/format'
 import { useRealtimeChannel } from '@/realtime/context'
 
 export const Route = createFileRoute('/_app/publicaciones/$id')({
@@ -112,6 +117,8 @@ function ListingView({ listing }: { listing: Listing }) {
           </div>
           {me?.role === 'operator' && !isOwner && <SellerCard sellerId={listing.seller.id} />}
 
+          {listing.status === 'paid' && <PaymentBox listing={listing} />}
+
           {listing.pickup_by && (
             <div className="flex gap-3 rounded-lg bg-paper p-4">
               <Truck className="mt-0.5 size-5 shrink-0" aria-hidden />
@@ -140,6 +147,36 @@ function ListingView({ listing }: { listing: Listing }) {
             <History listingId={listing.id} />
           </section>
         </div>
+      </div>
+    </div>
+  )
+}
+
+function PaymentBox({ listing }: { listing: Listing }) {
+  const { t } = useTranslation()
+  return (
+    <div className="flex gap-3 rounded-lg border-2 border-ink bg-lime-soft p-4">
+      <Banknote className="mt-0.5 size-5 shrink-0" aria-hidden />
+      <div className="min-w-0">
+        <p className="font-semibold">
+          {t('payment.paid', {
+            amount: formatMoney(listing.paid_amount ?? 0, listing.offer_currency || undefined),
+          })}
+        </p>
+        <p className="text-sm text-ink-soft">
+          {listing.paid_at && formatDate(listing.paid_at)}
+          {listing.payment_reference &&
+            ` · ${t('payment.reference')}: ${listing.payment_reference}`}
+        </p>
+        {listing.has_payment_receipt && (
+          <button
+            type="button"
+            onClick={() => void openPaymentReceipt(listing.id)}
+            className="mt-1 text-sm font-semibold text-blue hover:underline"
+          >
+            {t('payment.receipt')}
+          </button>
+        )}
       </div>
     </div>
   )

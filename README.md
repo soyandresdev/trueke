@@ -17,7 +17,7 @@ Everything happens in real time: offers, status changes, chat and notifications.
 
 - **Login without passwords**: phone number and a one-time code (SMS with Twilio; in development, the code is in the logs).
 - **Listings with fields per category**: each category defines its own fields with a JSON Schema in the admin.
-- **A state machine**: in review → offer made → accepted → pickup → completed (or cancelled). Every action has permissions and a full history.
+- **A state machine**: in review → offer made → accepted → pickup → completed → paid (or cancelled). Every action has permissions and a full history.
 - **Live chat** for each listing, with private attachments and read receipts.
 - **Live notifications** (bell and pop-up messages) through one authenticated WebSocket.
 - **Operator panel**: search, filters, the seller's profile and documents, offers and pickups.

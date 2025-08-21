@@ -41,6 +41,13 @@ PATHS = {
         ("pickup", "operator", {"pickup_by": "seller"}),
         ("complete", "operator", {}),
     ],
+    "paid": [
+        OFFER,
+        ("accept", "seller", {}),
+        ("pickup", "operator", {"pickup_by": "platform"}),
+        ("complete", "operator", {}),
+        ("pay", "operator", {"reference": "TRF-20260915"}),
+    ],
     "rejected": [OFFER, ("reject", "seller", {"reason": "reject_reason"})],
     "cancelled": [("cancel", "seller", {"reason": "cancel_reason"})],
 }
@@ -71,7 +78,7 @@ LISTINGS = [
     ("demo-mirrorless", "fotografia", "laura", "in_review", 0, "Cámara mirrorless con lente kit",
      "Menos de 5.000 disparos. Dos baterías.", "like_new",
      {"kind": "camera", "brand": "Fujifilm", "mount": "X"}),
-    ("demo-lente", "fotografia", "laura", "completed", 850_000, "Lente 50 mm f/1.8",
+    ("demo-lente", "fotografia", "laura", "paid", 850_000, "Lente 50 mm f/1.8",
      "Sin hongos ni rayones. Con tapas.", "like_new", {"kind": "lens", "brand": "Canon", "mount": "RF"}),
     ("demo-camara-pelicula", "fotografia", "mateo", "offered", 350_000, "Cámara de película 35 mm",
      "Fotómetro funcionando. Probada con un rollo este año.", "fair",
@@ -220,6 +227,8 @@ class Command(BaseCommand):
         for action, who, data in PATHS[path]:
             if action == "offer":
                 data = {"amount": amount, "currency": settings.LISTING_CURRENCY}
+            elif action == "pay":
+                data = {**data, "amount": amount}
             # Los textos de las acciones (motivo, indicaciones) van como claves de TEXTS.
             data = {
                 key: texts.get(value, value) if isinstance(value, str) else value

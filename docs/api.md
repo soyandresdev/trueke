@@ -49,7 +49,8 @@ The API answers in the language of `Accept-Language`: `en` by default, or `es`. 
 | `GET /api/listings/stats/` | same as the list | How many listings are in each status |
 | `GET /api/listings/{id}/` · `PATCH` | seller (edit only in review) | Detail with `available_actions` |
 | `POST /api/listings/{id}/images/` · `DELETE …/images/{image_id}/` | seller, in review | Photos (JPG/PNG/WebP, 8 MB, up to 10) |
-| `POST /api/listings/{id}/{action}/` | depends on the action | `offer {amount, currency}`, `accept`, `reject {reason}`, `pickup {pickup_by, pickup_date, notes}`, `complete`, `cancel {reason}` |
+| `POST /api/listings/{id}/{action}/` | depends on the action | `offer {amount, currency}`, `accept`, `reject {reason}`, `pickup {pickup_by, pickup_date, notes}`, `complete`, `pay {amount, paid_at, reference, receipt}` (multipart if there is a receipt), `cancel {reason}` |
+| `GET /api/listings/{id}/receipt/` | seller and operators | Payment receipt (private) |
 | `GET /api/listings/{id}/events/` | whoever can see it | History of the listing |
 | `GET /api/listings/{id}/messages/` · `POST` | seller and operators | Chat. Cursor pagination, newest first. Send JSON, or multipart with `attachment`. |
 | `POST /api/listings/{id}/messages/read/` | same | Marks the other side's messages as read |

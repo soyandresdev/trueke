@@ -20,6 +20,7 @@ DATA = {
     "reject": {"reason": "Muy poco"},
     "pickup": {"pickup_by": "platform", "pickup_date": "2026-10-01", "notes": "Portería"},
     "complete": {},
+    "pay": {"amount": "450000", "reference": "TRF-001"},
     "cancel": {"reason": "Ya lo vendí"},
 }
 
@@ -30,6 +31,7 @@ ALLOWED = [
     ("reject", S.OFFERED, "seller", S.CANCELLED),
     ("pickup", S.ACCEPTED, "operator", S.PICKUP_SENT),
     ("complete", S.PICKUP_SENT, "operator", S.COMPLETED),
+    ("pay", S.COMPLETED, "operator", S.PAID),
     ("cancel", S.IN_REVIEW, "seller", S.CANCELLED),
     ("cancel", S.IN_REVIEW, "operator", S.CANCELLED),
     ("cancel", S.OFFERED, "seller", S.CANCELLED),
@@ -189,3 +191,56 @@ def test_signal_not_sent_when_transition_fails(api, people, django_capture_on_co
     with django_capture_on_commit_callbacks() as callbacks:
         post(api, listing, "cancel", people["seller"])
     assert callbacks == []
+
+
+def test_pay_with_receipt_is_private_and_recorded(api, people, django_capture_on_commit_callbacks):
+    from django.core.files.uploadedfile import SimpleUploadedFile
+
+    from apps.notifications.models import Notification
+
+    listing = ListingFactory(seller=people["seller"], status=S.COMPLETED, offer_amount="450000")
+    api.force_authenticate(people["operator"])
+    receipt = SimpleUploadedFile("transferencia laura.pdf", b"%PDF recibo", content_type="application/pdf")
+    with django_capture_on_commit_callbacks(execute=True):
+        response = api.post(
+            reverse("listing-pay", args=[listing.pk]),
+            {"amount": "450000", "reference": "TRF-001", "paid_at": "2026-09-25", "receipt": receipt},
+            format="multipart",
+        )
+    assert response.status_code == 200, response.data
+    assert response.data["status"] == "paid"
+    assert response.data["has_payment_receipt"] is True
+    listing.refresh_from_db()
+    assert (str(listing.paid_amount), str(listing.paid_at), listing.payment_reference) == (
+        "450000.00",
+        "2026-09-25",
+        "TRF-001",
+    )
+    assert "laura" not in listing.payment_receipt.name
+    event = listing.events.get()
+    assert event.data["receipt"] is True and "transferencia" not in str(event.data)
+    assert Notification.objects.get(user=people["seller"]).kind == "listing.pay"
+
+    # El comprobante lo descargan el vendedor y los operadores; nadie más.
+    for user, expected in [(people["seller"], 200), (people["operator"], 200), (people["stranger"], 404)]:
+        api.force_authenticate(user)
+        download = api.get(reverse("listing-receipt", args=[listing.pk]))
+        assert download.status_code == expected
+        if expected == 200:
+            assert b"".join(download.streaming_content) == b"%PDF recibo"
+
+
+def test_pay_without_date_uses_today_and_rejects_bad_files(api, people):
+    from django.core.files.uploadedfile import SimpleUploadedFile
+    from django.utils import timezone
+
+    listing = ListingFactory(seller=people["seller"], status=S.COMPLETED)
+    api.force_authenticate(people["operator"])
+    bad = SimpleUploadedFile("recibo.exe", b"MZ", content_type="application/octet-stream")
+    response = api.post(
+        reverse("listing-pay", args=[listing.pk]), {"amount": "1", "receipt": bad}, format="multipart"
+    )
+    assert response.status_code == 400
+    response = api.post(reverse("listing-pay", args=[listing.pk]), {"amount": "1000"}, format="json")
+    assert response.data["paid_at"] == str(timezone.localdate())
+    assert response.data["has_payment_receipt"] is False

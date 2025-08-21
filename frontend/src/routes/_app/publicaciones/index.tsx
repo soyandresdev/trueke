@@ -18,6 +18,7 @@ const statuses: ListingStatus[] = [
   'accepted',
   'pickup_sent',
   'completed',
+  'paid',
   'cancelled',
 ]
 const isStatus = (value: unknown): value is ListingStatus =>

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Trueke\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 09:23-0500\n"
+"POT-Creation-Date: 2026-09-19 09:52-0500\n"
 "PO-Revision-Date: 2026-09-20 09:00-0500\n"
 "Last-Translator: \n"
 "Language-Team: Español\n"
@@ -181,6 +181,9 @@ msgstr "Recogida enviada"
 msgid "Completada"
 msgstr "Completada"
 
+msgid "Pagada"
+msgstr "Pagada"
+
 msgid "Cancelada"
 msgstr "Cancelada"
 
@@ -253,6 +256,20 @@ msgstr "indicaciones de recogida"
 msgid "motivo de cancelación"
 msgstr "motivo de cancelación"
 
+msgid "monto pagado"
+msgstr "monto pagado"
+
+#, fuzzy
+#| msgid "fecha de recogida"
+msgid "fecha de pago"
+msgstr "fecha de recogida"
+
+msgid "referencia del pago"
+msgstr "referencia del pago"
+
+msgid "comprobante de pago"
+msgstr "comprobante de pago"
+
 msgid "publicación"
 msgstr "publicación"
 
@@ -316,6 +333,9 @@ msgstr "Coordinar recogida"
 msgid "Completar venta"
 msgstr "Completar venta"
 
+msgid "Registrar pago"
+msgstr "Registrar pago"
+
 msgid "Cancelar"
 msgstr "Cancelar"
 
@@ -378,6 +398,9 @@ msgstr "Recogida coordinada"
 
 msgid "Venta completada"
 msgstr "Venta completada"
+
+msgid "Pago registrado"
+msgstr "Pago registrado"
 
 msgid "Publicación cancelada"
 msgstr "Publicación cancelada"

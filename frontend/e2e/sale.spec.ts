@@ -146,6 +146,20 @@ test('la operadora coordina la recogida y completa la venta', async () => {
   await expect(seller.getByRole('figure')).toContainText('Vendido por')
 })
 
+test('la operadora registra el pago y la vendedora lo ve con su comprobante', async () => {
+  await operator.getByRole('button', { name: 'Registrar pago' }).click()
+  const dialog = operator.getByRole('dialog', { name: 'Registrar el pago' })
+  await expect(dialog.getByLabel('Monto pagado (COP)')).toHaveValue('380000')
+  await dialog.getByLabel('Referencia de la transferencia').fill('TRF-E2E-001')
+  await dialog.getByLabel('Comprobante').setInputFiles(fixture('documento.pdf'))
+  await dialog.getByRole('button', { name: 'Registrar pago' }).click()
+
+  await expect(seller.getByText('Pagada', { exact: true })).toBeVisible()
+  await expect(seller.getByText(/Te pagamos \$\s?380\.000/).first()).toBeVisible()
+  await expect(seller.getByText(/Referencia: TRF-E2E-001/)).toBeVisible()
+  await expect(seller.getByRole('button', { name: 'Ver comprobante' })).toBeVisible()
+})
+
 test('la vendedora ve todo el historial y sus notificaciones', async () => {
   const history = seller.getByRole('heading', { name: 'Historial' }).locator('..')
   for (const step of [
@@ -154,11 +168,12 @@ test('la vendedora ve todo el historial y sus notificaciones', async () => {
     'Oferta aceptada',
     'Recogida coordinada',
     'Venta completada',
+    'Pago registrado',
   ]) {
     await expect(history.getByText(step)).toBeVisible()
   }
   await seller.getByRole('button', { name: /^Notificaciones/ }).click()
   await expect(
-    seller.getByText('Venta completada: «Teclado controlador MIDI 49 teclas».'),
+    seller.getByText(/Te pagamos \$\s?380\.000 por «Teclado controlador MIDI 49 teclas»/),
   ).toBeVisible()
 })

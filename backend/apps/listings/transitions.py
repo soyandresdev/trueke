@@ -1,8 +1,8 @@
 """Máquina de estados de las publicaciones: el único sitio donde cambia `Listing.status`.
 
     in_review ──offer──▶ offered ──accept──▶ accepted ──pickup──▶ pickup_sent ──complete──▶ completed
-        │                  │ reject
-        └──────cancel──────┴────────────────▶ cancelled
+        │                  │ reject                                                          │ pay
+        └──────cancel──────┴────────────────▶ cancelled                                   paid
 
 Cada transición dice desde qué estados se puede hacer y quién la hace. Al aplicarla se guarda
 un `ListingEvent` y, cuando la transacción se confirma, se emite `listing_transitioned`.
@@ -43,6 +43,7 @@ TRANSITIONS = {
         Transition("reject", frozenset({S.OFFERED}), S.CANCELLED, SELLER, _("Rechazar oferta")),
         Transition("pickup", frozenset({S.ACCEPTED}), S.PICKUP_SENT, OPERATOR, _("Coordinar recogida")),
         Transition("complete", frozenset({S.PICKUP_SENT}), S.COMPLETED, OPERATOR, _("Completar venta")),
+        Transition("pay", frozenset({S.COMPLETED}), S.PAID, OPERATOR, _("Registrar pago")),
         Transition("cancel", frozenset({S.IN_REVIEW, S.OFFERED}), S.CANCELLED, SELLER, _("Cancelar")),
     ]
 }
@@ -116,6 +117,14 @@ def apply(listing: Listing, user, name: str, **data) -> ListingEvent:
             locked.pickup_notes = data.get("notes", "")
         elif name in ("cancel", "reject"):
             locked.cancel_reason = data.get("reason", "")
+        elif name == "pay":
+            locked.paid_amount = data["amount"]
+            locked.paid_at = data.get("paid_at") or timezone.localdate()
+            locked.payment_reference = data.get("reference", "")
+            if receipt := data.pop("receipt", None):
+                locked.payment_receipt = receipt
+            # En el historial solo consta si hubo comprobante: el nombre puede tener datos personales.
+            data["receipt"] = bool(receipt)
 
         from_status = locked.status
         locked.status = t.target

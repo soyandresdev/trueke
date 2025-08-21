@@ -7,6 +7,8 @@ from django.db import models
 from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
 
+from apps.accounts.files import private_storage, validate_private_file
+
 from .schema import empty_schema, validate_fields_schema
 
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
@@ -38,6 +40,10 @@ class Category(models.Model):
         return self.name_en if get_language() == "en" and self.name_en else self.name
 
 
+def listing_receipt_path(instance, filename):
+    return f"listings/{instance.pk}/receipts/{uuid.uuid4().hex}{PurePath(filename).suffix.lower()}"
+
+
 class Listing(models.Model):
     class Status(models.TextChoices):
         IN_REVIEW = "in_review", _("En revisión")
@@ -45,6 +51,7 @@ class Listing(models.Model):
         ACCEPTED = "accepted", _("Aceptada")
         PICKUP_SENT = "pickup_sent", _("Recogida enviada")
         COMPLETED = "completed", _("Completada")
+        PAID = "paid", _("Pagada")
         CANCELLED = "cancelled", _("Cancelada")
 
     class Condition(models.TextChoices):
@@ -87,6 +94,20 @@ class Listing(models.Model):
     pickup_date = models.DateField(_("fecha de recogida"), null=True, blank=True)
     pickup_notes = models.CharField(_("indicaciones de recogida"), max_length=500, blank=True)
     cancel_reason = models.CharField(_("motivo de cancelación"), max_length=500, blank=True)
+
+    # Pago al vendedor (transición `pay`). El comprobante es privado: se descarga por la API.
+    paid_amount = models.DecimalField(
+        _("monto pagado"), max_digits=12, decimal_places=2, null=True, blank=True
+    )
+    paid_at = models.DateField(_("fecha de pago"), null=True, blank=True)
+    payment_reference = models.CharField(_("referencia del pago"), max_length=80, blank=True)
+    payment_receipt = models.FileField(
+        _("comprobante de pago"),
+        upload_to=listing_receipt_path,
+        storage=private_storage,
+        validators=[validate_private_file],
+        blank=True,
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

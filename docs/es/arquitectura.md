@@ -45,9 +45,10 @@ stateDiagram-v2
   offered --> accepted: accept (vendedor, con perfil completo)
   accepted --> pickup_sent: pickup (operador)
   pickup_sent --> completed: complete (operador)
+  completed --> paid: pay (operador, con monto, fecha y comprobante)
   in_review --> cancelled: cancel (vendedor u operador)
   offered --> cancelled: cancel (vendedor u operador) · reject (vendedor)
-  completed --> [*]
+  paid --> [*]
   cancelled --> [*]
 ```
 
