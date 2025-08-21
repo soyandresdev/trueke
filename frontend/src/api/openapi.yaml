@@ -550,6 +550,40 @@ paths:
               schema:
                 $ref: '#/components/schemas/Listing'
           description: ''
+  /api/listings/{id}/pay/:
+    post:
+      operationId: listings_pay_create
+      summary: Record payment
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this listing.
+        required: true
+      tags:
+      - listings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PayRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PayRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+          description: ''
   /api/listings/{id}/pickup/:
     post:
       operationId: listings_pickup_create
@@ -584,6 +618,43 @@ paths:
               schema:
                 $ref: '#/components/schemas/Listing'
           description: ''
+  /api/listings/{id}/receipt/:
+    get:
+      operationId: listings_receipt_retrieve
+      description: 'Comprobante de pago: lo ven el vendedor y los operadores.'
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+        description: Código de la categoría
+      - in: query
+        name: city
+        schema:
+          type: string
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this listing.
+        required: true
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Busca en nombre, descripción y vendedor
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Uno o varios estados separados por coma
+      tags:
+      - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: Archivo
   /api/listings/{id}/reject/:
     post:
       operationId: listings_reject_create
@@ -922,6 +993,7 @@ components:
       - reject
       - pickup
       - complete
+      - pay
       - cancel
       type: string
       description: |-
@@ -930,6 +1002,7 @@ components:
         * `reject` - reject
         * `pickup` - pickup
         * `complete` - complete
+        * `pay` - pay
         * `cancel` - cancel
     BlankEnum:
       enum:
@@ -985,6 +1058,7 @@ components:
       - listing.reject
       - listing.pickup
       - listing.complete
+      - listing.pay
       - listing.cancel
       - message.new
       type: string
@@ -995,6 +1069,7 @@ components:
         * `listing.reject` - Offer declined
         * `listing.pickup` - Pickup arranged
         * `listing.complete` - Sale completed
+        * `listing.pay` - Payment recorded
         * `listing.cancel` - Listing cancelled
         * `message.new` - New messages
     LanguageEnum:
@@ -1085,6 +1160,25 @@ components:
           type: string
           readOnly: true
           title: Cancellation reason
+        paid_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+          nullable: true
+          title: Amount paid
+        paid_at:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          title: Payment date
+        payment_reference:
+          type: string
+          readOnly: true
+        has_payment_receipt:
+          type: boolean
+          readOnly: true
         available_actions:
           type: array
           items:
@@ -1109,10 +1203,14 @@ components:
       - condition
       - created_at
       - description
+      - has_payment_receipt
       - id
       - images
       - offer_amount
       - offer_currency
+      - paid_amount
+      - paid_at
+      - payment_reference
       - pickup_address
       - pickup_by
       - pickup_date
@@ -1246,6 +1344,8 @@ components:
           type: integer
         completed:
           type: integer
+        paid:
+          type: integer
         cancelled:
           type: integer
       required:
@@ -1254,6 +1354,7 @@ components:
       - completed
       - in_review
       - offered
+      - paid
       - pickup_sent
     ListingStatusEnum:
       enum:
@@ -1262,6 +1363,7 @@ components:
       - accepted
       - pickup_sent
       - completed
+      - paid
       - cancelled
       type: string
       description: |-
@@ -1270,6 +1372,7 @@ components:
         * `accepted` - Accepted
         * `pickup_sent` - Pickup scheduled
         * `completed` - Completed
+        * `paid` - Paid
         * `cancelled` - Cancelled
     MarkRead:
       type: object
@@ -1399,6 +1502,7 @@ components:
       - accepted
       - pickup_sent
       - completed
+      - paid
       - cancelled
       type: string
       description: |-
@@ -1407,6 +1511,7 @@ components:
         * `accepted` - accepted
         * `pickup_sent` - pickup_sent
         * `completed` - completed
+        * `paid` - paid
         * `cancelled` - cancelled
     NotificationsSeen:
       type: object
@@ -1615,6 +1720,25 @@ components:
           type: string
           title: ID number
           maxLength: 30
+    PayRequest:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        paid_at:
+          type: string
+          format: date
+          nullable: true
+        reference:
+          type: string
+          maxLength: 80
+        receipt:
+          type: string
+          format: binary
+      required:
+      - amount
     PickupPickupByEnum:
       enum:
       - seller

@@ -1,11 +1,13 @@
 from django.conf import settings
 from django.db.models import Count, Q
 from django.utils.translation import gettext as _
-from drf_spectacular.utils import OpenApiParameter, extend_schema, inline_serializer
+from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema, inline_serializer
 from rest_framework import generics, mixins, parsers, permissions, serializers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.response import Response
+
+from apps.accounts.views import serve_private_file
 
 from . import transitions
 from .models import Category, Listing, ListingImage
@@ -17,6 +19,7 @@ from .serializers import (
     ListingImageSerializer,
     ListingSerializer,
     OfferSerializer,
+    PaySerializer,
     PickupSerializer,
     ReasonSerializer,
 )
@@ -124,6 +127,12 @@ class ListingViewSet(
         counts = {row["status"]: row["n"] for row in rows}
         return Response({s: counts.get(s, 0) for s in Listing.Status.values})
 
+    @extend_schema(responses={(200, "application/octet-stream"): OpenApiResponse(description="Archivo")})
+    @action(detail=True, methods=["get"])
+    def receipt(self, request, pk=None):
+        """Comprobante de pago: lo ven el vendedor y los operadores."""
+        return serve_private_file(self.get_object().payment_receipt)
+
     @extend_schema(responses={200: ListingEventSerializer(many=True)})
     @action(detail=True, methods=["get"], pagination_class=None)
     def events(self, request, pk=None):
@@ -163,4 +172,5 @@ class ListingViewSet(
     reject = transition_action("reject", ReasonSerializer)
     pickup = transition_action("pickup", PickupSerializer)
     complete = transition_action("complete", EmptySerializer)
+    pay = transition_action("pay", PaySerializer)
     cancel = transition_action("cancel", ReasonSerializer)

@@ -49,7 +49,8 @@ Se responde en el idioma de `Accept-Language` (`en` por defecto, o `es`): mensaj
 | `GET /api/listings/stats/` | ídem lista | Cuántas hay en cada estado |
 | `GET /api/listings/{id}/` · `PATCH` | vendedor (editar solo en revisión) | Detalle con `available_actions` |
 | `POST /api/listings/{id}/images/` · `DELETE …/images/{image_id}/` | vendedor, en revisión | Fotos (JPG/PNG/WebP, 8 MB, hasta 10) |
-| `POST /api/listings/{id}/{acción}/` | según la acción | `offer {amount, currency}`, `accept`, `reject {reason}`, `pickup {pickup_by, pickup_date, notes}`, `complete`, `cancel {reason}` |
+| `POST /api/listings/{id}/{acción}/` | según la acción | `offer {amount, currency}`, `accept`, `reject {reason}`, `pickup {pickup_by, pickup_date, notes}`, `complete`, `pay {amount, paid_at, reference, receipt}` (multipart si hay comprobante), `cancel {reason}` |
+| `GET /api/listings/{id}/receipt/` | vendedor y operadores | Comprobante de pago (privado) |
 | `GET /api/listings/{id}/events/` | quien la ve | Historial de la publicación |
 | `GET /api/listings/{id}/messages/` · `POST` | vendedor y operadores | Chat. Paginado por cursor, del más nuevo al más viejo. Envío JSON o multipart con `attachment`. |
 | `POST /api/listings/{id}/messages/read/` | ídem | Marca leídos los mensajes del otro lado |

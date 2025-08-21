@@ -2,6 +2,10 @@
 
 # Changelog
 
+## Unreleased
+
+- **Payments are recorded.** After the sale is completed, the operator records the payment (amount, date, transfer reference and a private receipt). The listing moves to the new "paid" status and the seller sees it live and can download the receipt.
+
 ## 0.1.0 · 2026-09-20
 
 The first version of Trueke.

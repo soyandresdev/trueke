@@ -29,12 +29,14 @@
     "accepted": "Aceptada",
     "pickup_sent": "Recogida enviada",
     "completed": "Completada",
-    "cancelled": "Cancelada"
+    "cancelled": "Cancelada",
+    "paid": "Pagada"
   },
   "ticket": {
     "label": "Te ofrecemos",
     "sold": "Vendido por",
-    "platform": "Oferta de Trueke"
+    "platform": "Oferta de Trueke",
+    "paid": "Te pagamos"
   },
   "notifications": {
     "bell_one": "Notificaciones: {{count}} sin ver",
@@ -52,7 +54,8 @@
         "reject": "{{actor}} rechazó la oferta por «{{title}}».",
         "pickup": "La recogida de «{{title}}» está coordinada.",
         "complete": "Venta completada: «{{title}}».",
-        "cancel": "«{{title}}» fue cancelada."
+        "cancel": "«{{title}}» fue cancelada.",
+        "pay": "Te pagamos {{amount}} por «{{title}}»."
       },
       "message": {
         "new_one": "Mensaje nuevo de {{actor}} en «{{title}}».",
@@ -197,7 +200,8 @@
     "reject": "Oferta rechazada",
     "pickup": "Recogida coordinada",
     "complete": "Venta completada",
-    "cancel": "Publicación cancelada"
+    "cancel": "Publicación cancelada",
+    "pay": "Pago registrado"
   },
   "statusNote": {
     "seller": {
@@ -205,16 +209,18 @@
       "offered": "¡Tienes una oferta! Acéptala o recházala.",
       "accepted": "Aceptaste la oferta. Estamos coordinando la recogida.",
       "pickup_sent": "La recogida está coordinada. Cuando recibamos el artículo, te pagamos.",
-      "completed": "Venta completada. ¡Gracias por vender con Trueke!",
-      "cancelled": "Esta publicación está cancelada."
+      "completed": "Recibimos tu artículo. Estamos preparando tu pago.",
+      "cancelled": "Esta publicación está cancelada.",
+      "paid": "¡Listo! Te pagamos por este artículo. Gracias por vender con Trueke."
     },
     "operator": {
       "in_review": "Pendiente de revisión: revisa las fotos y haz una oferta.",
       "offered": "Esperando la respuesta del vendedor.",
       "accepted": "El vendedor aceptó: coordina la recogida.",
       "pickup_sent": "Recogida en curso. Complétala cuando llegue el artículo.",
-      "completed": "Venta completada.",
-      "cancelled": "Publicación cancelada."
+      "completed": "Artículo recibido: registra el pago al vendedor.",
+      "cancelled": "Publicación cancelada.",
+      "paid": "Venta pagada y cerrada."
     }
   },
   "actions": {
@@ -264,6 +270,19 @@
       "lead": "No se puede deshacer. Puedes contarnos por qué.",
       "confirm": "Cancelar publicación",
       "done": "Publicación cancelada."
+    },
+    "pay": {
+      "button": "Registrar pago",
+      "title": "Registrar el pago",
+      "lead": "Registra la transferencia al vendedor. Verá el monto, la fecha y el comprobante.",
+      "amount": "Monto pagado (COP)",
+      "date": "Fecha del pago",
+      "dateHint": "Si la dejas vacía, se usa la de hoy.",
+      "reference": "Referencia de la transferencia",
+      "receipt": "Comprobante",
+      "receiptHint": "PDF, JPG o PNG de hasta 5 MB. Solo lo ven el vendedor y el equipo.",
+      "confirm": "Registrar pago",
+      "done": "Pago registrado."
     }
   },
   "chat": {
@@ -402,5 +421,10 @@
     "tagline": "Véndenos lo que ya no usas.",
     "nav": "Enlaces del pie de página",
     "license": "Proyecto open source con licencia MIT."
+  },
+  "payment": {
+    "paid": "Te pagamos {{amount}}",
+    "reference": "Referencia",
+    "receipt": "Ver comprobante"
   }
 }

@@ -29,12 +29,14 @@
     "accepted": "Accepted",
     "pickup_sent": "Pickup scheduled",
     "completed": "Completed",
-    "cancelled": "Cancelled"
+    "cancelled": "Cancelled",
+    "paid": "Paid"
   },
   "ticket": {
     "label": "Our offer",
     "sold": "Sold for",
-    "platform": "Trueke’s offer"
+    "platform": "Trueke’s offer",
+    "paid": "We paid you"
   },
   "notifications": {
     "bell_one": "Notifications: {{count}} unseen",
@@ -52,7 +54,8 @@
         "reject": "{{actor}} declined the offer for “{{title}}”.",
         "pickup": "Pickup for “{{title}}” is arranged.",
         "complete": "Sale completed: “{{title}}”.",
-        "cancel": "“{{title}}” was cancelled."
+        "cancel": "“{{title}}” was cancelled.",
+        "pay": "We paid you {{amount}} for “{{title}}”."
       },
       "message": {
         "new_one": "New message from {{actor}} on “{{title}}”.",
@@ -197,7 +200,8 @@
     "reject": "Offer declined",
     "pickup": "Pickup scheduled",
     "complete": "Sale completed",
-    "cancel": "Listing cancelled"
+    "cancel": "Listing cancelled",
+    "pay": "Payment recorded"
   },
   "statusNote": {
     "seller": {
@@ -205,16 +209,18 @@
       "offered": "You have an offer! Accept or decline it.",
       "accepted": "You accepted the offer. We're arranging the pickup.",
       "pickup_sent": "Pickup is scheduled. We'll pay you once we receive the item.",
-      "completed": "Sale completed. Thanks for selling with Trueke!",
-      "cancelled": "This listing is cancelled."
+      "completed": "We received your item. We're getting your payment ready.",
+      "cancelled": "This listing is cancelled.",
+      "paid": "Done! We paid you for this item. Thanks for selling with Trueke."
     },
     "operator": {
       "in_review": "Pending review: check the photos and make an offer.",
       "offered": "Waiting for the seller's answer.",
       "accepted": "The seller accepted: arrange the pickup.",
       "pickup_sent": "Pickup in progress. Complete it when the item arrives.",
-      "completed": "Sale completed.",
-      "cancelled": "Listing cancelled."
+      "completed": "Item received: record the payment to the seller.",
+      "cancelled": "Listing cancelled.",
+      "paid": "Sale paid and closed."
     }
   },
   "actions": {
@@ -264,6 +270,19 @@
       "lead": "This can't be undone. You can tell us why.",
       "confirm": "Cancel listing",
       "done": "Listing cancelled."
+    },
+    "pay": {
+      "button": "Record payment",
+      "title": "Record the payment",
+      "lead": "Record the transfer to the seller. They will see the amount, the date and the receipt.",
+      "amount": "Amount paid (COP)",
+      "date": "Payment date",
+      "dateHint": "If you leave it empty, today is used.",
+      "reference": "Transfer reference",
+      "receipt": "Receipt",
+      "receiptHint": "PDF, JPG or PNG up to 5 MB. Only the seller and the team can see it.",
+      "confirm": "Record payment",
+      "done": "Payment recorded."
     }
   },
   "chat": {
@@ -402,5 +421,10 @@
     "tagline": "Sell us what you no longer use.",
     "nav": "Footer links",
     "license": "Open source project under the MIT license."
+  },
+  "payment": {
+    "paid": "We paid you {{amount}}",
+    "reference": "Reference",
+    "receipt": "View receipt"
   }
 }

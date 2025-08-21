@@ -45,9 +45,10 @@ stateDiagram-v2
   offered --> accepted: accept (seller, with a complete profile)
   accepted --> pickup_sent: pickup (operator)
   pickup_sent --> completed: complete (operator)
+  completed --> paid: pay (operator, with amount, date and receipt)
   in_review --> cancelled: cancel (seller or operator)
   offered --> cancelled: cancel (seller or operator) · reject (seller)
-  completed --> [*]
+  paid --> [*]
   cancelled --> [*]
 ```
 

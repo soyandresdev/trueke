@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Trueke\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 09:23-0500\n"
+"POT-Creation-Date: 2026-09-19 09:52-0500\n"
 "PO-Revision-Date: 2026-09-19 08:50-0500\n"
 "Last-Translator: \n"
 "Language-Team: English\n"
@@ -178,6 +178,9 @@ msgstr "Pickup scheduled"
 msgid "Completada"
 msgstr "Completed"
 
+msgid "Pagada"
+msgstr "Paid"
+
 msgid "Cancelada"
 msgstr "Cancelled"
 
@@ -250,6 +253,18 @@ msgstr "pickup instructions"
 msgid "motivo de cancelación"
 msgstr "cancellation reason"
 
+msgid "monto pagado"
+msgstr "amount paid"
+
+msgid "fecha de pago"
+msgstr "payment date"
+
+msgid "referencia del pago"
+msgstr "payment reference"
+
+msgid "comprobante de pago"
+msgstr "payment receipt"
+
 msgid "publicación"
 msgstr "listing"
 
@@ -313,6 +328,9 @@ msgstr "Arrange pickup"
 msgid "Completar venta"
 msgstr "Complete sale"
 
+msgid "Registrar pago"
+msgstr "Record payment"
+
 msgid "Cancelar"
 msgstr "Cancel"
 
@@ -324,10 +342,11 @@ msgid "No se puede «%(action)s» una publicación %(status)s."
 msgstr "Can’t “%(action)s” a listing that is %(status)s."
 
 msgid ""
-"Completa tu perfil (datos, documento y certificado bancario) para aceptar la "
-"oferta."
+"Completa tu perfil (datos, documento y certificado bancario) para aceptar la"
+" oferta."
 msgstr ""
-"Complete your profile (details, ID and bank certificate) to accept the offer."
+"Complete your profile (details, ID and bank certificate) to accept the "
+"offer."
 
 msgid "Solo el vendedor puede editar la publicación."
 msgstr "Only the seller can edit the listing."
@@ -374,6 +393,9 @@ msgstr "Pickup arranged"
 
 msgid "Venta completada"
 msgstr "Sale completed"
+
+msgid "Pago registrado"
+msgstr "Payment recorded"
 
 msgid "Publicación cancelada"
 msgstr "Listing cancelled"

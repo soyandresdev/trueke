@@ -78,6 +78,7 @@ type TransitionData = {
   cancel: { reason?: string }
   accept: Record<string, never>
   complete: Record<string, never>
+  pay: { amount: string; paid_at?: string | null; reference?: string; receipt?: File | null }
 }
 
 async function postTransition<A extends ListingAction>(
@@ -85,13 +86,26 @@ async function postTransition<A extends ListingAction>(
   action: A,
   body: TransitionData[A],
 ) {
-  const options = { params: { path: { id } }, body } as never
+  // Con un archivo (el comprobante del pago) va como multipart; si no, como JSON.
+  const hasFile = Object.values(body).some((value) => value instanceof File)
+  const form = new FormData()
+  for (const [key, value] of Object.entries(body)) {
+    if (hasFile && value !== undefined && value !== null && value !== '') {
+      form.append(key, value as string | Blob)
+    }
+  }
+  const options = (
+    hasFile
+      ? { params: { path: { id } }, body: {}, bodySerializer: () => form }
+      : { params: { path: { id } }, body }
+  ) as never
   const call = {
     offer: () => api.POST('/api/listings/{id}/offer/', options),
     accept: () => api.POST('/api/listings/{id}/accept/', options),
     reject: () => api.POST('/api/listings/{id}/reject/', options),
     pickup: () => api.POST('/api/listings/{id}/pickup/', options),
     complete: () => api.POST('/api/listings/{id}/complete/', options),
+    pay: () => api.POST('/api/listings/{id}/pay/', options),
     cancel: () => api.POST('/api/listings/{id}/cancel/', options),
   }[action]
   return unwrap(await call())
@@ -163,4 +177,17 @@ export async function deleteListingImage(id: number, imageId: number) {
   })
   if (error !== undefined || !response.ok)
     throw { status: response.status, body: (error ?? {}) as ApiErrorBody }
+}
+
+/** Abre el comprobante de pago (privado) en otra pestaña. */
+export async function openPaymentReceipt(id: number) {
+  const win = window.open('', '_blank') // en el clic; si no, el navegador la bloquea
+  const { data } = await api.GET('/api/listings/{id}/receipt/', {
+    params: { path: { id } },
+    parseAs: 'blob',
+  })
+  if (!data || !win) return win?.close()
+  const url = URL.createObjectURL(data)
+  win.location.href = url
+  setTimeout(() => URL.revokeObjectURL(url), 60_000)
 }

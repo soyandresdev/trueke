@@ -10,6 +10,7 @@ const styles: Record<ListingStatus, string> = {
   accepted: 'bg-status-accepted text-ink',
   pickup_sent: 'bg-status-pickup text-ink',
   completed: 'bg-status-done text-white',
+  paid: 'bg-ink text-lime',
   cancelled: 'bg-status-cancelled text-ink',
 }
 

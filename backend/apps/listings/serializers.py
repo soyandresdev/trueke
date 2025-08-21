@@ -5,6 +5,8 @@ from django.utils.translation import gettext_lazy as _
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
+from apps.accounts.files import validate_private_file
+
 from . import transitions
 from .models import Category, Listing, ListingEvent, ListingImage
 from .queries import unread_filter
@@ -38,6 +40,7 @@ class ListingSerializer(serializers.ModelSerializer):
     terms_accepted = serializers.BooleanField(write_only=True, required=False)
     available_actions = serializers.SerializerMethodField()
     unread_messages = serializers.SerializerMethodField()
+    has_payment_receipt = serializers.SerializerMethodField()
 
     class Meta:
         model = Listing
@@ -63,6 +66,10 @@ class ListingSerializer(serializers.ModelSerializer):
             "pickup_date",
             "pickup_notes",
             "cancel_reason",
+            "paid_amount",
+            "paid_at",
+            "payment_reference",
+            "has_payment_receipt",
             "available_actions",
             "unread_messages",
             "created_at",
@@ -78,6 +85,9 @@ class ListingSerializer(serializers.ModelSerializer):
             "pickup_date",
             "pickup_notes",
             "cancel_reason",
+            "paid_amount",
+            "paid_at",
+            "payment_reference",
             "created_at",
             "updated_at",
         ]
@@ -85,6 +95,9 @@ class ListingSerializer(serializers.ModelSerializer):
     @extend_schema_field(serializers.ListField(child=serializers.ChoiceField(list(transitions.TRANSITIONS))))
     def get_available_actions(self, listing):
         return transitions.available(listing, self.context["request"].user)
+
+    def get_has_payment_receipt(self, listing) -> bool:
+        return bool(listing.payment_receipt)
 
     def get_unread_messages(self, listing) -> int:
         if hasattr(listing, "unread_messages"):
@@ -133,6 +146,13 @@ class PickupSerializer(serializers.Serializer):
     pickup_by = serializers.ChoiceField(Listing.PickupBy)
     pickup_date = serializers.DateField(required=False, allow_null=True)
     notes = serializers.CharField(max_length=500, required=False, allow_blank=True)
+
+
+class PaySerializer(serializers.Serializer):
+    amount = serializers.DecimalField(max_digits=12, decimal_places=2, min_value=1)
+    paid_at = serializers.DateField(required=False, allow_null=True)
+    reference = serializers.CharField(max_length=80, required=False, allow_blank=True)
+    receipt = serializers.FileField(required=False, validators=[validate_private_file])
 
 
 class ReasonSerializer(serializers.Serializer):

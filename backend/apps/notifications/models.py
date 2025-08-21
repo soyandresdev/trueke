@@ -13,6 +13,7 @@ class Notification(models.Model):
         LISTING_REJECT = "listing.reject", _("Oferta rechazada")
         LISTING_PICKUP = "listing.pickup", _("Recogida coordinada")
         LISTING_COMPLETE = "listing.complete", _("Venta completada")
+        LISTING_PAY = "listing.pay", _("Pago registrado")
         LISTING_CANCEL = "listing.cancel", _("Publicación cancelada")
         MESSAGE_NEW = "message.new", _("Mensajes nuevos")
 

@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from '@tanstack/react-router'
-import { useState, type ReactNode } from 'react'
+import { useId, useState, type ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
@@ -16,12 +16,13 @@ import { useFieldError } from '@/lib/useFieldError'
 import { useTransition, type ApiFailure } from '../api'
 
 // Orden y estilo de los botones: la acción que hace avanzar la venta va primero y destacada.
-const order: ListingAction[] = ['offer', 'accept', 'pickup', 'complete', 'reject', 'cancel']
+const order: ListingAction[] = ['offer', 'accept', 'pickup', 'complete', 'pay', 'reject', 'cancel']
 const variants = {
   offer: 'pop',
   accept: 'pop',
   pickup: 'primary',
   complete: 'primary',
+  pay: 'pop',
   reject: 'secondary',
   cancel: 'ghost',
 } as const
@@ -74,6 +75,7 @@ function ActionModal({
     <Modal open onClose={onClose} title={t(`actions.${action}.title`)}>
       {action === 'offer' && <OfferForm {...props} />}
       {action === 'pickup' && <PickupForm {...props} />}
+      {action === 'pay' && <PayForm {...props} />}
       {(action === 'reject' || action === 'cancel') && <ReasonForm {...props} action={action} />}
       {(action === 'accept' || action === 'complete') && <Confirm {...props} action={action} />}
     </Modal>
@@ -197,6 +199,78 @@ function PickupForm({ run, pending, error, onClose }: FormProps) {
       />
       {error}
       <Footer pending={pending} onClose={onClose} label={t('actions.pickup.confirm')} />
+    </form>
+  )
+}
+
+const paySchema = z.object({
+  amount: z
+    .string()
+    .trim()
+    .regex(/^\d+([.,]\d{1,2})?$/, 'validation.amount')
+    .transform((value) => value.replace(',', '.'))
+    .refine((value) => Number(value) > 0, 'validation.amount'),
+  paid_at: z.string().transform((value) => value || null),
+  reference: z.string().trim().max(80, 'validation.maxLength'),
+})
+
+function PayForm({ listing, run, pending, error, onClose }: FormProps) {
+  const { t } = useTranslation()
+  const fieldError = useFieldError()
+  const [receipt, setReceipt] = useState<File | null>(null)
+  const receiptId = useId()
+  const form = useForm({
+    resolver: zodResolver(paySchema),
+    // Por defecto se paga lo ofertado; sin fecha, el backend usa la de hoy.
+    defaultValues: {
+      amount: listing.offer_amount ? String(Number(listing.offer_amount)) : '',
+      paid_at: '',
+      reference: '',
+    },
+  })
+  return (
+    <form
+      noValidate
+      className="flex flex-col gap-4"
+      onSubmit={form.handleSubmit((values) => run({ ...values, receipt }))}
+    >
+      <p className="text-ink-soft">{t('actions.pay.lead')}</p>
+      <TextField
+        label={t('actions.pay.amount')}
+        inputMode="decimal"
+        error={fieldError(form.formState.errors.amount?.message)}
+        {...form.register('amount')}
+      />
+      <TextField
+        label={t('actions.pay.date')}
+        type="date"
+        hint={t('actions.pay.dateHint')}
+        {...form.register('paid_at')}
+      />
+      <TextField
+        label={t('actions.pay.reference')}
+        hint={t('ui.optional')}
+        error={fieldError(form.formState.errors.reference?.message)}
+        {...form.register('reference')}
+      />
+      <div className="flex flex-col gap-1.5 text-sm">
+        <label htmlFor={receiptId} className="font-semibold">
+          {t('actions.pay.receipt')}
+        </label>
+        <input
+          id={receiptId}
+          type="file"
+          accept=".pdf,.jpg,.jpeg,.png"
+          aria-describedby={`${receiptId}-hint`}
+          onChange={(event) => setReceipt(event.target.files?.[0] ?? null)}
+          className="text-sm file:mr-3 file:rounded-pill file:border file:border-line file:bg-white file:px-4 file:py-2 file:font-semibold"
+        />
+        <span id={`${receiptId}-hint`} className="text-muted">
+          {t('actions.pay.receiptHint')}
+        </span>
+      </div>
+      {error}
+      <Footer pending={pending} onClose={onClose} label={t('actions.pay.confirm')} />
     </form>
   )
 }
