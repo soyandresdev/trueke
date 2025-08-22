@@ -30,7 +30,8 @@
     "pickup_sent": "Pickup scheduled",
     "completed": "Completed",
     "cancelled": "Cancelled",
-    "paid": "Paid"
+    "paid": "Paid",
+    "countered": "Counteroffer"
   },
   "ticket": {
     "label": "Our offer",
@@ -55,7 +56,9 @@
         "pickup": "Pickup for “{{title}}” is arranged.",
         "complete": "Sale completed: “{{title}}”.",
         "cancel": "“{{title}}” was cancelled.",
-        "pay": "We paid you {{amount}} for “{{title}}”."
+        "pay": "We paid you {{amount}} for “{{title}}”.",
+        "counter": "{{actor}} asks for {{amount}} for “{{title}}”.",
+        "accept_counter": "We accepted your counteroffer of {{amount}} for “{{title}}”."
       },
       "message": {
         "new_one": "New message from {{actor}} on “{{title}}”.",
@@ -201,7 +204,9 @@
     "pickup": "Pickup scheduled",
     "complete": "Sale completed",
     "cancel": "Listing cancelled",
-    "pay": "Payment recorded"
+    "pay": "Payment recorded",
+    "counter": "Seller's counteroffer",
+    "accept_counter": "Counteroffer accepted"
   },
   "statusNote": {
     "seller": {
@@ -211,7 +216,8 @@
       "pickup_sent": "Pickup is scheduled. We'll pay you once we receive the item.",
       "completed": "We received your item. We're getting your payment ready.",
       "cancelled": "This listing is cancelled.",
-      "paid": "Done! We paid you for this item. Thanks for selling with Trueke."
+      "paid": "Done! We paid you for this item. Thanks for selling with Trueke.",
+      "countered": "You sent a counteroffer. The team can accept it or make you another offer."
     },
     "operator": {
       "in_review": "Pending review: check the photos and make an offer.",
@@ -220,7 +226,8 @@
       "pickup_sent": "Pickup in progress. Complete it when the item arrives.",
       "completed": "Item received: record the payment to the seller.",
       "cancelled": "Listing cancelled.",
-      "paid": "Sale paid and closed."
+      "paid": "Sale paid and closed.",
+      "countered": "The seller made a counteroffer: accept it or make another offer."
     }
   },
   "actions": {
@@ -283,6 +290,23 @@
       "receiptHint": "PDF, JPG or PNG up to 5 MB. Only the seller and the team can see it.",
       "confirm": "Record payment",
       "done": "Payment recorded."
+    },
+    "counter": {
+      "button": "Counteroffer",
+      "title": "Make a counteroffer",
+      "lead": "We offered {{offer}}. How much do you want?",
+      "amount": "Your price (COP)",
+      "left_one": "You have {{count}} counteroffer left.",
+      "left_other": "You have {{count}} counteroffers left.",
+      "confirm": "Send counteroffer",
+      "done": "Counteroffer sent."
+    },
+    "accept_counter": {
+      "button": "Accept counteroffer",
+      "title": "Accept the counteroffer?",
+      "lead": "The sale is accepted for the amount the seller asked for.",
+      "confirm": "Accept",
+      "done": "Counteroffer accepted."
     }
   },
   "chat": {
@@ -426,5 +450,10 @@
     "paid": "We paid you {{amount}}",
     "reference": "Reference",
     "receipt": "View receipt"
+  },
+  "counter": {
+    "sellerAsks": "The seller asks",
+    "sellerAsksAmount": "The seller asks for {{amount}}.",
+    "youAsked": "You asked for {{amount}}. We'll let you know when we review it."
   }
 }

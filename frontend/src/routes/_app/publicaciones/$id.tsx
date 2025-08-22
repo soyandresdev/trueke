@@ -117,6 +117,13 @@ function ListingView({ listing }: { listing: Listing }) {
           </div>
           {me?.role === 'operator' && !isOwner && <SellerCard sellerId={listing.seller.id} />}
 
+          {listing.status === 'countered' && listing.counter_amount && (
+            <p className="rounded-lg border-2 border-dashed border-blue bg-blue-soft/50 p-4 font-semibold">
+              {t(isOwner ? 'counter.youAsked' : 'counter.sellerAsksAmount', {
+                amount: formatMoney(listing.counter_amount, listing.offer_currency || undefined),
+              })}
+            </p>
+          )}
           {listing.status === 'paid' && <PaymentBox listing={listing} />}
 
           {listing.pickup_by && (

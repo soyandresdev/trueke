@@ -99,6 +99,8 @@ PRIVATE_FILE_MAX_MB = env.int("PRIVATE_FILE_MAX_MB", default=5)
 LISTING_IMAGE_MAX_MB = env.int("LISTING_IMAGE_MAX_MB", default=8)
 LISTING_MAX_IMAGES = env.int("LISTING_MAX_IMAGES", default=10)
 LISTING_CURRENCY = env("LISTING_CURRENCY", default="COP")
+# Contraofertas que puede hacer el vendedor en una misma publicación.
+LISTING_MAX_COUNTEROFFERS = env.int("LISTING_MAX_COUNTEROFFERS", default=2)
 CHAT_FILE_MAX_MB = env.int("CHAT_FILE_MAX_MB", default=10)
 
 S3_BUCKET = env("S3_BUCKET", default="")

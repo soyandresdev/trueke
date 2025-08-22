@@ -44,6 +44,7 @@ docker run --env-file prod.env trueke-backend celery -A config worker -l info
 | `PHONE_DEFAULT_REGION` | `CO` | Region for numbers without a country code |
 | `TIME_ZONE` | `America/Bogota` | |
 | `LISTING_CURRENCY` | `COP` | Currency of the offers |
+| `LISTING_MAX_COUNTEROFFERS` | `2` | Counteroffers a seller can make on one listing |
 | `JWT_ACCESS_MINUTES`, `JWT_REFRESH_DAYS` | `15`, `30` | Session length |
 | `OTP_THROTTLE_RATE`, `NEWSLETTER_THROTTLE_RATE` | `10/hour`, `20/hour` | Limits per IP address |
 | `LISTING_IMAGE_MAX_MB`, `LISTING_MAX_IMAGES`, `PRIVATE_FILE_MAX_MB`, `CHAT_FILE_MAX_MB` | `8`, `10`, `5`, `10` | File limits. If you change them, change them in the frontend too (`photoRules.ts`, `DocumentsCard.tsx`, `chat/api.ts`). |

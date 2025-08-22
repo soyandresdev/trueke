@@ -14,6 +14,7 @@ from .models import Category, Listing, ListingImage
 from .queries import unread_filter, visible_listings
 from .serializers import (
     CategorySerializer,
+    CounterSerializer,
     EmptySerializer,
     ListingEventSerializer,
     ListingImageSerializer,
@@ -60,7 +61,8 @@ def transition_action(name, serializer_class):
     view.__name__ = name
     # extend_schema va por fuera de action(), igual que al apilar @extend_schema sobre @action.
     schema = extend_schema(request=serializer_class, responses={200: ListingSerializer}, summary=str(t.label))
-    return schema(action(detail=True, methods=["post"], url_path=name)(view))
+    # En la URL con guion (accept-counter); el nombre de la transición sigue con guion bajo.
+    return schema(action(detail=True, methods=["post"], url_path=name.replace("_", "-"))(view))
 
 
 @extend_schema(parameters=FILTERS, methods=["GET"])
@@ -170,6 +172,8 @@ class ListingViewSet(
     offer = transition_action("offer", OfferSerializer)
     accept = transition_action("accept", EmptySerializer)
     reject = transition_action("reject", ReasonSerializer)
+    counter = transition_action("counter", CounterSerializer)
+    accept_counter = transition_action("accept_counter", EmptySerializer)
     pickup = transition_action("pickup", PickupSerializer)
     complete = transition_action("complete", EmptySerializer)
     pay = transition_action("pay", PaySerializer)

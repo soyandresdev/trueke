@@ -33,7 +33,7 @@ The API answers in the language of `Accept-Language`: `en` by default, or `es`. 
 | 401 | No session or expired token | `{"detail": "…"}` |
 | 403 | You can't do this action | `{"code": "not_allowed", "detail": "…"}` for transitions |
 | 404 | It doesn't exist **or it isn't yours**: another person's listing answers the same as a missing one | `{"detail": "…"}` |
-| 409 | The action isn't possible in this status | `{"code": "invalid_state" \| "profile_incomplete", "detail": "…"}` |
+| 409 | The action isn't possible in this status | `{"code": "invalid_state" \| "profile_incomplete" \| "counter_limit", "detail": "…"}` |
 | 429 | Too many requests (OTP, newsletter) | `{"detail": "…"}` |
 
 ## Endpoints
@@ -49,7 +49,7 @@ The API answers in the language of `Accept-Language`: `en` by default, or `es`. 
 | `GET /api/listings/stats/` | same as the list | How many listings are in each status |
 | `GET /api/listings/{id}/` · `PATCH` | seller (edit only in review) | Detail with `available_actions` |
 | `POST /api/listings/{id}/images/` · `DELETE …/images/{image_id}/` | seller, in review | Photos (JPG/PNG/WebP, 8 MB, up to 10) |
-| `POST /api/listings/{id}/{action}/` | depends on the action | `offer {amount, currency}`, `accept`, `reject {reason}`, `pickup {pickup_by, pickup_date, notes}`, `complete`, `pay {amount, paid_at, reference, receipt}` (multipart if there is a receipt), `cancel {reason}` |
+| `POST /api/listings/{id}/{action}/` | depends on the action | `offer {amount, currency}`, `accept`, `counter {amount}`, `accept-counter`, `reject {reason}`, `pickup {pickup_by, pickup_date, notes}`, `complete`, `pay {amount, paid_at, reference, receipt}` (multipart if there is a receipt), `cancel {reason}` |
 | `GET /api/listings/{id}/receipt/` | seller and operators | Payment receipt (private) |
 | `GET /api/listings/{id}/events/` | whoever can see it | History of the listing |
 | `GET /api/listings/{id}/messages/` · `POST` | seller and operators | Chat. Cursor pagination, newest first. Send JSON, or multipart with `attachment`. |

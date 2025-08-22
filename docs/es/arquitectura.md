@@ -43,6 +43,10 @@ stateDiagram-v2
   [*] --> in_review: el vendedor publica
   in_review --> offered: offer (operador)
   offered --> accepted: accept (vendedor, con perfil completo)
+  offered --> countered: counter (vendedor, rondas limitadas)
+  countered --> accepted: accept_counter (operador)
+  countered --> offered: offer (operador, otra oferta)
+  countered --> cancelled: cancel (vendedor u operador)
   accepted --> pickup_sent: pickup (operador)
   pickup_sent --> completed: complete (operador)
   completed --> paid: pay (operador, con monto, fecha y comprobante)

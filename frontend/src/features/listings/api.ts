@@ -77,6 +77,8 @@ type TransitionData = {
   reject: { reason?: string }
   cancel: { reason?: string }
   accept: Record<string, never>
+  counter: { amount: string }
+  accept_counter: Record<string, never>
   complete: Record<string, never>
   pay: { amount: string; paid_at?: string | null; reference?: string; receipt?: File | null }
 }
@@ -103,6 +105,8 @@ async function postTransition<A extends ListingAction>(
     offer: () => api.POST('/api/listings/{id}/offer/', options),
     accept: () => api.POST('/api/listings/{id}/accept/', options),
     reject: () => api.POST('/api/listings/{id}/reject/', options),
+    counter: () => api.POST('/api/listings/{id}/counter/', options),
+    accept_counter: () => api.POST('/api/listings/{id}/accept-counter/', options),
     pickup: () => api.POST('/api/listings/{id}/pickup/', options),
     complete: () => api.POST('/api/listings/{id}/complete/', options),
     pay: () => api.POST('/api/listings/{id}/pay/', options),

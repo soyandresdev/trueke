@@ -48,6 +48,7 @@ class Listing(models.Model):
     class Status(models.TextChoices):
         IN_REVIEW = "in_review", _("En revisión")
         OFFERED = "offered", _("Con oferta")
+        COUNTERED = "countered", _("Contraoferta")
         ACCEPTED = "accepted", _("Aceptada")
         PICKUP_SENT = "pickup_sent", _("Recogida enviada")
         COMPLETED = "completed", _("Completada")
@@ -90,6 +91,10 @@ class Listing(models.Model):
     status_changed_at = models.DateTimeField(_("último cambio de estado"), auto_now_add=True)
     offer_amount = models.DecimalField(_("oferta"), max_digits=12, decimal_places=2, null=True, blank=True)
     offer_currency = models.CharField(_("moneda"), max_length=3, blank=True)
+    # Lo que pide el vendedor en su contraoferta (transición `counter`).
+    counter_amount = models.DecimalField(
+        _("contraoferta"), max_digits=12, decimal_places=2, null=True, blank=True
+    )
     pickup_by = models.CharField(_("responsable de la recogida"), max_length=10, choices=PickupBy, blank=True)
     pickup_date = models.DateField(_("fecha de recogida"), null=True, blank=True)
     pickup_notes = models.CharField(_("indicaciones de recogida"), max_length=500, blank=True)
