@@ -188,3 +188,27 @@ test('la vendedora ve todo el historial y sus notificaciones', async () => {
     seller.getByText(/Te pagamos \$\s?420\.000 por «Teclado controlador MIDI 49 teclas»/),
   ).toBeVisible()
 })
+
+test('la operadora ve la venta en el panel y descarga el CSV', async () => {
+  await operator.getByRole('link', { name: 'Panel' }).first().click()
+  await expect(operator).toHaveURL(/\/panel$/)
+
+  // La venta recién pagada ya cuenta en los números y en el embudo.
+  const stats = operator.getByRole('region').filter({ hasText: 'Números' })
+  await expect(operator.getByRole('heading', { name: 'Embudo' })).toBeVisible()
+  // "Pagado" y "Pago promedio" traen la misma cifra: se mira la que va con su etiqueta.
+  await expect(stats.getByText('Pagado', { exact: true }).locator('..')).toContainText('$ 420.000')
+
+  const row = operator.getByRole('row').filter({ hasText: TITLE })
+  await expect(row.getByText('Pagada')).toBeVisible()
+
+  const download = operator.waitForEvent('download')
+  await operator.getByRole('button', { name: 'Descargar CSV' }).click()
+  expect((await download).suggestedFilename()).toBe('trueke-ofertas.csv')
+})
+
+test('la vendedora no tiene panel', async () => {
+  await expect(seller.getByRole('link', { name: 'Panel' })).toBeHidden()
+  await seller.goto('/panel')
+  await expect(seller).toHaveURL(/\/publicaciones$/)
+})

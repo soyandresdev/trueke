@@ -21,6 +21,7 @@ Todo pasa en tiempo real: ofertas, cambios de estado, chat y notificaciones.
 - **Chat en vivo** por publicación, con adjuntos privados y leídos.
 - **Notificaciones en vivo** (campana y avisos) por un único WebSocket autenticado.
 - **Panel del operador**: búsqueda, filtros, ficha del vendedor con sus documentos, ofertas y recogidas.
+- **Tablero**: lo que espera al equipo, el embudo, los números de los últimos 30 días y todas las ofertas en una tabla (con CSV).
 - **Documentos privados**: identidad y certificado bancario, sin URL pública (en S3, URLs firmadas).
 - **Inglés y español** en la app y en la API (inglés por defecto; español si el navegador lo pide o la persona lo elige).
 
@@ -28,6 +29,7 @@ Todo pasa en tiempo real: ofertas, cambios de estado, chat y notificaciones.
 |---|---|
 | ![Landing](docs/screenshots/es/landing.png) | ![Detalle con oferta y chat](docs/screenshots/es/listing-offer.png) |
 | ![Mis publicaciones](docs/screenshots/es/my-listings.png) | ![Panel del operador](docs/screenshots/es/operator-panel.png) |
+| ![Tablero](docs/screenshots/es/dashboard.png) | |
 
 ## Empezar
 

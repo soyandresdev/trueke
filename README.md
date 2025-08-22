@@ -21,6 +21,7 @@ Everything happens in real time: offers, status changes, chat and notifications.
 - **Live chat** for each listing, with private attachments and read receipts.
 - **Live notifications** (bell and pop-up messages) through one authenticated WebSocket.
 - **Operator panel**: search, filters, the seller's profile and documents, offers and pickups.
+- **Dashboard**: what is waiting for the team, the funnel, the numbers of the last 30 days and every offer in one table (with CSV).
 - **Private documents**: ID and bank certificate have no public URL (signed URLs on S3).
 - **English and Spanish** in the app and the API. English is the default; the app uses Spanish when the browser or the person asks for it.
 
@@ -28,6 +29,7 @@ Everything happens in real time: offers, status changes, chat and notifications.
 |---|---|
 | ![Landing page](docs/screenshots/en/landing.png) | ![Listing with an offer and the chat](docs/screenshots/en/listing-offer.png) |
 | ![My listings](docs/screenshots/en/my-listings.png) | ![Operator panel](docs/screenshots/en/operator-panel.png) |
+| ![Dashboard](docs/screenshots/en/dashboard.png) | |
 
 ## Get started
 

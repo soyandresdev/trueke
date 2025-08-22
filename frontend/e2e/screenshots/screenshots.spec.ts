@@ -29,6 +29,7 @@ const ui = {
     sendOffer: 'Send offer',
     acceptOffer: 'Accept offer',
     accept: 'Accept',
+    funnel: 'Funnel',
   },
   es: {
     photography: 'Fotografía',
@@ -43,6 +44,7 @@ const ui = {
     sendOffer: 'Enviar oferta',
     acceptOffer: 'Aceptar oferta',
     accept: 'Aceptar',
+    funnel: 'Embudo',
   },
 }[LANG]
 
@@ -125,6 +127,11 @@ test('operator panel', async ({ browser }) => {
   await page.goto('/publicaciones')
   await expect(page.getByRole('table')).toBeVisible()
   await shot(page, 'operator-panel')
+
+  await page.setViewportSize({ width: 1440, height: 1100 })
+  await page.goto('/panel')
+  await expect(page.getByRole('heading', { name: ui.funnel })).toBeVisible()
+  await shot(page, 'dashboard')
 })
 
 test('GIF: the offer arrives live and the seller accepts it', async ({ browser }) => {

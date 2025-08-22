@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.db.models import Count, Q
+from django.db.models import Count
 from django.utils.translation import gettext as _
 from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema, inline_serializer
 from rest_framework import generics, mixins, parsers, permissions, serializers, status, viewsets
@@ -7,18 +7,23 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.response import Response
 
+from apps.accounts.permissions import IsOperator
 from apps.accounts.views import serve_private_file
 
+from . import dashboard as dashboard_module
+from . import offers as offers_module
 from . import transitions
 from .models import Category, Listing, ListingImage
-from .queries import unread_filter, visible_listings
+from .queries import QUEUES, apply_filters, unread_filter, visible_listings
 from .serializers import (
     CategorySerializer,
     CounterSerializer,
+    DashboardSerializer,
     EmptySerializer,
     ListingEventSerializer,
     ListingImageSerializer,
     ListingSerializer,
+    OfferRowSerializer,
     OfferSerializer,
     PaySerializer,
     PickupSerializer,
@@ -35,8 +40,15 @@ class CategoryListView(generics.ListAPIView):
     pagination_class = None
 
 
+ORDERING_PARAM = OpenApiParameter(
+    "ordering",
+    description="Columna de la tabla de ofertas, con - para descendente",
+    enum=sorted(offers_module.ORDERING),
+)
+
 FILTERS = [
     OpenApiParameter("status", description="Uno o varios estados separados por coma"),
+    OpenApiParameter("queue", description="Cola del operador", enum=sorted(QUEUES)),
     OpenApiParameter("category", description="Código de la categoría"),
     OpenApiParameter("city"),
     OpenApiParameter("q", description="Busca en nombre, descripción y vendedor"),
@@ -82,24 +94,9 @@ class ListingViewSet(
         user = self.request.user
         qs = visible_listings(user).annotate(unread_messages=Count("messages", filter=unread_filter(user)))
         qs = qs.order_by("-created_at", "-id")  # con annotate, Meta.ordering no se aplica
-        if self.action != "list":
+        if self.action not in ("list", "offers", "offers_export"):
             return qs
-        params = self.request.query_params
-        if statuses := params.get("status"):
-            qs = qs.filter(status__in=statuses.split(","))
-        if category := params.get("category"):
-            qs = qs.filter(category__code=category)
-        if city := params.get("city"):
-            qs = qs.filter(city__iexact=city)
-        if q := params.get("q"):
-            qs = qs.filter(
-                Q(title__icontains=q)
-                | Q(description__icontains=q)
-                | Q(seller__first_name__icontains=q)
-                | Q(seller__last_name__icontains=q)
-                | Q(seller__phone__icontains=q)
-            )
-        return qs
+        return apply_filters(qs, self.request.query_params)
 
     def perform_create(self, serializer):
         listing = serializer.save(seller=self.request.user)
@@ -128,6 +125,34 @@ class ListingViewSet(
         rows = visible_listings(request.user).order_by().values("status").annotate(n=Count("id"))
         counts = {row["status"]: row["n"] for row in rows}
         return Response({s: counts.get(s, 0) for s in Listing.Status.values})
+
+    @extend_schema(responses={200: DashboardSerializer}, summary="Números del panel del operador")
+    @action(detail=False, methods=["get"], permission_classes=[IsOperator])
+    def dashboard(self, request):
+        """Colas de trabajo, embudo y números de los últimos 30 días."""
+        return Response(DashboardSerializer(dashboard_module.summary()).data)
+
+    @extend_schema(parameters=[*FILTERS, ORDERING_PARAM], responses={200: OfferRowSerializer(many=True)})
+    @action(detail=False, methods=["get"], permission_classes=[IsOperator])
+    def offers(self, request):
+        """Tabla de ofertas: una fila por publicación, con las fechas de cada paso."""
+        qs = self._offer_rows(request)
+        page = self.paginate_queryset(qs)
+        serializer = OfferRowSerializer(page, many=True, context=self.get_serializer_context())
+        return self.get_paginated_response(serializer.data)
+
+    @extend_schema(
+        parameters=[*FILTERS, ORDERING_PARAM],
+        responses={(200, "text/csv"): OpenApiResponse(description="CSV")},
+    )
+    @action(detail=False, methods=["get"], url_path="offers/export", permission_classes=[IsOperator])
+    def offers_export(self, request):
+        """La misma tabla, en CSV, sin paginar."""
+        return offers_module.csv_response(self._offer_rows(request))
+
+    def _offer_rows(self, request):
+        rows = offers_module.with_dates(self.get_queryset())
+        return offers_module.ordered(rows, request.query_params.get("ordering"))
 
     @extend_schema(responses={(200, "application/octet-stream"): OpenApiResponse(description="Archivo")})
     @action(detail=True, methods=["get"])

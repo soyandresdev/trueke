@@ -44,9 +44,12 @@ Se responde en el idioma de `Accept-Language` (`en` por defecto, o `es`): mensaj
 | `PATCH /api/me/documents/` | cualquiera | Sube `document_file` y/o `bank_certificate` (multipart; PDF/JPG/PNG, 5 MB) |
 | `GET /api/me/documents/{document\|bank-certificate}/` | cualquiera | Descarga mi documento (en S3, redirige a una URL firmada) |
 | `GET /api/categories/` | público | Categorías activas con su `fields_schema` (JSON Schema) |
-| `GET /api/listings/` | vendedor: las suyas; operador: todas | Filtros: `status` (uno o varios separados por coma), `category` (código), `city`, `q`, `page` |
+| `GET /api/listings/` | vendedor: las suyas; operador: todas | Filtros: `status` (uno o varios separados por coma), `category` (código), `city`, `q`, `page`, y `queue` para el operador (`unoffered`, `countered`, `pickups_today`, `unpaid`) |
 | `POST /api/listings/` | vendedor | Crear. Exige `terms_accepted: true` y valida `attributes` con el esquema de la categoría |
 | `GET /api/listings/stats/` | ídem lista | Cuántas hay en cada estado |
+| `GET /api/listings/dashboard/` | operador | Colas de trabajo, embudo y números de los últimos 30 días |
+| `GET /api/listings/offers/` | operador | Tabla de ofertas. Los mismos filtros y `ordering` (`title`, `city`, `status`, `offer_amount`, `paid_amount`, `created_at`, `offered_at`, con `-` para descendente) |
+| `GET /api/listings/offers/export/` | operador | La misma tabla en CSV, sin páginas |
 | `GET /api/listings/{id}/` · `PATCH` | vendedor (editar solo en revisión) | Detalle con `available_actions` |
 | `POST /api/listings/{id}/images/` · `DELETE …/images/{image_id}/` | vendedor, en revisión | Fotos (JPG/PNG/WebP, 8 MB, hasta 10) |
 | `POST /api/listings/{id}/{acción}/` | según la acción | `offer {amount, currency}`, `accept`, `counter {amount}`, `accept-counter`, `reject {reason}`, `pickup {pickup_by, pickup_date, notes}`, `complete`, `pay {amount, paid_at, reference, receipt}` (multipart si hay comprobante), `cancel {reason}` |

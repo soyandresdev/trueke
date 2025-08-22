@@ -150,7 +150,8 @@
   },
   "nav": {
     "listings": "My listings",
-    "listingsOperator": "Listings"
+    "listingsOperator": "Listings",
+    "panel": "Panel"
   },
   "listings": {
     "title": "My listings",
@@ -455,5 +456,54 @@
     "sellerAsks": "The seller asks",
     "sellerAsksAmount": "The seller asks for {{amount}}.",
     "youAsked": "You asked for {{amount}}. We'll let you know when we review it."
+  },
+  "panel": {
+    "title": "Panel",
+    "period": "Last {{count}} days",
+    "queue": {
+      "unoffered": "Waiting for an offer",
+      "unofferedHint": "In review",
+      "countered": "Counteroffers",
+      "counteredHint": "The seller asked for another price",
+      "pickups_today": "Pickups due",
+      "pickups_todayHint": "Today or earlier",
+      "unpaid": "Sold, not paid",
+      "unpaidHint": "Waiting for the transfer",
+      "empty": "Nothing waiting",
+      "waiting_one": "The oldest has been waiting 1 day",
+      "waiting_other": "The oldest has been waiting {{count}} days",
+      "showAll": "Show all"
+    },
+    "funnel": {
+      "title": "Funnel",
+      "empty": "No listings in this period yet.",
+      "created": "Listed",
+      "offered": "Offer made",
+      "accepted": "Accepted",
+      "picked_up": "Picked up",
+      "completed": "Completed",
+      "paid": "Paid"
+    },
+    "stats": {
+      "title": "Numbers",
+      "created": "New listings",
+      "offered": "Offers made",
+      "acceptance": "Accepted offers",
+      "paidCount": "Items paid",
+      "paidTotal": "Paid out",
+      "averagePaid": "Average payment",
+      "hoursToOffer": "Time to first offer",
+      "hoursValue_one": "{{count}} hour",
+      "hoursValue_other": "{{count}} hours"
+    },
+    "table": {
+      "title": "All offers",
+      "export": "Download CSV",
+      "fileName": "trueke-offers.csv",
+      "paid": "Paid",
+      "published": "Listed",
+      "offered": "Offered",
+      "counter": "Counter:"
+    }
   }
 }

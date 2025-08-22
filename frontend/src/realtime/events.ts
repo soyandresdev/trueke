@@ -12,6 +12,8 @@ export const queryKeys = {
   listings: ['listings'] as const,
   listingList: (filters: object) => ['listings', 'list', filters] as const,
   listingStats: ['listings', 'stats'] as const,
+  dashboard: ['listings', 'dashboard'] as const,
+  offers: (filters: object) => ['listings', 'offers', filters] as const,
   listing: (id: number) => ['listings', id] as const,
   listingEvents: (id: number) => ['listings', id, 'events'] as const,
   // Los nombres vienen traducidos del backend: cada idioma es otra consulta.

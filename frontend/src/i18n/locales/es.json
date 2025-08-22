@@ -150,7 +150,8 @@
   },
   "nav": {
     "listings": "Mis publicaciones",
-    "listingsOperator": "Publicaciones"
+    "listingsOperator": "Publicaciones",
+    "panel": "Panel"
   },
   "listings": {
     "title": "Mis publicaciones",
@@ -455,5 +456,54 @@
     "sellerAsks": "El vendedor pide",
     "sellerAsksAmount": "El vendedor pide {{amount}}.",
     "youAsked": "Pediste {{amount}}. Te avisaremos cuando la revisemos."
+  },
+  "panel": {
+    "title": "Panel",
+    "period": "Últimos {{count}} días",
+    "queue": {
+      "unoffered": "Esperan oferta",
+      "unofferedHint": "En revisión",
+      "countered": "Contraofertas",
+      "counteredHint": "El vendedor pidió otro precio",
+      "pickups_today": "Recogidas pendientes",
+      "pickups_todayHint": "Hoy o antes",
+      "unpaid": "Vendidas sin pagar",
+      "unpaidHint": "Falta la transferencia",
+      "empty": "Nada pendiente",
+      "waiting_one": "La más vieja lleva 1 día",
+      "waiting_other": "La más vieja lleva {{count}} días",
+      "showAll": "Ver todas"
+    },
+    "funnel": {
+      "title": "Embudo",
+      "empty": "Todavía no hay publicaciones en este periodo.",
+      "created": "Publicadas",
+      "offered": "Con oferta",
+      "accepted": "Aceptadas",
+      "picked_up": "Recogidas",
+      "completed": "Completadas",
+      "paid": "Pagadas"
+    },
+    "stats": {
+      "title": "Números",
+      "created": "Publicaciones nuevas",
+      "offered": "Ofertas hechas",
+      "acceptance": "Ofertas aceptadas",
+      "paidCount": "Artículos pagados",
+      "paidTotal": "Pagado",
+      "averagePaid": "Pago promedio",
+      "hoursToOffer": "Tiempo hasta la oferta",
+      "hoursValue_one": "{{count}} hora",
+      "hoursValue_other": "{{count}} horas"
+    },
+    "table": {
+      "title": "Todas las ofertas",
+      "export": "Descargar CSV",
+      "fileName": "trueke-ofertas.csv",
+      "paid": "Pagado",
+      "published": "Publicada",
+      "offered": "Ofertada",
+      "counter": "Contra:"
+    }
   }
 }

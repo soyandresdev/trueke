@@ -4,6 +4,7 @@
 
 ## Sin publicar
 
+- **Tablero del equipo** (`/panel`). Lo que espera una acción (publicaciones sin oferta, contraofertas, recogidas pendientes, ventas sin pagar), el embudo de publicada a pagada, los números de los últimos 30 días y una tabla con todas las ofertas, ordenable y descargable en CSV. Todo sale del historial de cada publicación: no hay contadores nuevos que mantener.
 - **Fotos más livianas y seguras.** Las fotos se guardan en WebP en dos tamaños (una grande y una miniatura para las listas), bien giradas y sin metadatos como la ubicación GPS. Las listas cargan unas 8 veces menos datos. Para las fotos que ya existen: `python manage.py optimize_images`.
 - **Contraofertas.** El vendedor puede responder a una oferta con su propio precio. El operador puede aceptarla, hacer otra oferta o cancelar. Las rondas son limitadas (`LISTING_MAX_COUNTEROFFERS`, 2 por defecto).
 - **Registro del pago.** Tras completar la venta, el operador registra el pago (monto, fecha, referencia de la transferencia y un comprobante privado). La publicación pasa al estado nuevo "pagada" y el vendedor lo ve en vivo y puede descargar el comprobante.
