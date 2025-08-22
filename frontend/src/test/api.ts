@@ -90,7 +90,14 @@ export const listing = (overrides: Record<string, unknown> = {}) => ({
   pickup_address: 'Calle 1',
   is_original: true,
   terms_accepted_at: '2026-09-19T12:00:00Z',
-  images: [{ id: 1, image: 'http://localhost/media/1.jpg', position: 0 }],
+  images: [
+    {
+      id: 1,
+      image: 'http://localhost/media/1.webp',
+      thumbnail: 'http://localhost/media/1-min.webp',
+      position: 0,
+    },
+  ],
   status: 'in_review',
   status_changed_at: '2026-09-19T12:00:00Z',
   offer_amount: null,

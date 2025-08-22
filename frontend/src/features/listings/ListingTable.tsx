@@ -35,7 +35,7 @@ export function ListingTable({ listings }: { listings: Listing[] }) {
                 <div className="flex items-center gap-3">
                   {listing.images[0] ? (
                     <img
-                      src={listing.images[0].image}
+                      src={listing.images[0].thumbnail}
                       alt=""
                       className="size-12 shrink-0 rounded-md object-cover"
                       loading="lazy"

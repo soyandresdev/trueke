@@ -76,6 +76,8 @@ python manage.py create_operator 3001234567      # operadores (entran por OTP)
 python manage.py load_demo_categories            # opcional: las 4 categorías de ejemplo
 ```
 
+Si actualizas desde la 0.1.0 y ya tienes fotos, ejecuta una vez `python manage.py optimize_images` después de `migrate`. Crea las versiones WebP y las miniaturas, y borra los originales con sus metadatos.
+
 Las categorías se gestionan en el admin. Cada una define sus campos extra con un JSON Schema de tipo `object`: `title` y `x-title-en` para los textos, y `x-labels` / `x-labels-en` para las opciones de un `enum`. Ejemplos en `backend/apps/listings/demo.py`.
 
 ## Antes de abrir al público

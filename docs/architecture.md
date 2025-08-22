@@ -83,6 +83,8 @@ There is one WebSocket at `/ws/`. The JWT goes in the **first message**, not in 
 
 File names are replaced with random ones, because the original name can include personal data.
 
+Listing photos are not kept as uploaded. `apps/listings/images.py` rotates them by their EXIF orientation, removes all metadata (including GPS location) and saves two WebP files: a large one (1600 px) for the gallery and a thumbnail (480 px) for lists and cards.
+
 ## Frontend
 
 React 19 with the React Compiler, Vite and strict TypeScript. The state rules avoid common problems in React apps (extra renders, copied server data):

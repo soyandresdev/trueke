@@ -4,6 +4,7 @@
 
 ## Sin publicar
 
+- **Fotos más livianas y seguras.** Las fotos se guardan en WebP en dos tamaños (una grande y una miniatura para las listas), bien giradas y sin metadatos como la ubicación GPS. Las listas cargan unas 8 veces menos datos. Para las fotos que ya existen: `python manage.py optimize_images`.
 - **Contraofertas.** El vendedor puede responder a una oferta con su propio precio. El operador puede aceptarla, hacer otra oferta o cancelar. Las rondas son limitadas (`LISTING_MAX_COUNTEROFFERS`, 2 por defecto).
 - **Registro del pago.** Tras completar la venta, el operador registra el pago (monto, fecha, referencia de la transferencia y un comprobante privado). La publicación pasa al estado nuevo "pagada" y el vendedor lo ve en vivo y puede descargar el comprobante.
 

@@ -83,6 +83,8 @@ Un solo WebSocket en `/ws/`, autenticado con el JWT en el **primer mensaje**, no
 
 Los nombres de archivo se reemplazan por uno aleatorio: el nombre original puede tener datos personales.
 
+Las fotos de las publicaciones no se guardan tal como llegan. `apps/listings/images.py` las gira según su orientación EXIF, les quita todos los metadatos (también la ubicación GPS) y guarda dos WebP: uno grande (1600 px) para la galería y una miniatura (480 px) para listas y tarjetas.
+
 ## Frontend
 
 React 19 con el React Compiler, Vite y TypeScript estricto. Las reglas de estado evitan problemas típicos de las apps de React (renders de más, datos del servidor copiados):

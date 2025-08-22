@@ -76,6 +76,8 @@ python manage.py create_operator 3001234567      # operators (they log in with a
 python manage.py load_demo_categories            # optional: the 4 sample categories
 ```
 
+If you update from 0.1.0 and already have photos, run `python manage.py optimize_images` once after `migrate`. It creates the WebP versions and the thumbnails, and deletes the originals with their metadata.
+
 You manage categories in the admin. Each one defines its extra fields with a JSON Schema of type `object`:
 - `title` is the label in Spanish and `x-title-en` in English.
 - `x-labels` / `x-labels-en` are the labels of the options of an `enum`.

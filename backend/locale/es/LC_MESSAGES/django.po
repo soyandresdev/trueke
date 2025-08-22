@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Trueke\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 10:02-0500\n"
+"POT-Creation-Date: 2026-09-19 10:10-0500\n"
 "PO-Revision-Date: 2026-09-20 09:00-0500\n"
 "Last-Translator: \n"
 "Language-Team: Español\n"
@@ -288,6 +288,9 @@ msgstr "La imagen supera los %(mb)s MB."
 
 msgid "imagen"
 msgstr "imagen"
+
+msgid "miniatura"
+msgstr "miniatura"
 
 msgid "imágenes"
 msgstr "imágenes"

@@ -60,7 +60,7 @@ export function PhotoManager({ listing }: { listing: Listing }) {
         {images.map((image, index) => (
           <li key={image.id} className="relative aspect-square overflow-hidden rounded-md bg-paper">
             <img
-              src={image.image}
+              src={image.thumbnail}
               alt={t('wizard.photoAlt', { n: index + 1 })}
               className="size-full object-cover"
             />

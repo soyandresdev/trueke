@@ -78,6 +78,10 @@ async function shot(page: Page, name: string, fullPage = false) {
     document.querySelectorAll('img').forEach((img) => (img.loading = 'eager')),
   )
   await page.waitForLoadState('networkidle')
+  // networkidle no garantiza que las fotos ya estén decodificadas.
+  await page.waitForFunction(() =>
+    [...document.querySelectorAll('img')].every((img) => img.complete && img.naturalWidth > 0),
+  )
   await page.screenshot({ path: `${OUT}${name}.png`, fullPage })
 }
 
