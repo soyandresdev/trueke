@@ -144,7 +144,9 @@ def validate_listing_image(file):
 
 class ListingImage(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="images")
+    # Versión grande (WebP, sin metadatos). Se crea con `ListingImage.create_from_upload`.
     image = models.ImageField(_("imagen"), upload_to=listing_image_path, validators=[validate_listing_image])
+    thumbnail = models.ImageField(_("miniatura"), upload_to=listing_image_path, blank=True)
     position = models.PositiveSmallIntegerField(_("orden"), default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -155,6 +157,23 @@ class ListingImage(models.Model):
 
     def __str__(self):
         return self.image.name
+
+    @classmethod
+    def create_from_upload(cls, listing, file, position: int) -> "ListingImage":
+        """Guarda una foto subida ya optimizada (ver `images.py`)."""
+        from .images import optimize
+
+        large, thumb = optimize(file)
+        image = cls(listing=listing, position=position)
+        image.image.save("foto.webp", large, save=False)
+        image.thumbnail.save("miniatura.webp", thumb, save=False)
+        image.save()
+        return image
+
+    def delete_files(self):
+        for field in (self.image, self.thumbnail):
+            if field:
+                field.delete(save=False)
 
 
 class ListingEvent(models.Model):

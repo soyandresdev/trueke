@@ -22,10 +22,19 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ListingImageSerializer(serializers.ModelSerializer):
+    thumbnail = serializers.SerializerMethodField()
+
     class Meta:
         model = ListingImage
-        fields = ["id", "image", "position"]
+        fields = ["id", "image", "thumbnail", "position"]
         extra_kwargs = {"position": {"required": False}}
+
+    @extend_schema_field(serializers.URLField())
+    def get_thumbnail(self, image) -> str:
+        # Las fotos anteriores a la optimización no tienen miniatura: se usa la grande.
+        field = image.thumbnail or image.image
+        request = self.context.get("request")
+        return request.build_absolute_uri(field.url) if request else field.url
 
 
 class SellerSerializer(serializers.Serializer):

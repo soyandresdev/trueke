@@ -140,7 +140,7 @@ function Listings() {
                   <ListingCard
                     id={listing.id}
                     title={listing.title}
-                    image={listing.images[0]?.image}
+                    image={listing.images[0]?.thumbnail}
                     status={listing.status}
                     city={listing.city}
                     offer={listing.offer_amount}

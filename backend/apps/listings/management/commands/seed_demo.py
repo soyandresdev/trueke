@@ -175,7 +175,7 @@ class Command(BaseCommand):
                 self.stdout.write("Ya hay datos de demo. Usa --reset para volver a crearlos.")
                 return
             for image in ListingImage.objects.filter(listing__in=demo):
-                image.image.delete(save=False)
+                image.delete_files()
             demo.delete()
 
         for row in LISTINGS:
@@ -221,7 +221,7 @@ class Command(BaseCommand):
             terms_accepted_at=timezone.now(),
         )
         with (images_dir / f"{image}.jpg").open("rb") as f:
-            ListingImage.objects.create(listing=listing, image=File(f, name=f"{image}.jpg"))
+            ListingImage.create_from_upload(listing, File(f, name=f"{image}.jpg"), position=0)
         transitions.record_creation(listing, seller)
 
         actors = {"seller": seller, "operator": people["operator"]}

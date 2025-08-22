@@ -33,7 +33,7 @@ export function Gallery({ listing }: { listing: Listing }) {
                   image.id === current.id ? 'border-blue' : 'border-transparent',
                 )}
               >
-                <img src={image.image} alt="" className="size-full object-cover" />
+                <img src={image.thumbnail} alt="" className="size-full object-cover" />
               </button>
             </li>
           ))}

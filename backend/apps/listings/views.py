@@ -154,10 +154,16 @@ class ListingViewSet(
                 {"image": _("Máximo %(n)s imágenes por publicación.") % {"n": settings.LISTING_MAX_IMAGES}}
             )
         serializer = ListingImageSerializer(data=request.data, context=self.get_serializer_context())
-        serializer.is_valid(raise_exception=True)
-        position = serializer.validated_data.get("position", listing.images.count())
-        serializer.save(listing=listing, position=position)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer.is_valid(raise_exception=True)  # tipo, tamaño y que Pillow pueda abrirla
+        image = ListingImage.create_from_upload(
+            listing,
+            serializer.validated_data["image"],
+            serializer.validated_data.get("position", listing.images.count()),
+        )
+        return Response(
+            ListingImageSerializer(image, context=self.get_serializer_context()).data,
+            status=status.HTTP_201_CREATED,
+        )
 
     @extend_schema(request=None, responses={204: None})
     @action(detail=True, methods=["delete"], url_path=r"images/(?P<image_id>\d+)")
@@ -165,7 +171,7 @@ class ListingViewSet(
         listing = self.get_object()
         self._check_editable(listing)
         image = generics.get_object_or_404(ListingImage, pk=image_id, listing=listing)
-        image.image.delete(save=False)
+        image.delete_files()
         image.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

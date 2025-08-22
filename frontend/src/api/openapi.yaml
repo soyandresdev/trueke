@@ -1346,6 +1346,10 @@ components:
         image:
           type: string
           format: uri
+        thumbnail:
+          type: string
+          format: uri
+          readOnly: true
         position:
           type: integer
           maximum: 9223372036854775807
@@ -1355,6 +1359,7 @@ components:
       required:
       - id
       - image
+      - thumbnail
     ListingImageRequest:
       type: object
       properties:

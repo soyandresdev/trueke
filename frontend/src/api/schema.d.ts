@@ -729,6 +729,8 @@ export interface components {
             readonly id: number;
             /** Format: uri */
             image: string;
+            /** Format: uri */
+            readonly thumbnail: string;
             /**
              * Order
              * Format: int64
