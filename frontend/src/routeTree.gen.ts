@@ -14,6 +14,7 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as AppCuentaRouteImport } from './routes/_app/cuenta'
+import { Route as AppPagosRouteImport } from './routes/_app/pagos'
 import { Route as AppPanelRouteImport } from './routes/_app/panel'
 import { Route as DevUiRouteImport } from './routes/dev.ui'
 import { Route as NewsletterBajaRouteImport } from './routes/newsletter.baja'
@@ -44,6 +45,11 @@ const TerminosRoute = TerminosRouteImport.update({
 const AppCuentaRoute = AppCuentaRouteImport.update({
   id: '/cuenta',
   path: '/cuenta',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPagosRoute = AppPagosRouteImport.update({
+  id: '/pagos',
+  path: '/pagos',
   getParentRoute: () => AppRoute,
 } as any)
 const AppPanelRoute = AppPanelRouteImport.update({
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/entrar': typeof EntrarRoute
   '/terminos': typeof TerminosRoute
   '/cuenta': typeof AppCuentaRoute
+  '/pagos': typeof AppPagosRoute
   '/panel': typeof AppPanelRoute
   '/dev/ui': typeof DevUiRoute
   '/newsletter/baja': typeof NewsletterBajaRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/entrar': typeof EntrarRoute
   '/terminos': typeof TerminosRoute
   '/cuenta': typeof AppCuentaRoute
+  '/pagos': typeof AppPagosRoute
   '/panel': typeof AppPanelRoute
   '/dev/ui': typeof DevUiRoute
   '/newsletter/baja': typeof NewsletterBajaRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/entrar': typeof EntrarRoute
   '/terminos': typeof TerminosRoute
   '/_app/cuenta': typeof AppCuentaRoute
+  '/_app/pagos': typeof AppPagosRoute
   '/_app/panel': typeof AppPanelRoute
   '/dev/ui': typeof DevUiRoute
   '/newsletter/baja': typeof NewsletterBajaRoute
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/terminos'
     | '/cuenta'
+    | '/pagos'
     | '/panel'
     | '/dev/ui'
     | '/newsletter/baja'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/terminos'
     | '/cuenta'
+    | '/pagos'
     | '/panel'
     | '/dev/ui'
     | '/newsletter/baja'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/terminos'
     | '/_app/cuenta'
+    | '/_app/pagos'
     | '/_app/panel'
     | '/dev/ui'
     | '/newsletter/baja'
@@ -211,6 +223,13 @@ declare module '@tanstack/react-router' {
       path: '/cuenta'
       fullPath: '/cuenta'
       preLoaderRoute: typeof AppCuentaRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/pagos': {
+      id: '/_app/pagos'
+      path: '/pagos'
+      fullPath: '/pagos'
+      preLoaderRoute: typeof AppPagosRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/panel': {
@@ -267,6 +286,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppCuentaRoute: typeof AppCuentaRoute
+  AppPagosRoute: typeof AppPagosRoute
   AppPanelRoute: typeof AppPanelRoute
   AppPublicacionesIdRoute: typeof AppPublicacionesIdRoute
   AppPublicacionesNuevaRoute: typeof AppPublicacionesNuevaRoute
@@ -276,6 +296,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppCuentaRoute: AppCuentaRoute,
+  AppPagosRoute: AppPagosRoute,
   AppPanelRoute: AppPanelRoute,
   AppPublicacionesIdRoute: AppPublicacionesIdRoute,
   AppPublicacionesNuevaRoute: AppPublicacionesNuevaRoute,

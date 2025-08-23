@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+- **The seller sees their own numbers.** Above their listings: what they have earned, what is still to be paid and how many listings are moving. "My payments" lists every sale that was paid, with its date, reference and receipt.
 - **The platform follows up on its own.** If a listing waits too long for an offer, the team hears about it; if an offer waits for an answer, the seller gets a reminder; and an offer nobody answers expires and the listing goes back to review. The three times can be changed, or turned off, with `LISTING_REVIEW_REMINDER_HOURS`, `LISTING_OFFER_REMINDER_DAYS` and `LISTING_OFFER_EXPIRY_DAYS`. It needs a `celery beat` process.
 - **Dashboard for the team** (`/panel`). What is waiting for an action (listings with no offer, counteroffers, pickups due, sales that are not paid), the funnel from listed to paid, the numbers of the last 30 days, and one table with every offer, sortable and downloadable as CSV. It is all worked out from the history of each listing, so there is nothing new to keep up to date.
 - **Lighter and safer photos.** Uploaded photos are saved as WebP in two sizes (a large one and a thumbnail for lists), rotated correctly, and without metadata such as the GPS location. Lists load about 8 times less data. For existing photos, run `python manage.py optimize_images`.

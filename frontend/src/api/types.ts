@@ -15,6 +15,7 @@ export type PickupBy = Schemas['PickupPickupByEnum']
 export type NotificationKind = Schemas['KindEnum']
 export type Dashboard = Schemas['Dashboard']
 export type OfferRow = Schemas['OfferRow']
+export type SellerSummary = Schemas['SellerSummary']
 
 type OfferQuery = NonNullable<operations['listings_offers_list']['parameters']['query']>
 export type Queue = NonNullable<OfferQuery['queue']>

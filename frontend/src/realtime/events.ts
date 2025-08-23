@@ -13,6 +13,7 @@ export const queryKeys = {
   listingList: (filters: object) => ['listings', 'list', filters] as const,
   listingStats: ['listings', 'stats'] as const,
   dashboard: ['listings', 'dashboard'] as const,
+  sellerSummary: ['listings', 'summary'] as const,
   offers: (filters: object) => ['listings', 'offers', filters] as const,
   listing: (id: number) => ['listings', id] as const,
   listingEvents: (id: number) => ['listings', id, 'events'] as const,

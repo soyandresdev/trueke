@@ -215,6 +215,16 @@ class DashboardSerializer(serializers.Serializer):
     period = PeriodSerializer()
 
 
+class SellerSummarySerializer(serializers.Serializer):
+    """Lo que ve el vendedor arriba de sus publicaciones."""
+
+    paid_total = serializers.DecimalField(max_digits=14, decimal_places=2)
+    pending_total = serializers.DecimalField(max_digits=14, decimal_places=2)
+    paid_count = serializers.IntegerField()
+    in_progress = serializers.IntegerField()
+    currency = serializers.CharField()
+
+
 class ListingEventSerializer(serializers.ModelSerializer):
     actor = SellerSerializer(read_only=True)
 

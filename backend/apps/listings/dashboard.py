@@ -6,6 +6,7 @@ guardar contadores aparte ni mantenerlos al día.
 
 from datetime import timedelta
 
+from django.conf import settings
 from django.db.models import Avg, Count, Q, Subquery, Sum
 from django.db.models.functions import Coalesce
 from django.utils import timezone
@@ -83,6 +84,35 @@ def period(since):
         "average_paid": round(money["average"], 2) if money["average"] is not None else None,
         "offered_total": offered_total["total"],
         "hours_to_offer": hours_to_offer(since),
+    }
+
+
+# Lo que ya se vendió pero todavía no se ha pagado.
+TO_BE_PAID = [Listing.Status.ACCEPTED, Listing.Status.PICKUP_SENT, Listing.Status.COMPLETED]
+# Lo que sigue su curso: ni cancelado ni cerrado.
+IN_PROGRESS = [
+    Listing.Status.IN_REVIEW,
+    Listing.Status.OFFERED,
+    Listing.Status.COUNTERED,
+    *TO_BE_PAID,
+]
+
+
+def seller_summary(user):
+    """Resumen de una persona: cuánto ha ganado, cuánto le falta cobrar y qué tiene en curso."""
+    listings = Listing.objects.filter(seller=user)
+    money = listings.aggregate(
+        paid_total=Sum("paid_amount", filter=Q(status=Listing.Status.PAID)),
+        pending_total=Sum("offer_amount", filter=Q(status__in=TO_BE_PAID)),
+        paid_count=Count("id", filter=Q(status=Listing.Status.PAID)),
+        in_progress=Count("id", filter=Q(status__in=IN_PROGRESS)),
+    )
+    return {
+        "paid_total": money["paid_total"] or 0,
+        "pending_total": money["pending_total"] or 0,
+        "paid_count": money["paid_count"],
+        "in_progress": money["in_progress"],
+        "currency": settings.LISTING_CURRENCY,
     }
 
 

@@ -994,6 +994,53 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListingStats'
           description: ''
+  /api/listings/summary/:
+    get:
+      operationId: listings_summary_retrieve
+      description: Cuánto ha ganado, cuánto le falta cobrar y cuántas publicaciones
+        tiene en curso.
+      summary: Resumen del vendedor
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+        description: Código de la categoría
+      - in: query
+        name: city
+        schema:
+          type: string
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Busca en nombre, descripción y vendedor
+      - in: query
+        name: queue
+        schema:
+          type: string
+          enum:
+          - countered
+          - pickups_today
+          - unoffered
+          - unpaid
+        description: Cola del operador
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Uno o varios estados separados por coma
+      tags:
+      - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SellerSummary'
+          description: ''
   /api/me/:
     get:
       operationId: me_retrieve
@@ -1402,9 +1449,9 @@ components:
         * `listing.complete` - Sale completed
         * `listing.pay` - Payment recorded
         * `listing.cancel` - Listing cancelled
-        * `listing.expire` - Oferta vencida
-        * `listing.review_reminder` - Publicación esperando oferta
-        * `listing.offer_reminder` - Oferta sin responder
+        * `listing.expire` - Offer expired
+        * `listing.review_reminder` - Listing waiting for an offer
+        * `listing.offer_reminder` - Offer with no answer
         * `message.new` - New messages
     LanguageEnum:
       enum:
@@ -2327,6 +2374,30 @@ components:
       required:
       - id
       - name
+    SellerSummary:
+      type: object
+      description: Lo que ve el vendedor arriba de sus publicaciones.
+      properties:
+        paid_total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        pending_total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        paid_count:
+          type: integer
+        in_progress:
+          type: integer
+        currency:
+          type: string
+      required:
+      - currency
+      - in_progress
+      - paid_count
+      - paid_total
+      - pending_total
     SubscribeRequest:
       type: object
       properties:

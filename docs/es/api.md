@@ -47,6 +47,7 @@ Se responde en el idioma de `Accept-Language` (`en` por defecto, o `es`): mensaj
 | `GET /api/listings/` | vendedor: las suyas; operador: todas | Filtros: `status` (uno o varios separados por coma), `category` (código), `city`, `q`, `page`, y `queue` para el operador (`unoffered`, `countered`, `pickups_today`, `unpaid`) |
 | `POST /api/listings/` | vendedor | Crear. Exige `terms_accepted: true` y valida `attributes` con el esquema de la categoría |
 | `GET /api/listings/stats/` | ídem lista | Cuántas hay en cada estado |
+| `GET /api/listings/summary/` | cualquiera | Mis números: ganado, por cobrar y publicaciones en curso |
 | `GET /api/listings/dashboard/` | operador | Colas de trabajo, embudo y números de los últimos 30 días |
 | `GET /api/listings/offers/` | operador | Tabla de ofertas. Los mismos filtros y `ordering` (`title`, `city`, `status`, `offer_amount`, `paid_amount`, `created_at`, `offered_at`, con `-` para descendente) |
 | `GET /api/listings/offers/export/` | operador | La misma tabla en CSV, sin páginas |

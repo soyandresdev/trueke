@@ -447,6 +447,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/listings/summary/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Resumen del vendedor
+         * @description Cuánto ha ganado, cuánto le falta cobrar y cuántas publicaciones tiene en curso.
+         */
+        get: operations["listings_summary_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/me/": {
         parameters: {
             query?: never;
@@ -708,9 +728,9 @@ export interface components {
          *     * `listing.complete` - Sale completed
          *     * `listing.pay` - Payment recorded
          *     * `listing.cancel` - Listing cancelled
-         *     * `listing.expire` - Oferta vencida
-         *     * `listing.review_reminder` - Publicación esperando oferta
-         *     * `listing.offer_reminder` - Oferta sin responder
+         *     * `listing.expire` - Offer expired
+         *     * `listing.review_reminder` - Listing waiting for an offer
+         *     * `listing.offer_reminder` - Offer with no answer
          *     * `message.new` - New messages
          * @enum {string}
          */
@@ -1140,6 +1160,16 @@ export interface components {
         SellerRequest: {
             id: number;
             name: string;
+        };
+        /** @description Lo que ve el vendedor arriba de sus publicaciones. */
+        SellerSummary: {
+            /** Format: decimal */
+            paid_total: string;
+            /** Format: decimal */
+            pending_total: string;
+            paid_count: number;
+            in_progress: number;
+            currency: string;
         };
         SubscribeRequest: {
             /** Format: email */
@@ -1959,6 +1989,35 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ListingStats"];
+                };
+            };
+        };
+    };
+    listings_summary_retrieve: {
+        parameters: {
+            query?: {
+                /** @description Código de la categoría */
+                category?: string;
+                city?: string;
+                /** @description Busca en nombre, descripción y vendedor */
+                q?: string;
+                /** @description Cola del operador */
+                queue?: "countered" | "pickups_today" | "unoffered" | "unpaid";
+                /** @description Uno o varios estados separados por coma */
+                status?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SellerSummary"];
                 };
             };
         };
