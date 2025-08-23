@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 import pytest
-from django.urls import reverse
+from django.urls import NoReverseMatch, reverse
 
 from apps.accounts.tests.factories import OperatorFactory, UserFactory
 from apps.listings import transitions
@@ -78,9 +78,12 @@ def test_allowed_transition(api, people, action, source, actor, target):
     )
 
 
+# `expire` no está aquí: la hace la plataforma sola y no tiene endpoint (ver test_reminders.py).
+API_ACTIONS = [name for name, t in transitions.TRANSITIONS.items() if t.actor != transitions.SYSTEM]
+
 REFUSED = [
     (action, source, actor)
-    for action in transitions.TRANSITIONS
+    for action in API_ACTIONS
     for source in S.values
     for actor in ["seller", "operator", "stranger"]
     if (action, source, actor) not in ALLOWED_KEYS
@@ -104,6 +107,16 @@ def test_everything_else_is_refused(api, people, action, source, actor):
     listing.refresh_from_db()
     assert listing.status == source
     assert not listing.events.exists()
+
+
+def test_the_platform_transitions_have_no_endpoint(api, people):
+    """Vencer una oferta no es una acción de nadie: la URL ni siquiera existe."""
+    listing = ListingFactory(seller=people["seller"], status=S.OFFERED)
+    with pytest.raises(NoReverseMatch):
+        reverse("listing-expire", args=[listing.pk])
+
+    api.force_authenticate(people["operator"])
+    assert api.post(f"/api/listings/{listing.pk}/expire/").status_code == 404
 
 
 def test_offer_stores_amount_and_currency(api, people, settings):

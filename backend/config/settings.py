@@ -101,6 +101,10 @@ LISTING_MAX_IMAGES = env.int("LISTING_MAX_IMAGES", default=10)
 LISTING_CURRENCY = env("LISTING_CURRENCY", default="COP")
 # Contraofertas que puede hacer el vendedor en una misma publicación.
 LISTING_MAX_COUNTEROFFERS = env.int("LISTING_MAX_COUNTEROFFERS", default=2)
+# Recordatorios y vencimiento (horas/días; 0 apaga cada uno).
+LISTING_REVIEW_REMINDER_HOURS = env.int("LISTING_REVIEW_REMINDER_HOURS", default=48)
+LISTING_OFFER_REMINDER_DAYS = env.int("LISTING_OFFER_REMINDER_DAYS", default=3)
+LISTING_OFFER_EXPIRY_DAYS = env.int("LISTING_OFFER_EXPIRY_DAYS", default=7)
 CHAT_FILE_MAX_MB = env.int("CHAT_FILE_MAX_MB", default=10)
 
 S3_BUCKET = env("S3_BUCKET", default="")
@@ -195,6 +199,10 @@ else:
     CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
     CELERY_TASK_ALWAYS_EAGER = True
 CELERY_TASK_IGNORE_RESULT = True
+# Una sola tarea periódica: revisa lo que lleva demasiado tiempo parado (recordatorios y vencimientos).
+CELERY_BEAT_SCHEDULE = {
+    "listings-check-pending": {"task": "apps.listings.tasks.check_pending", "schedule": 60 * 60}
+}
 
 # OTP
 OTP_PROVIDER = env("OTP_PROVIDER", default="console")  # console | twilio | outbox (solo E2E)

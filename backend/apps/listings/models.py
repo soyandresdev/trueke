@@ -114,6 +114,10 @@ class Listing(models.Model):
         blank=True,
     )
 
+    # Último recordatorio enviado por este estado. Cada transición lo borra: así se avisa
+    # una sola vez por cada espera, y no todos los días.
+    reminded_at = models.DateTimeField(_("último recordatorio"), null=True, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

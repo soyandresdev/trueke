@@ -58,7 +58,12 @@
         "cancel": "“{{title}}” was cancelled.",
         "pay": "We paid you {{amount}} for “{{title}}”.",
         "counter": "{{actor}} asks for {{amount}} for “{{title}}”.",
-        "accept_counter": "We accepted your counteroffer of {{amount}} for “{{title}}”."
+        "accept_counter": "We accepted your counteroffer of {{amount}} for “{{title}}”.",
+        "expire": "The offer for “{{title}}” expired. It is back in review.",
+        "review_reminder": "“{{title}}” has been waiting for an offer for {{hours}} hours.",
+        "offer_reminder_one": "You still have an offer for “{{title}}”. It expires tomorrow.",
+        "offer_reminder_other": "You still have an offer for “{{title}}”. It expires in {{count}} days.",
+        "offer_reminder_zero": "You still have an offer for “{{title}}”. It expires today."
       },
       "message": {
         "new_one": "New message from {{actor}} on “{{title}}”.",
@@ -207,7 +212,8 @@
     "cancel": "Listing cancelled",
     "pay": "Payment recorded",
     "counter": "Seller's counteroffer",
-    "accept_counter": "Counteroffer accepted"
+    "accept_counter": "Counteroffer accepted",
+    "expire": "Offer expired"
   },
   "statusNote": {
     "seller": {

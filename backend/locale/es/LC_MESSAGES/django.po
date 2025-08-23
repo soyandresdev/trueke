@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Trueke\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 20:31-0500\n"
+"POT-Creation-Date: 2026-09-19 20:46-0500\n"
 "PO-Revision-Date: 2026-09-20 09:00-0500\n"
 "Last-Translator: \n"
 "Language-Team: Español\n"
@@ -273,6 +273,9 @@ msgstr "referencia del pago"
 msgid "comprobante de pago"
 msgstr "comprobante de pago"
 
+msgid "último recordatorio"
+msgstr "último recordatorio"
+
 msgid "publicación"
 msgstr "publicación"
 
@@ -375,6 +378,9 @@ msgstr "Registrar pago"
 msgid "Cancelar"
 msgstr "Cancelar"
 
+msgid "Oferta vencida"
+msgstr "Oferta vencida"
+
 msgid "No puedes hacer esta acción en esta publicación."
 msgstr "No puedes hacer esta acción en esta publicación."
 
@@ -446,6 +452,12 @@ msgstr "Pago registrado"
 
 msgid "Publicación cancelada"
 msgstr "Publicación cancelada"
+
+msgid "Publicación esperando oferta"
+msgstr "Publicación esperando oferta"
+
+msgid "Oferta sin responder"
+msgstr "Oferta sin responder"
 
 msgid "Mensajes nuevos"
 msgstr "Mensajes nuevos"

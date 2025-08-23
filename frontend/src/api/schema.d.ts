@@ -708,10 +708,13 @@ export interface components {
          *     * `listing.complete` - Sale completed
          *     * `listing.pay` - Payment recorded
          *     * `listing.cancel` - Listing cancelled
+         *     * `listing.expire` - Oferta vencida
+         *     * `listing.review_reminder` - Publicación esperando oferta
+         *     * `listing.offer_reminder` - Oferta sin responder
          *     * `message.new` - New messages
          * @enum {string}
          */
-        KindEnum: "listing.create" | "listing.offer" | "listing.accept" | "listing.reject" | "listing.counter" | "listing.accept_counter" | "listing.pickup" | "listing.complete" | "listing.pay" | "listing.cancel" | "message.new";
+        KindEnum: "listing.create" | "listing.offer" | "listing.accept" | "listing.reject" | "listing.counter" | "listing.accept_counter" | "listing.pickup" | "listing.complete" | "listing.pay" | "listing.cancel" | "listing.expire" | "listing.review_reminder" | "listing.offer_reminder" | "message.new";
         /**
          * @description * `es` - Español
          *     * `en` - English
