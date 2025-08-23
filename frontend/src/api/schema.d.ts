@@ -376,6 +376,60 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/listings/dashboard/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Números del panel del operador
+         * @description Colas de trabajo, embudo y números de los últimos 30 días.
+         */
+        get: operations["listings_dashboard_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/listings/offers/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Tabla de ofertas: una fila por publicación, con las fechas de cada paso. */
+        get: operations["listings_offers_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/listings/offers/export/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description La misma tabla, en CSV, sin paginar. */
+        get: operations["listings_offers_export_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/listings/stats/": {
         parameters: {
             query?: never;
@@ -621,6 +675,12 @@ export interface components {
             /** Format: decimal */
             amount: string;
         };
+        Dashboard: {
+            days: number;
+            queue: components["schemas"]["Queue"];
+            funnel: components["schemas"]["Funnel"];
+            period: components["schemas"]["Period"];
+        };
         /**
          * @description * `national_id` - National ID
          *     * `foreign_id` - Foreign ID
@@ -628,6 +688,15 @@ export interface components {
          * @enum {string}
          */
         DocumentTypeEnum: "national_id" | "foreign_id" | "passport";
+        /** @description De las publicaciones creadas en la ventana, cuántas llegaron a cada paso. */
+        Funnel: {
+            created: number;
+            offered: number;
+            accepted: number;
+            picked_up: number;
+            completed: number;
+            paid: number;
+        };
         /**
          * @description * `listing.create` - New listing
          *     * `listing.offer` - New offer
@@ -858,6 +927,45 @@ export interface components {
             /** @default COP */
             currency: string;
         };
+        /** @description Una fila de la tabla de ofertas del operador. */
+        OfferRow: {
+            readonly id: number;
+            /** Name */
+            readonly title: string;
+            readonly seller: components["schemas"]["Seller"];
+            readonly category: string;
+            readonly city: string;
+            readonly status: components["schemas"]["ListingStatusEnum"];
+            /**
+             * Offer
+             * Format: decimal
+             */
+            readonly offer_amount: string | null;
+            /**
+             * Counteroffer
+             * Format: decimal
+             */
+            readonly counter_amount: string | null;
+            /**
+             * Amount paid
+             * Format: decimal
+             */
+            readonly paid_amount: string | null;
+            /** Currency */
+            readonly offer_currency: string;
+            readonly payment_reference: string;
+            /** Format: date-time */
+            readonly created_at: string;
+            /** Format: date-time */
+            readonly offered_at: string;
+            /** Format: date-time */
+            readonly accepted_at: string;
+            /**
+             * Payment date
+             * Format: date
+             */
+            readonly paid_at: string | null;
+        };
         OtpIssued: {
             expires_in: number;
             resend_in: number;
@@ -917,6 +1025,21 @@ export interface components {
             previous?: string | null;
             results: components["schemas"]["Notification"][];
         };
+        PaginatedOfferRowList: {
+            /** @example 123 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?page=4
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?page=2
+             */
+            previous?: string | null;
+            results: components["schemas"]["OfferRow"][];
+        };
         PatchedDocumentsRequest: {
             /**
              * ID document
@@ -962,6 +1085,22 @@ export interface components {
             /** Format: binary */
             receipt?: string;
         };
+        Period: {
+            created: number;
+            offered: number;
+            accepted: number;
+            /** Format: double */
+            acceptance_rate: number | null;
+            paid_count: number;
+            /** Format: decimal */
+            paid_total: string;
+            /** Format: decimal */
+            average_paid: string | null;
+            /** Format: decimal */
+            offered_total: string;
+            /** Format: double */
+            hours_to_offer: number | null;
+        };
         /**
          * @description * `seller` - seller
          *     * `platform` - platform
@@ -973,6 +1112,14 @@ export interface components {
             /** Format: date */
             pickup_date?: string | null;
             notes?: string;
+        };
+        /** @description Cuántas publicaciones esperan una acción del operador. */
+        Queue: {
+            unoffered: number;
+            countered: number;
+            pickups_today: number;
+            unpaid: number;
+            oldest_waiting_days: number | null;
         };
         ReasonRequest: {
             reason?: string;
@@ -1149,6 +1296,8 @@ export interface operations {
                 page?: number;
                 /** @description Busca en nombre, descripción y vendedor */
                 q?: string;
+                /** @description Cola del operador */
+                queue?: "countered" | "pickups_today" | "unoffered" | "unpaid";
                 /** @description Uno o varios estados separados por coma */
                 status?: string;
             };
@@ -1293,6 +1442,8 @@ export interface operations {
                 city?: string;
                 /** @description Busca en nombre, descripción y vendedor */
                 q?: string;
+                /** @description Cola del operador */
+                queue?: "countered" | "pickups_today" | "unoffered" | "unpaid";
                 /** @description Uno o varios estados separados por coma */
                 status?: string;
             };
@@ -1473,6 +1624,8 @@ export interface operations {
                 city?: string;
                 /** @description Busca en nombre, descripción y vendedor */
                 q?: string;
+                /** @description Cola del operador */
+                queue?: "countered" | "pickups_today" | "unoffered" | "unpaid";
                 /** @description Uno o varios estados separados por coma */
                 status?: string;
             };
@@ -1635,6 +1788,8 @@ export interface operations {
                 city?: string;
                 /** @description Busca en nombre, descripción y vendedor */
                 q?: string;
+                /** @description Cola del operador */
+                queue?: "countered" | "pickups_today" | "unoffered" | "unpaid";
                 /** @description Uno o varios estados separados por coma */
                 status?: string;
             };
@@ -1684,6 +1839,98 @@ export interface operations {
             };
         };
     };
+    listings_dashboard_retrieve: {
+        parameters: {
+            query?: {
+                /** @description Código de la categoría */
+                category?: string;
+                city?: string;
+                /** @description Busca en nombre, descripción y vendedor */
+                q?: string;
+                /** @description Cola del operador */
+                queue?: "countered" | "pickups_today" | "unoffered" | "unpaid";
+                /** @description Uno o varios estados separados por coma */
+                status?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Dashboard"];
+                };
+            };
+        };
+    };
+    listings_offers_list: {
+        parameters: {
+            query?: {
+                /** @description Código de la categoría */
+                category?: string;
+                city?: string;
+                /** @description Columna de la tabla de ofertas, con - para descendente */
+                ordering?: "city" | "created_at" | "offer_amount" | "offered_at" | "paid_amount" | "status" | "title";
+                /** @description A page number within the paginated result set. */
+                page?: number;
+                /** @description Busca en nombre, descripción y vendedor */
+                q?: string;
+                /** @description Cola del operador */
+                queue?: "countered" | "pickups_today" | "unoffered" | "unpaid";
+                /** @description Uno o varios estados separados por coma */
+                status?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedOfferRowList"];
+                };
+            };
+        };
+    };
+    listings_offers_export_retrieve: {
+        parameters: {
+            query?: {
+                /** @description Código de la categoría */
+                category?: string;
+                city?: string;
+                /** @description Columna de la tabla de ofertas, con - para descendente */
+                ordering?: "city" | "created_at" | "offer_amount" | "offered_at" | "paid_amount" | "status" | "title";
+                /** @description Busca en nombre, descripción y vendedor */
+                q?: string;
+                /** @description Cola del operador */
+                queue?: "countered" | "pickups_today" | "unoffered" | "unpaid";
+                /** @description Uno o varios estados separados por coma */
+                status?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description CSV */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     listings_stats_retrieve: {
         parameters: {
             query?: {
@@ -1692,6 +1939,8 @@ export interface operations {
                 city?: string;
                 /** @description Busca en nombre, descripción y vendedor */
                 q?: string;
+                /** @description Cola del operador */
+                queue?: "countered" | "pickups_today" | "unoffered" | "unpaid";
                 /** @description Uno o varios estados separados por coma */
                 status?: string;
             };

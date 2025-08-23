@@ -1,5 +1,5 @@
 import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
-import { Package } from 'lucide-react'
+import { LayoutDashboard, Package } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { useMe } from '@/auth/session'
@@ -66,18 +66,36 @@ function SessionLink() {
     )
   }
   const name = me ? `${me.first_name ?? ''} ${me.last_name ?? ''}`.trim() : ''
+  const operator = me?.role === 'operator'
   return (
     <>
+      {operator && (
+        <>
+          <Link
+            to="/panel"
+            className="hidden text-sm font-semibold hover:text-blue sm:inline [&.active]:text-blue"
+          >
+            {t('nav.panel')}
+          </Link>
+          <Link
+            to="/panel"
+            aria-label={t('nav.panel')}
+            className="rounded-pill p-2.5 hover:bg-paper sm:hidden [&.active]:text-blue"
+          >
+            <LayoutDashboard className="size-5" aria-hidden />
+          </Link>
+        </>
+      )}
       <Link
         to="/publicaciones"
         className="hidden text-sm font-semibold hover:text-blue sm:inline [&.active]:text-blue"
       >
-        {me?.role === 'operator' ? t('nav.listingsOperator') : t('nav.listings')}
+        {operator ? t('nav.listingsOperator') : t('nav.listings')}
       </Link>
       {/* En móvil el texto no cabe: el mismo enlace como icono. */}
       <Link
         to="/publicaciones"
-        aria-label={me?.role === 'operator' ? t('nav.listingsOperator') : t('nav.listings')}
+        aria-label={operator ? t('nav.listingsOperator') : t('nav.listings')}
         className="rounded-pill p-2.5 hover:bg-paper sm:hidden [&.active]:text-blue"
       >
         <Package className="size-5" aria-hidden />

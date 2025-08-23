@@ -2,7 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-import type { ListingStatus } from '@/api/types'
+import type { ListingStatus, Queue } from '@/api/types'
 import { useMe } from '@/auth/session'
 import { ListingCard } from '@/components/ListingCard'
 import { Pagination } from '@/components/ui/Pagination'
@@ -25,8 +25,11 @@ const statuses: ListingStatus[] = [
 const isStatus = (value: unknown): value is ListingStatus =>
   statuses.includes(value as ListingStatus)
 
+const queues: Queue[] = ['unoffered', 'countered', 'pickups_today', 'unpaid']
+
 type Search = {
   estado?: ListingStatus
+  cola?: Queue
   q?: string
   ciudad?: string
   categoria?: string
@@ -41,6 +44,7 @@ export const Route = createFileRoute('/_app/publicaciones/')({
     const page = Number(search.pagina)
     return {
       estado: isStatus(search.estado) ? search.estado : undefined,
+      cola: queues.includes(search.cola as Queue) ? (search.cola as Queue) : undefined,
       q: text(search.q),
       ciudad: text(search.ciudad),
       categoria: text(search.categoria),
@@ -61,13 +65,16 @@ function Listings() {
   const stats = useListingStats()
   const listings = useListings({
     status: search.estado,
+    queue: search.cola,
     q: search.q,
     city: search.ciudad,
     category: search.categoria,
     page: search.pagina,
   })
   const total = stats.data ? Object.values(stats.data).reduce((sum, n) => sum + n, 0) : undefined
-  const filtered = Boolean(search.estado || search.q || search.ciudad || search.categoria)
+  const filtered = Boolean(
+    search.estado || search.cola || search.q || search.ciudad || search.categoria,
+  )
   // Cambiar un filtro vuelve a la primera página.
   const setSearch = (next: Partial<Search>) =>
     void navigate({ search: (prev) => ({ ...prev, ...next, pagina: undefined }) })
@@ -113,6 +120,20 @@ function Listings() {
           />
         ))}
       </nav>
+
+      {search.cola && (
+        // Al llegar desde una cola del panel, la lista se ve filtrada aunque las pestañas digan otra cosa.
+        <p className="mt-4 flex items-center gap-3 text-sm text-ink-soft">
+          {t(`panel.queue.${search.cola}`)}
+          <button
+            type="button"
+            onClick={() => setSearch({ cola: undefined })}
+            className="font-semibold text-blue underline"
+          >
+            {t('panel.queue.showAll')}
+          </button>
+        </p>
+      )}
 
       {listings.isPending ? (
         <Spinner className="mx-auto mt-20 block size-6 text-blue" />

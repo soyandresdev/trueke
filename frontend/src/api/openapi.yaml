@@ -137,6 +137,16 @@ paths:
           type: string
         description: Busca en nombre, descripción y vendedor
       - in: query
+        name: queue
+        schema:
+          type: string
+          enum:
+          - countered
+          - pickups_today
+          - unoffered
+          - unpaid
+        description: Cola del operador
+      - in: query
         name: status
         schema:
           type: string
@@ -300,6 +310,16 @@ paths:
         schema:
           type: string
         description: Busca en nombre, descripción y vendedor
+      - in: query
+        name: queue
+        schema:
+          type: string
+          enum:
+          - countered
+          - pickups_today
+          - unoffered
+          - unpaid
+        description: Cola del operador
       - in: query
         name: status
         schema:
@@ -505,6 +525,16 @@ paths:
           type: string
         description: Busca en nombre, descripción y vendedor
       - in: query
+        name: queue
+        schema:
+          type: string
+          enum:
+          - countered
+          - pickups_today
+          - unoffered
+          - unpaid
+        description: Cola del operador
+      - in: query
         name: status
         schema:
           type: string
@@ -700,6 +730,16 @@ paths:
           type: string
         description: Busca en nombre, descripción y vendedor
       - in: query
+        name: queue
+        schema:
+          type: string
+          enum:
+          - countered
+          - pickups_today
+          - unoffered
+          - unpaid
+        description: Cola del operador
+      - in: query
         name: status
         schema:
           type: string
@@ -744,6 +784,171 @@ paths:
               schema:
                 $ref: '#/components/schemas/Listing'
           description: ''
+  /api/listings/dashboard/:
+    get:
+      operationId: listings_dashboard_retrieve
+      description: Colas de trabajo, embudo y números de los últimos 30 días.
+      summary: Números del panel del operador
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+        description: Código de la categoría
+      - in: query
+        name: city
+        schema:
+          type: string
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Busca en nombre, descripción y vendedor
+      - in: query
+        name: queue
+        schema:
+          type: string
+          enum:
+          - countered
+          - pickups_today
+          - unoffered
+          - unpaid
+        description: Cola del operador
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Uno o varios estados separados por coma
+      tags:
+      - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dashboard'
+          description: ''
+  /api/listings/offers/:
+    get:
+      operationId: listings_offers_list
+      description: 'Tabla de ofertas: una fila por publicación, con las fechas de
+        cada paso.'
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+        description: Código de la categoría
+      - in: query
+        name: city
+        schema:
+          type: string
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          enum:
+          - city
+          - created_at
+          - offer_amount
+          - offered_at
+          - paid_amount
+          - status
+          - title
+        description: Columna de la tabla de ofertas, con - para descendente
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Busca en nombre, descripción y vendedor
+      - in: query
+        name: queue
+        schema:
+          type: string
+          enum:
+          - countered
+          - pickups_today
+          - unoffered
+          - unpaid
+        description: Cola del operador
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Uno o varios estados separados por coma
+      tags:
+      - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOfferRowList'
+          description: ''
+  /api/listings/offers/export/:
+    get:
+      operationId: listings_offers_export_retrieve
+      description: La misma tabla, en CSV, sin paginar.
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+        description: Código de la categoría
+      - in: query
+        name: city
+        schema:
+          type: string
+      - in: query
+        name: ordering
+        schema:
+          type: string
+          enum:
+          - city
+          - created_at
+          - offer_amount
+          - offered_at
+          - paid_amount
+          - status
+          - title
+        description: Columna de la tabla de ofertas, con - para descendente
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Busca en nombre, descripción y vendedor
+      - in: query
+        name: queue
+        schema:
+          type: string
+          enum:
+          - countered
+          - pickups_today
+          - unoffered
+          - unpaid
+        description: Cola del operador
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Uno o varios estados separados por coma
+      tags:
+      - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: CSV
   /api/listings/stats/:
     get:
       operationId: listings_stats_retrieve
@@ -763,6 +968,16 @@ paths:
         schema:
           type: string
         description: Busca en nombre, descripción y vendedor
+      - in: query
+        name: queue
+        schema:
+          type: string
+          enum:
+          - countered
+          - pickups_today
+          - unoffered
+          - unpaid
+        description: Cola del operador
       - in: query
         name: status
         schema:
@@ -1109,6 +1324,22 @@ components:
           pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
       required:
       - amount
+    Dashboard:
+      type: object
+      properties:
+        days:
+          type: integer
+        queue:
+          $ref: '#/components/schemas/Queue'
+        funnel:
+          $ref: '#/components/schemas/Funnel'
+        period:
+          $ref: '#/components/schemas/Period'
+      required:
+      - days
+      - funnel
+      - period
+      - queue
     DocumentTypeEnum:
       enum:
       - national_id
@@ -1119,6 +1350,30 @@ components:
         * `national_id` - National ID
         * `foreign_id` - Foreign ID
         * `passport` - Passport
+    Funnel:
+      type: object
+      description: De las publicaciones creadas en la ventana, cuántas llegaron a
+        cada paso.
+      properties:
+        created:
+          type: integer
+        offered:
+          type: integer
+        accepted:
+          type: integer
+        picked_up:
+          type: integer
+        completed:
+          type: integer
+        paid:
+          type: integer
+      required:
+      - accepted
+      - completed
+      - created
+      - offered
+      - paid
+      - picked_up
     KindEnum:
       enum:
       - listing.create
@@ -1631,6 +1886,93 @@ components:
           maxLength: 3
       required:
       - amount
+    OfferRow:
+      type: object
+      description: Una fila de la tabla de ofertas del operador.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          readOnly: true
+          title: Name
+        seller:
+          allOf:
+          - $ref: '#/components/schemas/Seller'
+          readOnly: true
+        category:
+          type: string
+          readOnly: true
+        city:
+          type: string
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ListingStatusEnum'
+          readOnly: true
+        offer_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+          nullable: true
+          title: Offer
+        counter_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+          nullable: true
+          title: Counteroffer
+        paid_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          readOnly: true
+          nullable: true
+          title: Amount paid
+        offer_currency:
+          type: string
+          readOnly: true
+          title: Currency
+        payment_reference:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        offered_at:
+          type: string
+          format: date-time
+          readOnly: true
+        accepted_at:
+          type: string
+          format: date-time
+          readOnly: true
+        paid_at:
+          type: string
+          format: date
+          readOnly: true
+          nullable: true
+          title: Payment date
+      required:
+      - accepted_at
+      - category
+      - city
+      - counter_amount
+      - created_at
+      - id
+      - offer_amount
+      - offer_currency
+      - offered_at
+      - paid_amount
+      - paid_at
+      - payment_reference
+      - seller
+      - status
+      - title
     OtpIssued:
       type: object
       properties:
@@ -1742,6 +2084,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Notification'
+    PaginatedOfferRowList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OfferRow'
     PatchedDocumentsRequest:
       type: object
       properties:
@@ -1836,6 +2201,48 @@ components:
           format: binary
       required:
       - amount
+    Period:
+      type: object
+      properties:
+        created:
+          type: integer
+        offered:
+          type: integer
+        accepted:
+          type: integer
+        acceptance_rate:
+          type: number
+          format: double
+          nullable: true
+        paid_count:
+          type: integer
+        paid_total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        average_paid:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+          nullable: true
+        offered_total:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        hours_to_offer:
+          type: number
+          format: double
+          nullable: true
+      required:
+      - acceptance_rate
+      - accepted
+      - average_paid
+      - created
+      - hours_to_offer
+      - offered
+      - offered_total
+      - paid_count
+      - paid_total
     PickupPickupByEnum:
       enum:
       - seller
@@ -1858,6 +2265,27 @@ components:
           maxLength: 500
       required:
       - pickup_by
+    Queue:
+      type: object
+      description: Cuántas publicaciones esperan una acción del operador.
+      properties:
+        unoffered:
+          type: integer
+        countered:
+          type: integer
+        pickups_today:
+          type: integer
+        unpaid:
+          type: integer
+        oldest_waiting_days:
+          type: integer
+          nullable: true
+      required:
+      - countered
+      - oldest_waiting_days
+      - pickups_today
+      - unoffered
+      - unpaid
     ReasonRequest:
       type: object
       properties:

@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next'
 
 import { api } from '@/api/client'
 import type { ApiErrorBody } from '@/api/errors'
-import type { Listing, ListingAction, ListingStatus } from '@/api/types'
+import type { Listing, ListingAction, ListingStatus, Queue } from '@/api/types'
 import { queryClient } from '@/lib/queryClient'
 import { queryKeys } from '@/realtime/events'
 
 /** Convierte la respuesta de openapi-fetch en datos o en una excepción con el body del error. */
-function unwrap<T>({
+export function unwrap<T>({
   data,
   error,
   response,
@@ -35,6 +35,7 @@ export function useCategories() {
 
 export type ListingFilters = {
   status?: ListingStatus
+  queue?: Queue
   q?: string
   city?: string
   category?: string

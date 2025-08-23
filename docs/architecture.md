@@ -28,7 +28,7 @@ The backend uses Django 5 with Django REST Framework, Channels for the WebSocket
 | App | What it does |
 |---|---|
 | `accounts` | Users who log in with a one-time code (no passwords), JWT, profile and private documents. OTP providers: `console`, `twilio`, `outbox` (end-to-end tests only). |
-| `listings` | Categories with extra fields in JSON Schema, listings, photos and the state machine. |
+| `listings` | Categories with extra fields in JSON Schema, listings, photos, the state machine and the dashboard numbers. |
 | `chat` | One chat per listing between the seller and the platform, with private attachments and read receipts. |
 | `notifications` | Messages for "the other side" of each action. Celery creates them and they are sent live. |
 | `realtime` | The single WebSocket and `broadcast(channel, event, data)`. |
@@ -64,6 +64,8 @@ Each transition:
 4. After the database transaction commits, sends the `listing_transitioned` signal. The live update (`realtime`) and the notifications (`notifications`) start from there.
 
 The API returns `available_actions` in each listing: the transitions the current user can do. The frontend shows the buttons from that list and doesn't repeat the rules.
+
+Those events are also the source of the dashboard (`apps/listings/dashboard.py`): the funnel and the numbers of the period are counted from them, so no counter has to be kept up to date and an old listing tells its whole story.
 
 ### Real time
 

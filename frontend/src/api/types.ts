@@ -1,4 +1,4 @@
-import type { components } from './schema'
+import type { components, operations } from './schema'
 
 type Schemas = components['schemas']
 
@@ -13,3 +13,9 @@ export type ListingEvent = Schemas['ListingEvent']
 export type ListingAction = Schemas['AvailableActionsEnum']
 export type PickupBy = Schemas['PickupPickupByEnum']
 export type NotificationKind = Schemas['KindEnum']
+export type Dashboard = Schemas['Dashboard']
+export type OfferRow = Schemas['OfferRow']
+
+type OfferQuery = NonNullable<operations['listings_offers_list']['parameters']['query']>
+export type Queue = NonNullable<OfferQuery['queue']>
+export type OfferOrdering = NonNullable<OfferQuery['ordering']>

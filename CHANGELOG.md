@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+- **Dashboard for the team** (`/panel`). What is waiting for an action (listings with no offer, counteroffers, pickups due, sales that are not paid), the funnel from listed to paid, the numbers of the last 30 days, and one table with every offer, sortable and downloadable as CSV. It is all worked out from the history of each listing, so there is nothing new to keep up to date.
 - **Lighter and safer photos.** Uploaded photos are saved as WebP in two sizes (a large one and a thumbnail for lists), rotated correctly, and without metadata such as the GPS location. Lists load about 8 times less data. For existing photos, run `python manage.py optimize_images`.
 - **Counteroffers.** The seller can answer an offer with their own price. The operator can accept it, make a new offer or cancel. The number of rounds is limited (`LISTING_MAX_COUNTEROFFERS`, 2 by default).
 - **Payments are recorded.** After the sale is completed, the operator records the payment (amount, date, transfer reference and a private receipt). The listing moves to the new "paid" status and the seller sees it live and can download the receipt.

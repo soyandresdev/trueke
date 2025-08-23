@@ -28,7 +28,7 @@ Django 5 con Django REST Framework, Channels para el WebSocket y Celery para las
 | App | Qué hace |
 |---|---|
 | `accounts` | Usuario con login por OTP (sin contraseñas), JWT, perfil y documentos privados. Proveedores de OTP: `console`, `twilio`, `outbox` (solo E2E). |
-| `listings` | Categorías con campos extra en JSON Schema, publicaciones, fotos y la máquina de estados. |
+| `listings` | Categorías con campos extra en JSON Schema, publicaciones, fotos, la máquina de estados y los números del tablero. |
 | `chat` | Un chat por publicación entre el vendedor y la plataforma, con adjuntos privados y leídos. |
 | `notifications` | Avisos para "el otro lado" de cada acción; se generan en Celery y se envían en vivo. |
 | `realtime` | El WebSocket único y `broadcast(canal, evento, datos)`. |
@@ -64,6 +64,8 @@ Cada transición:
 4. Cuando la transacción se confirma, emite la señal `listing_transitioned`. De ahí salen el aviso en vivo (`realtime`) y las notificaciones (`notifications`).
 
 La API devuelve en cada publicación `available_actions`, las transiciones que puede hacer quien pregunta. El frontend pinta los botones con eso y no repite las reglas.
+
+Esos eventos son también el origen del tablero (`apps/listings/dashboard.py`): el embudo y los números del periodo se cuentan a partir de ellos, así que no hay contadores que mantener y una publicación vieja sigue contando su historia completa.
 
 ### Tiempo real
 

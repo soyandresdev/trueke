@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Trueke\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 10:10-0500\n"
+"POT-Creation-Date: 2026-09-19 20:31-0500\n"
 "PO-Revision-Date: 2026-09-19 08:50-0500\n"
 "Last-Translator: \n"
 "Language-Team: English\n"
@@ -302,6 +302,30 @@ msgstr "event"
 msgid "eventos"
 msgstr "events"
 
+msgid "id"
+msgstr "id"
+
+msgid "artículo"
+msgstr "item"
+
+msgid "pagado"
+msgstr "paid"
+
+msgid "publicada"
+msgstr "listed"
+
+msgid "ofertada"
+msgstr "offered"
+
+msgid "aceptada"
+msgstr "accepted"
+
+msgid "pagada"
+msgstr "paid on"
+
+msgid "referencia"
+msgstr "reference"
+
 msgid "El esquema debe ser un objeto con \"type\": \"object\"."
 msgstr "The schema must be an object with \"type\": \"object\"."
 
@@ -357,11 +381,10 @@ msgid "No se puede «%(action)s» una publicación %(status)s."
 msgstr "Can’t “%(action)s” a listing that is %(status)s."
 
 msgid ""
-"Completa tu perfil (datos, documento y certificado bancario) para aceptar la"
-" oferta."
+"Completa tu perfil (datos, documento y certificado bancario) para aceptar la "
+"oferta."
 msgstr ""
-"Complete your profile (details, ID and bank certificate) to accept the "
-"offer."
+"Complete your profile (details, ID and bank certificate) to accept the offer."
 
 msgid "Ya no puedes hacer más contraofertas en esta publicación."
 msgstr "You can’t make more counteroffers on this listing."

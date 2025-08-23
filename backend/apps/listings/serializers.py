@@ -142,6 +142,79 @@ class ListingSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
+OFFER_ROW_FIELDS = [
+    "id",
+    "title",
+    "seller",
+    "category",
+    "city",
+    "status",
+    "offer_amount",
+    "counter_amount",
+    "paid_amount",
+    "offer_currency",
+    "payment_reference",
+    "created_at",
+    "offered_at",
+    "accepted_at",
+    "paid_at",
+]
+
+
+class OfferRowSerializer(serializers.ModelSerializer):
+    """Una fila de la tabla de ofertas del operador."""
+
+    seller = SellerSerializer(read_only=True)
+    category = serializers.CharField(source="category.display_name", read_only=True)
+    offered_at = serializers.DateTimeField(read_only=True)
+    accepted_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Listing
+        fields = OFFER_ROW_FIELDS
+        read_only_fields = OFFER_ROW_FIELDS
+
+
+class QueueSerializer(serializers.Serializer):
+    """Cuántas publicaciones esperan una acción del operador."""
+
+    unoffered = serializers.IntegerField()
+    countered = serializers.IntegerField()
+    pickups_today = serializers.IntegerField()
+    unpaid = serializers.IntegerField()
+    oldest_waiting_days = serializers.IntegerField(allow_null=True)
+
+
+class FunnelSerializer(serializers.Serializer):
+    """De las publicaciones creadas en la ventana, cuántas llegaron a cada paso."""
+
+    created = serializers.IntegerField()
+    offered = serializers.IntegerField()
+    accepted = serializers.IntegerField()
+    picked_up = serializers.IntegerField()
+    completed = serializers.IntegerField()
+    paid = serializers.IntegerField()
+
+
+class PeriodSerializer(serializers.Serializer):
+    created = serializers.IntegerField()
+    offered = serializers.IntegerField()
+    accepted = serializers.IntegerField()
+    acceptance_rate = serializers.FloatField(allow_null=True)
+    paid_count = serializers.IntegerField()
+    paid_total = serializers.DecimalField(max_digits=14, decimal_places=2)
+    average_paid = serializers.DecimalField(max_digits=14, decimal_places=2, allow_null=True)
+    offered_total = serializers.DecimalField(max_digits=14, decimal_places=2)
+    hours_to_offer = serializers.FloatField(allow_null=True)
+
+
+class DashboardSerializer(serializers.Serializer):
+    days = serializers.IntegerField()
+    queue = QueueSerializer()
+    funnel = FunnelSerializer()
+    period = PeriodSerializer()
+
+
 class ListingEventSerializer(serializers.ModelSerializer):
     actor = SellerSerializer(read_only=True)
 

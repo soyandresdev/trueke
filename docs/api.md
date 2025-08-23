@@ -44,9 +44,12 @@ The API answers in the language of `Accept-Language`: `en` by default, or `es`. 
 | `PATCH /api/me/documents/` | anyone | Uploads `document_file` and/or `bank_certificate` (multipart; PDF/JPG/PNG, 5 MB) |
 | `GET /api/me/documents/{document\|bank-certificate}/` | anyone | Downloads my document (on S3, it redirects to a signed URL) |
 | `GET /api/categories/` | public | Active categories with their `fields_schema` (JSON Schema) |
-| `GET /api/listings/` | seller: own listings; operator: all | Filters: `status` (one or more, comma-separated), `category` (code), `city`, `q`, `page` |
+| `GET /api/listings/` | seller: own listings; operator: all | Filters: `status` (one or more, comma-separated), `category` (code), `city`, `q`, `page`, and `queue` for the operator (`unoffered`, `countered`, `pickups_today`, `unpaid`) |
 | `POST /api/listings/` | seller | Create. Needs `terms_accepted: true` and checks `attributes` against the category schema |
 | `GET /api/listings/stats/` | same as the list | How many listings are in each status |
+| `GET /api/listings/dashboard/` | operator | Work queues, funnel and the numbers of the last 30 days |
+| `GET /api/listings/offers/` | operator | Offers table. Same filters, plus `ordering` (`title`, `city`, `status`, `offer_amount`, `paid_amount`, `created_at`, `offered_at`, with `-` for descending) |
+| `GET /api/listings/offers/export/` | operator | The same table as CSV, without pages |
 | `GET /api/listings/{id}/` · `PATCH` | seller (edit only in review) | Detail with `available_actions` |
 | `POST /api/listings/{id}/images/` · `DELETE …/images/{image_id}/` | seller, in review | Photos (JPG/PNG/WebP, 8 MB, up to 10) |
 | `POST /api/listings/{id}/{action}/` | depends on the action | `offer {amount, currency}`, `accept`, `counter {amount}`, `accept-counter`, `reject {reason}`, `pickup {pickup_by, pickup_date, notes}`, `complete`, `pay {amount, paid_at, reference, receipt}` (multipart if there is a receipt), `cancel {reason}` |
