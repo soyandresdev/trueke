@@ -9,6 +9,7 @@ Trueke en producción son cuatro piezas:
 | **Frontend** | Archivos estáticos (`frontend/dist`) | Cualquier servidor estático o CDN, con fallback a `index.html` |
 | **Backend** | Django por ASGI (HTTP y WebSocket) | La imagen de `backend/Dockerfile` (`daphne` en el puerto 8000) |
 | **Worker** | Celery (envío de OTP y notificaciones) | La misma imagen con `celery -A config worker -l info` |
+| **Reloj** | Celery beat (recordatorios y vencimiento de ofertas, cada hora) | La misma imagen con `celery -A config beat -l info`. Solo **uno**. |
 | **Servicios** | PostgreSQL 16, Redis 7 y un bucket S3 (o compatible) | Los que prefieras, gestionados o propios |
 
 ## Recomendado: todo en un mismo dominio
@@ -24,6 +25,7 @@ docker build -t trueke-backend backend
 docker run --env-file prod.env trueke-backend python manage.py migrate
 docker run --env-file prod.env -p 8000:8000 trueke-backend
 docker run --env-file prod.env trueke-backend celery -A config worker -l info
+docker run --env-file prod.env trueke-backend celery -A config beat -l info
 ```
 
 ## Variables del backend
@@ -45,6 +47,9 @@ docker run --env-file prod.env trueke-backend celery -A config worker -l info
 | `TIME_ZONE` | `America/Bogota` | |
 | `LISTING_CURRENCY` | `COP` | Moneda de las ofertas |
 | `LISTING_MAX_COUNTEROFFERS` | `2` | Contraofertas que puede hacer un vendedor en una publicación |
+| `LISTING_REVIEW_REMINDER_HOURS` | `48` | Avisa al equipo de una publicación sin oferta después de ese tiempo. `0` lo apaga. |
+| `LISTING_OFFER_REMINDER_DAYS` | `3` | Recuerda al vendedor la oferta que no ha respondido. `0` lo apaga. |
+| `LISTING_OFFER_EXPIRY_DAYS` | `7` | La oferta sin respuesta vence y la publicación vuelve a revisión. `0` lo apaga. |
 | `JWT_ACCESS_MINUTES`, `JWT_REFRESH_DAYS` | `15`, `30` | Duración de la sesión |
 | `OTP_THROTTLE_RATE`, `NEWSLETTER_THROTTLE_RATE` | `10/hour`, `20/hour` | Límites por IP |
 | `LISTING_IMAGE_MAX_MB`, `LISTING_MAX_IMAGES`, `PRIVATE_FILE_MAX_MB`, `CHAT_FILE_MAX_MB` | `8`, `10`, `5`, `10` | Límites de archivos. Si los cambias, cámbialos también en el frontend (`photoRules.ts`, `DocumentsCard.tsx`, `chat/api.ts`). |

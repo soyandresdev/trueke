@@ -1386,6 +1386,9 @@ components:
       - listing.complete
       - listing.pay
       - listing.cancel
+      - listing.expire
+      - listing.review_reminder
+      - listing.offer_reminder
       - message.new
       type: string
       description: |-
@@ -1399,6 +1402,9 @@ components:
         * `listing.complete` - Sale completed
         * `listing.pay` - Payment recorded
         * `listing.cancel` - Listing cancelled
+        * `listing.expire` - Oferta vencida
+        * `listing.review_reminder` - Publicación esperando oferta
+        * `listing.offer_reminder` - Oferta sin responder
         * `message.new` - New messages
     LanguageEnum:
       enum:

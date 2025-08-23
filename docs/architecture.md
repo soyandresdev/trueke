@@ -63,6 +63,8 @@ Each transition:
 3. Saves a `ListingEvent` for the history.
 4. After the database transaction commits, sends the `listing_transitioned` signal. The live update (`realtime`) and the notifications (`notifications`) start from there.
 
+`expire` is the only transition the platform does by itself, from the hourly task in `apps/listings/tasks.py`. It has no endpoint and no one can ask for it.
+
 The API returns `available_actions` in each listing: the transitions the current user can do. The frontend shows the buttons from that list and doesn't repeat the rules.
 
 Those events are also the source of the dashboard (`apps/listings/dashboard.py`): the funnel and the numbers of the period are counted from them, so no counter has to be kept up to date and an old listing tells its whole story.

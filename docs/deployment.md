@@ -9,6 +9,7 @@ In production, Trueke has four parts:
 | **Frontend** | Static files (`frontend/dist`) | Any static server or CDN, with a fallback to `index.html` |
 | **Backend** | Django over ASGI (HTTP and WebSocket) | The image from `backend/Dockerfile` (`daphne` on port 8000) |
 | **Worker** | Celery (sends codes and notifications) | The same image with `celery -A config worker -l info` |
+| **Clock** | Celery beat (reminders and offer expiry, once an hour) | The same image with `celery -A config beat -l info`. Only **one** of these. |
 | **Services** | PostgreSQL 16, Redis 7 and an S3 bucket (or compatible) | Managed or your own |
 
 ## Recommended: everything on one domain
@@ -24,6 +25,7 @@ docker build -t trueke-backend backend
 docker run --env-file prod.env trueke-backend python manage.py migrate
 docker run --env-file prod.env -p 8000:8000 trueke-backend
 docker run --env-file prod.env trueke-backend celery -A config worker -l info
+docker run --env-file prod.env trueke-backend celery -A config beat -l info
 ```
 
 ## Backend settings
@@ -45,6 +47,9 @@ docker run --env-file prod.env trueke-backend celery -A config worker -l info
 | `TIME_ZONE` | `America/Bogota` | |
 | `LISTING_CURRENCY` | `COP` | Currency of the offers |
 | `LISTING_MAX_COUNTEROFFERS` | `2` | Counteroffers a seller can make on one listing |
+| `LISTING_REVIEW_REMINDER_HOURS` | `48` | Tells the team about a listing with no offer after this long. `0` turns it off. |
+| `LISTING_OFFER_REMINDER_DAYS` | `3` | Reminds the seller about an offer they haven't answered. `0` turns it off. |
+| `LISTING_OFFER_EXPIRY_DAYS` | `7` | An offer with no answer expires and the listing goes back to review. `0` turns it off. |
 | `JWT_ACCESS_MINUTES`, `JWT_REFRESH_DAYS` | `15`, `30` | Session length |
 | `OTP_THROTTLE_RATE`, `NEWSLETTER_THROTTLE_RATE` | `10/hour`, `20/hour` | Limits per IP address |
 | `LISTING_IMAGE_MAX_MB`, `LISTING_MAX_IMAGES`, `PRIVATE_FILE_MAX_MB`, `CHAT_FILE_MAX_MB` | `8`, `10`, `5`, `10` | File limits. If you change them, change them in the frontend too (`photoRules.ts`, `DocumentsCard.tsx`, `chat/api.ts`). |

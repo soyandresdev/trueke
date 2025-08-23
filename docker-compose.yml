@@ -38,7 +38,7 @@ services:
 
   worker:
     <<: *backend
-    command: celery -A config worker -l info
+    command: celery -A config worker -B -l info
 
   frontend:
     image: node:24-alpine

@@ -63,6 +63,8 @@ Cada transición:
 3. Guarda un `ListingEvent` con el historial.
 4. Cuando la transacción se confirma, emite la señal `listing_transitioned`. De ahí salen el aviso en vivo (`realtime`) y las notificaciones (`notifications`).
 
+`expire` es la única transición que hace la plataforma sola, desde la tarea que corre cada hora (`apps/listings/tasks.py`). No tiene endpoint y nadie puede pedirla.
+
 La API devuelve en cada publicación `available_actions`, las transiciones que puede hacer quien pregunta. El frontend pinta los botones con eso y no repite las reglas.
 
 Esos eventos son también el origen del tablero (`apps/listings/dashboard.py`): el embudo y los números del periodo se cuentan a partir de ellos, así que no hay contadores que mantener y una publicación vieja sigue contando su historia completa.

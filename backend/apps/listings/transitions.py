@@ -22,6 +22,8 @@ S = Listing.Status
 
 SELLER = "seller"
 OPERATOR = "operator"
+# La hace la plataforma sola (tareas periódicas), no una persona.
+SYSTEM = "system"
 
 # Argumentos: listing, event. También se emite al crear la publicación (event.action == "create").
 listing_transitioned = Signal()
@@ -52,10 +54,13 @@ TRANSITIONS = {
         Transition(
             "cancel", frozenset({S.IN_REVIEW, S.OFFERED, S.COUNTERED}), S.CANCELLED, SELLER, _("Cancelar")
         ),
+        Transition("expire", frozenset({S.OFFERED, S.COUNTERED}), S.IN_REVIEW, SYSTEM, _("Oferta vencida")),
     ]
 }
 # Cancelar lo pueden hacer los dos lados.
 SHARED = {"cancel"}
+# Las que puede hacer una persona: las que aparecen en `available_actions` y tienen endpoint.
+USER_ACTIONS = [name for name, t in TRANSITIONS.items() if t.actor != SYSTEM]
 
 
 class TransitionError(Exception):
@@ -69,6 +74,8 @@ class TransitionError(Exception):
 
 
 def _role(listing: Listing, user) -> str | None:
+    if user is None:
+        return SYSTEM
     if user.pk == listing.seller_id:
         return SELLER
     # Un operador nunca actúa como plataforma sobre sus propias publicaciones.
@@ -80,7 +87,12 @@ def _role(listing: Listing, user) -> str | None:
 def can_act(listing: Listing, user, name: str) -> bool:
     t = TRANSITIONS[name]
     role = _role(listing, user)
-    return role is not None and (role == t.actor or name in SHARED)
+    if role is None:
+        return False
+    # Lo de la plataforma es solo suyo, y ella no hace lo de las personas.
+    if SYSTEM in (role, t.actor):
+        return role == t.actor
+    return role == t.actor or name in SHARED
 
 
 def counters_left(listing: Listing) -> int:
@@ -143,6 +155,11 @@ def apply(listing: Listing, user, name: str, **data) -> ListingEvent:
             locked.pickup_notes = data.get("notes", "")
         elif name in ("cancel", "reject"):
             locked.cancel_reason = data.get("reason", "")
+        elif name == "expire":
+            # La oferta deja de estar en pie: la publicación vuelve a la cola de revisión.
+            data["amount"] = locked.offer_amount
+            locked.offer_amount = None
+            locked.counter_amount = None
         elif name == "pay":
             locked.paid_amount = data["amount"]
             locked.paid_at = data.get("paid_at") or timezone.localdate()
@@ -155,6 +172,7 @@ def apply(listing: Listing, user, name: str, **data) -> ListingEvent:
         from_status = locked.status
         locked.status = t.target
         locked.status_changed_at = timezone.now()
+        locked.reminded_at = None  # la espera nueva empieza sin recordatorios
         locked.save()
         event = ListingEvent.objects.create(
             listing=locked,

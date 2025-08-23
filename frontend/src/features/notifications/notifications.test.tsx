@@ -35,6 +35,28 @@ describe('texto de las notificaciones', () => {
       '“Teclado MIDI” was cancelled.',
     )
   })
+
+  it('los recordatorios de la plataforma dicen el tiempo que queda', async () => {
+    const reminder = notification({
+      kind: 'listing.review_reminder',
+      data: { hours: 48 },
+    })
+    expect(notificationText(reminder as never)).toBe(
+      '«Teclado MIDI» lleva 48 horas esperando una oferta.',
+    )
+
+    const pending = (days: number) =>
+      notificationText(
+        notification({ kind: 'listing.offer_reminder', data: { days_left: days } }) as never,
+      )
+    expect(pending(3)).toBe('Todavía tienes una oferta por «Teclado MIDI». Vence en 3 días.')
+    expect(pending(1)).toBe('Todavía tienes una oferta por «Teclado MIDI». Vence mañana.')
+    expect(pending(0)).toBe('Todavía tienes una oferta por «Teclado MIDI». Vence hoy.')
+
+    expect(notificationText(notification({ kind: 'listing.expire' }) as never)).toBe(
+      'La oferta por «Teclado MIDI» venció. Vuelve a revisión.',
+    )
+  })
 })
 
 describe('campana', () => {

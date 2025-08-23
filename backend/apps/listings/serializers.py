@@ -105,7 +105,7 @@ class ListingSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
-    @extend_schema_field(serializers.ListField(child=serializers.ChoiceField(list(transitions.TRANSITIONS))))
+    @extend_schema_field(serializers.ListField(child=serializers.ChoiceField(transitions.USER_ACTIONS)))
     def get_available_actions(self, listing):
         return transitions.available(listing, self.context["request"].user)
 

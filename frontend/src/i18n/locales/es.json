@@ -58,7 +58,12 @@
         "cancel": "«{{title}}» fue cancelada.",
         "pay": "Te pagamos {{amount}} por «{{title}}».",
         "counter": "{{actor}} pide {{amount}} por «{{title}}».",
-        "accept_counter": "Aceptamos tu contraoferta de {{amount}} por «{{title}}»."
+        "accept_counter": "Aceptamos tu contraoferta de {{amount}} por «{{title}}».",
+        "expire": "La oferta por «{{title}}» venció. Vuelve a revisión.",
+        "review_reminder": "«{{title}}» lleva {{hours}} horas esperando una oferta.",
+        "offer_reminder_one": "Todavía tienes una oferta por «{{title}}». Vence mañana.",
+        "offer_reminder_other": "Todavía tienes una oferta por «{{title}}». Vence en {{count}} días.",
+        "offer_reminder_zero": "Todavía tienes una oferta por «{{title}}». Vence hoy."
       },
       "message": {
         "new_one": "Mensaje nuevo de {{actor}} en «{{title}}».",
@@ -207,7 +212,8 @@
     "cancel": "Publicación cancelada",
     "pay": "Pago registrado",
     "counter": "Contraoferta del vendedor",
-    "accept_counter": "Contraoferta aceptada"
+    "accept_counter": "Contraoferta aceptada",
+    "expire": "Oferta vencida"
   },
   "statusNote": {
     "seller": {
