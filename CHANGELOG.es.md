@@ -4,6 +4,7 @@
 
 ## Sin publicar
 
+- **El vendedor ve sus números.** Arriba de sus publicaciones: cuánto ha ganado, cuánto le falta cobrar y cuántas publicaciones tiene en curso. «Mis pagos» lista cada venta pagada, con su fecha, referencia y comprobante.
 - **La plataforma hace seguimiento sola.** Si una publicación lleva mucho esperando oferta, el equipo se entera; si una oferta espera respuesta, el vendedor recibe un recordatorio; y la oferta que nadie responde vence y la publicación vuelve a revisión. Los tres tiempos se cambian, o se apagan, con `LISTING_REVIEW_REMINDER_HOURS`, `LISTING_OFFER_REMINDER_DAYS` y `LISTING_OFFER_EXPIRY_DAYS`. Hace falta un proceso `celery beat`.
 - **Tablero del equipo** (`/panel`). Lo que espera una acción (publicaciones sin oferta, contraofertas, recogidas pendientes, ventas sin pagar), el embudo de publicada a pagada, los números de los últimos 30 días y una tabla con todas las ofertas, ordenable y descargable en CSV. Todo sale del historial de cada publicación: no hay contadores nuevos que mantener.
 - **Fotos más livianas y seguras.** Las fotos se guardan en WebP en dos tamaños (una grande y una miniatura para las listas), bien giradas y sin metadatos como la ubicación GPS. Las listas cargan unas 8 veces menos datos. Para las fotos que ya existen: `python manage.py optimize_images`.

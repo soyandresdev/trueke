@@ -207,6 +207,17 @@ test('la operadora ve la venta en el panel y descarga el CSV', async () => {
   expect((await download).suggestedFilename()).toBe('trueke-ofertas.csv')
 })
 
+test('la vendedora ve su resumen y el historial de pagos', async () => {
+  await seller.getByRole('link', { name: 'Mis publicaciones' }).first().click()
+  const summary = seller.getByRole('definition').filter({ hasText: '$' }).first()
+  await expect(summary).toContainText('420.000')
+
+  await seller.getByRole('link', { name: 'Ver mi pago' }).click()
+  await expect(seller).toHaveURL(/\/pagos$/)
+  await expect(seller.getByText('TRF-E2E-001')).toBeVisible()
+  await expect(seller.getByRole('button', { name: 'Ver comprobante' })).toBeVisible()
+})
+
 test('la vendedora no tiene panel', async () => {
   await expect(seller.getByRole('link', { name: 'Panel' })).toBeHidden()
   await seller.goto('/panel')

@@ -511,5 +511,20 @@
       "offered": "Ofertada",
       "counter": "Contra:"
     }
+  },
+  "summary": {
+    "earned": "Ganado",
+    "seePayments_one": "Ver mi pago",
+    "seePayments_other": "Ver mis {{count}} pagos",
+    "pending": "Por cobrar",
+    "pendingHint": "Ventas ya aceptadas",
+    "inProgress": "En curso",
+    "inProgressHint": "Publicaciones que siguen andando"
+  },
+  "payments": {
+    "title": "Mis pagos",
+    "lead_one": "Trueke te ha pagado {{total}} por 1 artículo.",
+    "lead_other": "Trueke te ha pagado {{total}} por {{count}} artículos.",
+    "empty": "Todavía no tienes pagos. Cuando te compremos un artículo, aparece aquí."
   }
 }

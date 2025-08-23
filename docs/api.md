@@ -47,6 +47,7 @@ The API answers in the language of `Accept-Language`: `en` by default, or `es`. 
 | `GET /api/listings/` | seller: own listings; operator: all | Filters: `status` (one or more, comma-separated), `category` (code), `city`, `q`, `page`, and `queue` for the operator (`unoffered`, `countered`, `pickups_today`, `unpaid`) |
 | `POST /api/listings/` | seller | Create. Needs `terms_accepted: true` and checks `attributes` against the category schema |
 | `GET /api/listings/stats/` | same as the list | How many listings are in each status |
+| `GET /api/listings/summary/` | anyone | My own numbers: earned, to be paid, listings in progress |
 | `GET /api/listings/dashboard/` | operator | Work queues, funnel and the numbers of the last 30 days |
 | `GET /api/listings/offers/` | operator | Offers table. Same filters, plus `ordering` (`title`, `city`, `status`, `offer_amount`, `paid_amount`, `created_at`, `offered_at`, with `-` for descending) |
 | `GET /api/listings/offers/export/` | operator | The same table as CSV, without pages |

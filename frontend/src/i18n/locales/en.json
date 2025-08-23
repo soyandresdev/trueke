@@ -511,5 +511,20 @@
       "offered": "Offered",
       "counter": "Counter:"
     }
+  },
+  "summary": {
+    "earned": "Earned",
+    "seePayments_one": "See my payment",
+    "seePayments_other": "See my {{count}} payments",
+    "pending": "To be paid",
+    "pendingHint": "Sales already accepted",
+    "inProgress": "In progress",
+    "inProgressHint": "Listings that are still moving"
+  },
+  "payments": {
+    "title": "My payments",
+    "lead_one": "Trueke has paid you {{total}} for 1 item.",
+    "lead_other": "Trueke has paid you {{total}} for {{count}} items.",
+    "empty": "You have no payments yet. When we buy an item from you, it shows up here."
   }
 }

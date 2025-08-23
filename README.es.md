@@ -22,6 +22,7 @@ Todo pasa en tiempo real: ofertas, cambios de estado, chat y notificaciones.
 - **Notificaciones en vivo** (campana y avisos) por un único WebSocket autenticado.
 - **Panel del operador**: búsqueda, filtros, ficha del vendedor con sus documentos, ofertas y recogidas.
 - **Tablero**: lo que espera al equipo, el embudo, los números de los últimos 30 días y todas las ofertas en una tabla (con CSV).
+- **Los números del vendedor**: ganado, por cobrar, en curso y el historial de pagos con sus comprobantes.
 - **Documentos privados**: identidad y certificado bancario, sin URL pública (en S3, URLs firmadas).
 - **Inglés y español** en la app y en la API (inglés por defecto; español si el navegador lo pide o la persona lo elige).
 

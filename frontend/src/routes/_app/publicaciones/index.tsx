@@ -7,9 +7,10 @@ import { useMe } from '@/auth/session'
 import { ListingCard } from '@/components/ListingCard'
 import { Pagination } from '@/components/ui/Pagination'
 import { Spinner } from '@/components/ui/Spinner'
-import { useListings, useListingStats } from '@/features/listings/api'
+import { useListings, useListingStats, useSellerSummary } from '@/features/listings/api'
 import { ListingFilters } from '@/features/listings/ListingFilters'
 import { ListingTable } from '@/features/listings/ListingTable'
+import { SellerSummary } from '@/features/listings/SellerSummary'
 import { cn } from '@/lib/cn'
 
 const statuses: ListingStatus[] = [
@@ -63,6 +64,8 @@ function Listings() {
   const { data: me } = useMe()
   const operator = me?.role === 'operator'
   const stats = useListingStats()
+  // Solo cuando ya se sabe quién es: el operador no tiene resumen que pedir.
+  const summary = useSellerSummary(me !== undefined && !operator)
   const listings = useListings({
     status: search.estado,
     queue: search.cola,
@@ -97,6 +100,11 @@ function Listings() {
           </Link>
         )}
       </div>
+
+      {/* El resumen solo tiene sentido con algo publicado. */}
+      {summary.data && summary.data.in_progress + summary.data.paid_count > 0 && (
+        <SellerSummary summary={summary.data} />
+      )}
 
       {operator && (
         <ListingFilters

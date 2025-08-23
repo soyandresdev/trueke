@@ -28,6 +28,7 @@ from .serializers import (
     PaySerializer,
     PickupSerializer,
     ReasonSerializer,
+    SellerSummarySerializer,
 )
 
 
@@ -125,6 +126,12 @@ class ListingViewSet(
         rows = visible_listings(request.user).order_by().values("status").annotate(n=Count("id"))
         counts = {row["status"]: row["n"] for row in rows}
         return Response({s: counts.get(s, 0) for s in Listing.Status.values})
+
+    @extend_schema(responses={200: SellerSummarySerializer}, summary="Resumen del vendedor")
+    @action(detail=False, methods=["get"])
+    def summary(self, request):
+        """Cuánto ha ganado, cuánto le falta cobrar y cuántas publicaciones tiene en curso."""
+        return Response(SellerSummarySerializer(dashboard_module.seller_summary(request.user)).data)
 
     @extend_schema(responses={200: DashboardSerializer}, summary="Números del panel del operador")
     @action(detail=False, methods=["get"], permission_classes=[IsOperator])

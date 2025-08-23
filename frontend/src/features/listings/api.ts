@@ -57,6 +57,15 @@ export function useListingStats() {
   })
 }
 
+/** Resumen del vendedor: ganado, por cobrar y en curso. */
+export function useSellerSummary(enabled: boolean) {
+  return useQuery({
+    queryKey: queryKeys.sellerSummary,
+    queryFn: async () => unwrap(await api.GET('/api/listings/summary/')),
+    enabled,
+  })
+}
+
 export function useListing(id: number) {
   return useQuery({
     queryKey: queryKeys.listing(id),
