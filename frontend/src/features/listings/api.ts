@@ -157,6 +157,43 @@ export async function uploadListingImage(id: number, file: File, position: numbe
   )
 }
 
+/** Notas internas del equipo sobre una publicación (solo operadores). */
+export function useNotes(id: number, enabled: boolean) {
+  return useQuery({
+    queryKey: queryKeys.notes(id),
+    queryFn: async () =>
+      unwrap(await api.GET('/api/listings/{id}/notes/', { params: { path: { id } } })),
+    enabled,
+  })
+}
+
+export function useAddNote(id: number) {
+  return useMutation({
+    mutationFn: async (text: string) =>
+      unwrap(
+        await api.POST('/api/listings/{id}/notes/', {
+          params: { path: { id } },
+          body: { text } as never,
+        }),
+      ),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.notes(id) }),
+  })
+}
+
+/** Pone o quita el operador que lleva el caso (`null` lo suelta). */
+export function useAssign(id: number) {
+  return useMutation({
+    mutationFn: async (operator: number | null) =>
+      unwrap(
+        await api.POST('/api/listings/{id}/assign/', {
+          params: { path: { id } },
+          body: { operator } as never,
+        }),
+      ),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.listings }),
+  })
+}
+
 /** Perfil completo de un vendedor (solo operadores). */
 export function useSeller(id: number, enabled: boolean) {
   return useQuery({

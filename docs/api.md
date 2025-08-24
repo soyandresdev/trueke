@@ -44,7 +44,7 @@ The API answers in the language of `Accept-Language`: `en` by default, or `es`. 
 | `PATCH /api/me/documents/` | anyone | Uploads `document_file` and/or `bank_certificate` (multipart; PDF/JPG/PNG, 5 MB) |
 | `GET /api/me/documents/{document\|bank-certificate}/` | anyone | Downloads my document (on S3, it redirects to a signed URL) |
 | `GET /api/categories/` | public | Active categories with their `fields_schema` (JSON Schema) |
-| `GET /api/listings/` | seller: own listings; operator: all | Filters: `status` (one or more, comma-separated), `category` (code), `city`, `q`, `page`, and `queue` for the operator (`unoffered`, `countered`, `pickups_today`, `unpaid`) |
+| `GET /api/listings/` | seller: own listings; operator: all | Filters: `status` (one or more, comma-separated), `category` (code), `city`, `q`, `page`, and for the operator `queue` (`unoffered`, `countered`, `pickups_today`, `unpaid`) and `assigned` (`me`, `none`) |
 | `POST /api/listings/` | seller | Create. Needs `terms_accepted: true` and checks `attributes` against the category schema |
 | `GET /api/listings/stats/` | same as the list | How many listings are in each status |
 | `GET /api/listings/summary/` | anyone | My own numbers: earned, to be paid, listings in progress |
@@ -54,6 +54,8 @@ The API answers in the language of `Accept-Language`: `en` by default, or `es`. 
 | `GET /api/listings/{id}/` · `PATCH` | seller (edit only in review) | Detail with `available_actions` |
 | `POST /api/listings/{id}/images/` · `DELETE …/images/{image_id}/` | seller, in review | Photos (JPG/PNG/WebP, 8 MB, up to 10) |
 | `POST /api/listings/{id}/{action}/` | depends on the action | `offer {amount, currency}`, `accept`, `counter {amount}`, `accept-counter`, `reject {reason}`, `pickup {pickup_by, pickup_date, notes}`, `complete`, `pay {amount, paid_at, reference, receipt}` (multipart if there is a receipt), `cancel {reason}` |
+| `POST /api/listings/{id}/assign/` | operator | `{operator: id\|null}`: who is in charge of the case |
+| `GET /api/listings/{id}/notes/` · `POST` | operator | Internal notes. The seller never sees them. |
 | `GET /api/listings/{id}/receipt/` | seller and operators | Payment receipt (private) |
 | `GET /api/listings/{id}/events/` | whoever can see it | History of the listing |
 | `GET /api/listings/{id}/messages/` · `POST` | seller and operators | Chat. Cursor pagination, newest first. Send JSON, or multipart with `attachment`. |

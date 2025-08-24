@@ -100,6 +100,7 @@ export const listing = (overrides: Record<string, unknown> = {}) => ({
   ],
   status: 'in_review',
   status_changed_at: '2026-09-19T12:00:00Z',
+  assigned_to: null as { id: number; name: string } | null,
   offer_amount: null,
   offer_currency: '',
   pickup_by: '',

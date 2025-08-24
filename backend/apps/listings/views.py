@@ -7,21 +7,26 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.response import Response
 
+from apps.accounts.models import User
 from apps.accounts.permissions import IsOperator
 from apps.accounts.views import serve_private_file
+from apps.notifications.models import Notification
+from apps.notifications.services import notify_reminder
 
 from . import dashboard as dashboard_module
 from . import offers as offers_module
 from . import transitions
-from .models import Category, Listing, ListingImage
+from .models import Category, Listing, ListingImage, ListingNote
 from .queries import QUEUES, apply_filters, unread_filter, visible_listings
 from .serializers import (
+    AssignSerializer,
     CategorySerializer,
     CounterSerializer,
     DashboardSerializer,
     EmptySerializer,
     ListingEventSerializer,
     ListingImageSerializer,
+    ListingNoteSerializer,
     ListingSerializer,
     OfferRowSerializer,
     OfferSerializer,
@@ -50,6 +55,7 @@ ORDERING_PARAM = OpenApiParameter(
 FILTERS = [
     OpenApiParameter("status", description="Uno o varios estados separados por coma"),
     OpenApiParameter("queue", description="Cola del operador", enum=sorted(QUEUES)),
+    OpenApiParameter("assigned", description="Responsable (solo operadores)", enum=["me", "none"]),
     OpenApiParameter("category", description="Código de la categoría"),
     OpenApiParameter("city"),
     OpenApiParameter("q", description="Busca en nombre, descripción y vendedor"),
@@ -94,10 +100,11 @@ class ListingViewSet(
             return Listing.objects.none()
         user = self.request.user
         qs = visible_listings(user).annotate(unread_messages=Count("messages", filter=unread_filter(user)))
+        qs = qs.select_related("assigned_to")
         qs = qs.order_by("-created_at", "-id")  # con annotate, Meta.ordering no se aplica
         if self.action not in ("list", "offers", "offers_export"):
             return qs
-        return apply_filters(qs, self.request.query_params)
+        return apply_filters(qs, self.request.query_params, user)
 
     def perform_create(self, serializer):
         listing = serializer.save(seller=self.request.user)
@@ -126,6 +133,44 @@ class ListingViewSet(
         rows = visible_listings(request.user).order_by().values("status").annotate(n=Count("id"))
         counts = {row["status"]: row["n"] for row in rows}
         return Response({s: counts.get(s, 0) for s in Listing.Status.values})
+
+    @extend_schema(request=AssignSerializer, responses={200: ListingSerializer})
+    @action(detail=True, methods=["post"], permission_classes=[IsOperator])
+    def assign(self, request, pk=None):
+        """Pone (o quita) el operador que lleva el caso."""
+        listing = self.get_object()
+        serializer = AssignSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        operator_id = serializer.validated_data["operator"]
+        operator = None
+        if operator_id is not None:
+            operator = User.objects.filter(pk=operator_id, role=User.Role.OPERATOR, is_active=True).first()
+            if operator is None:
+                raise ValidationError({"operator": _("No es un operador activo.")})
+        listing.assigned_to = operator
+        listing.save(update_fields=["assigned_to", "updated_at"])
+        # Si alguien te pasa un caso, te enteras; tomarlo tú mismo no se avisa.
+        if operator is not None and operator.pk != request.user.pk:
+            notify_reminder(listing, Notification.Kind.LISTING_ASSIGN, [operator], actor=request.user)
+        return Response(ListingSerializer(listing, context=self.get_serializer_context()).data)
+
+    @extend_schema(
+        methods=["GET"], responses={200: ListingNoteSerializer(many=True)}, summary="Notas internas"
+    )
+    @extend_schema(methods=["POST"], request=ListingNoteSerializer, responses={201: ListingNoteSerializer})
+    @action(detail=True, methods=["get", "post"], permission_classes=[IsOperator], pagination_class=None)
+    def notes(self, request, pk=None):
+        """Notas del equipo sobre la publicación. El vendedor no las ve nunca."""
+        listing = self.get_object()
+        if request.method == "POST":
+            serializer = ListingNoteSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            note = ListingNote.objects.create(
+                listing=listing, author=request.user, text=serializer.validated_data["text"]
+            )
+            return Response(ListingNoteSerializer(note).data, status=status.HTTP_201_CREATED)
+        notes = listing.notes.select_related("author")
+        return Response(ListingNoteSerializer(notes, many=True).data)
 
     @extend_schema(responses={200: SellerSummarySerializer}, summary="Resumen del vendedor")
     @action(detail=False, methods=["get"])

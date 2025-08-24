@@ -117,6 +117,14 @@ paths:
       operationId: listings_list
       parameters:
       - in: query
+        name: assigned
+        schema:
+          type: string
+          enum:
+          - me
+          - none
+        description: Responsable (solo operadores)
+      - in: query
         name: category
         schema:
           type: string
@@ -291,6 +299,14 @@ paths:
       operationId: listings_retrieve
       parameters:
       - in: query
+        name: assigned
+        schema:
+          type: string
+          enum:
+          - me
+          - none
+        description: Responsable (solo operadores)
+      - in: query
         name: category
         schema:
           type: string
@@ -411,6 +427,40 @@ paths:
               schema:
                 $ref: '#/components/schemas/Listing'
           description: ''
+  /api/listings/{id}/assign/:
+    post:
+      operationId: listings_assign_create
+      description: Pone (o quita) el operador que lleva el caso.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this listing.
+        required: true
+      tags:
+      - listings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AssignRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AssignRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+          description: ''
   /api/listings/{id}/cancel/:
     post:
       operationId: listings_cancel_create
@@ -504,6 +554,14 @@ paths:
     get:
       operationId: listings_events_list
       parameters:
+      - in: query
+        name: assigned
+        schema:
+          type: string
+          enum:
+          - me
+          - none
+        description: Responsable (solo operadores)
       - in: query
         name: category
         schema:
@@ -602,6 +660,101 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/listings/{id}/notes/:
+    get:
+      operationId: listings_notes_list
+      description: Notas del equipo sobre la publicación. El vendedor no las ve nunca.
+      summary: Notas internas
+      parameters:
+      - in: query
+        name: assigned
+        schema:
+          type: string
+          enum:
+          - me
+          - none
+        description: Responsable (solo operadores)
+      - in: query
+        name: category
+        schema:
+          type: string
+        description: Código de la categoría
+      - in: query
+        name: city
+        schema:
+          type: string
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this listing.
+        required: true
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Busca en nombre, descripción y vendedor
+      - in: query
+        name: queue
+        schema:
+          type: string
+          enum:
+          - countered
+          - pickups_today
+          - unoffered
+          - unpaid
+        description: Cola del operador
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Uno o varios estados separados por coma
+      tags:
+      - listings
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListingNote'
+          description: ''
+    post:
+      operationId: listings_notes_create
+      description: Notas del equipo sobre la publicación. El vendedor no las ve nunca.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this listing.
+        required: true
+      tags:
+      - listings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListingNoteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ListingNoteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ListingNoteRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListingNote'
+          description: ''
   /api/listings/{id}/offer/:
     post:
       operationId: listings_offer_create
@@ -710,6 +863,14 @@ paths:
       description: 'Comprobante de pago: lo ven el vendedor y los operadores.'
       parameters:
       - in: query
+        name: assigned
+        schema:
+          type: string
+          enum:
+          - me
+          - none
+        description: Responsable (solo operadores)
+      - in: query
         name: category
         schema:
           type: string
@@ -791,6 +952,14 @@ paths:
       summary: Números del panel del operador
       parameters:
       - in: query
+        name: assigned
+        schema:
+          type: string
+          enum:
+          - me
+          - none
+        description: Responsable (solo operadores)
+      - in: query
         name: category
         schema:
           type: string
@@ -836,6 +1005,14 @@ paths:
       description: 'Tabla de ofertas: una fila por publicación, con las fechas de
         cada paso.'
       parameters:
+      - in: query
+        name: assigned
+        schema:
+          type: string
+          enum:
+          - me
+          - none
+        description: Responsable (solo operadores)
       - in: query
         name: category
         schema:
@@ -901,6 +1078,14 @@ paths:
       description: La misma tabla, en CSV, sin paginar.
       parameters:
       - in: query
+        name: assigned
+        schema:
+          type: string
+          enum:
+          - me
+          - none
+        description: Responsable (solo operadores)
+      - in: query
         name: category
         schema:
           type: string
@@ -955,6 +1140,14 @@ paths:
       description: Cuántas publicaciones hay en cada estado (pestañas del panel).
       parameters:
       - in: query
+        name: assigned
+        schema:
+          type: string
+          enum:
+          - me
+          - none
+        description: Responsable (solo operadores)
+      - in: query
         name: category
         schema:
           type: string
@@ -1001,6 +1194,14 @@ paths:
         tiene en curso.
       summary: Resumen del vendedor
       parameters:
+      - in: query
+        name: assigned
+        schema:
+          type: string
+          enum:
+          - me
+          - none
+        description: Responsable (solo operadores)
       - in: query
         name: category
         schema:
@@ -1288,6 +1489,15 @@ paths:
           description: Archivo
 components:
   schemas:
+    AssignRequest:
+      type: object
+      description: '`operator: null` suelta el caso.'
+      properties:
+        operator:
+          type: integer
+          nullable: true
+      required:
+      - operator
     AuthResponse:
       type: object
       properties:
@@ -1434,6 +1644,7 @@ components:
       - listing.pay
       - listing.cancel
       - listing.expire
+      - listing.assign
       - listing.review_reminder
       - listing.offer_reminder
       - message.new
@@ -1450,6 +1661,7 @@ components:
         * `listing.pay` - Payment recorded
         * `listing.cancel` - Listing cancelled
         * `listing.expire` - Offer expired
+        * `listing.assign` - Caso asignado
         * `listing.review_reminder` - Listing waiting for an offer
         * `listing.offer_reminder` - Offer with no answer
         * `message.new` - New messages
@@ -1533,6 +1745,11 @@ components:
         counters_left:
           type: integer
           readOnly: true
+        assigned_to:
+          allOf:
+          - $ref: '#/components/schemas/Seller'
+          nullable: true
+          readOnly: true
         pickup_by:
           allOf:
           - $ref: '#/components/schemas/ListingPickupByEnum'
@@ -1587,6 +1804,7 @@ components:
           format: date-time
           readOnly: true
       required:
+      - assigned_to
       - available_actions
       - cancel_reason
       - category
@@ -1682,6 +1900,39 @@ components:
           title: Order
       required:
       - image
+    ListingNote:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        text:
+          type: string
+          title: Nota
+          maxLength: 2000
+        author:
+          allOf:
+          - $ref: '#/components/schemas/Seller'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - author
+      - created_at
+      - id
+      - text
+    ListingNoteRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          minLength: 1
+          title: Nota
+          maxLength: 2000
+      required:
+      - text
     ListingPickupByEnum:
       enum:
       - seller
@@ -1954,6 +2205,11 @@ components:
           allOf:
           - $ref: '#/components/schemas/Seller'
           readOnly: true
+        assigned_to:
+          allOf:
+          - $ref: '#/components/schemas/Seller'
+          readOnly: true
+          nullable: true
         category:
           type: string
           readOnly: true
@@ -2012,6 +2268,7 @@ components:
           title: Payment date
       required:
       - accepted_at
+      - assigned_to
       - category
       - city
       - counter_amount

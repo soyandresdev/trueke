@@ -27,8 +27,16 @@ QUEUES = {
 }
 
 
-def apply_filters(qs, params):
+def apply_filters(qs, params, user=None):
     """Filtros del listado y de la tabla de ofertas."""
+    if assigned := params.get("assigned"):
+        # `me`: las que lleva quien pregunta. `none`: las que no lleva nadie.
+        if assigned == "me" and user is not None:
+            qs = qs.filter(assigned_to=user)
+        elif assigned == "none":
+            qs = qs.filter(assigned_to__isnull=True)
+        else:
+            return qs.none()
     if queue := params.get("queue"):
         if queue not in QUEUES:
             return qs.none()

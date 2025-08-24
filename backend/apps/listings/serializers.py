@@ -8,7 +8,7 @@ from rest_framework import serializers
 from apps.accounts.files import validate_private_file
 
 from . import transitions
-from .models import Category, Listing, ListingEvent, ListingImage
+from .models import Category, Listing, ListingEvent, ListingImage, ListingNote
 from .queries import unread_filter
 from .schema import attribute_errors
 
@@ -51,6 +51,7 @@ class ListingSerializer(serializers.ModelSerializer):
     unread_messages = serializers.SerializerMethodField()
     has_payment_receipt = serializers.SerializerMethodField()
     counters_left = serializers.SerializerMethodField()
+    assigned_to = serializers.SerializerMethodField()
 
     class Meta:
         model = Listing
@@ -74,6 +75,7 @@ class ListingSerializer(serializers.ModelSerializer):
             "offer_currency",
             "counter_amount",
             "counters_left",
+            "assigned_to",
             "pickup_by",
             "pickup_date",
             "pickup_notes",
@@ -108,6 +110,14 @@ class ListingSerializer(serializers.ModelSerializer):
     @extend_schema_field(serializers.ListField(child=serializers.ChoiceField(transitions.USER_ACTIONS)))
     def get_available_actions(self, listing):
         return transitions.available(listing, self.context["request"].user)
+
+    @extend_schema_field(SellerSerializer(allow_null=True))
+    def get_assigned_to(self, listing):
+        """Quién lleva el caso. Es organización interna: el vendedor no lo ve."""
+        user = self.context["request"].user
+        if not user.is_operator or listing.assigned_to is None:
+            return None
+        return SellerSerializer(listing.assigned_to).data
 
     def get_counters_left(self, listing) -> int:
         return transitions.counters_left(listing)
@@ -146,6 +156,7 @@ OFFER_ROW_FIELDS = [
     "id",
     "title",
     "seller",
+    "assigned_to",
     "category",
     "city",
     "status",
@@ -165,6 +176,7 @@ class OfferRowSerializer(serializers.ModelSerializer):
     """Una fila de la tabla de ofertas del operador."""
 
     seller = SellerSerializer(read_only=True)
+    assigned_to = SellerSerializer(read_only=True, allow_null=True)
     category = serializers.CharField(source="category.display_name", read_only=True)
     offered_at = serializers.DateTimeField(read_only=True)
     accepted_at = serializers.DateTimeField(read_only=True)
@@ -173,6 +185,20 @@ class OfferRowSerializer(serializers.ModelSerializer):
         model = Listing
         fields = OFFER_ROW_FIELDS
         read_only_fields = OFFER_ROW_FIELDS
+
+
+class ListingNoteSerializer(serializers.ModelSerializer):
+    author = SellerSerializer(read_only=True)
+
+    class Meta:
+        model = ListingNote
+        fields = ["id", "text", "author", "created_at"]
+
+
+class AssignSerializer(serializers.Serializer):
+    """`operator: null` suelta el caso."""
+
+    operator = serializers.IntegerField(allow_null=True)
 
 
 class QueueSerializer(serializers.Serializer):

@@ -18,6 +18,7 @@ import { ActionPanel } from '@/features/listings/detail/ActionPanel'
 import { Gallery } from '@/features/listings/detail/Gallery'
 import { History } from '@/features/listings/detail/History'
 import { SellerCard } from '@/features/listings/detail/SellerCard'
+import { TeamCard } from '@/features/listings/detail/TeamCard'
 import { displayAttribute, fieldsFromSchema } from '@/features/listings/schemaFields'
 import { formatDate, formatMoney, ticketCode } from '@/lib/format'
 import { useRealtimeChannel } from '@/realtime/context'
@@ -115,7 +116,12 @@ function ListingView({ listing }: { listing: Listing }) {
               </Link>
             )}
           </div>
-          {me?.role === 'operator' && !isOwner && <SellerCard sellerId={listing.seller.id} />}
+          {me?.role === 'operator' && !isOwner && (
+            <>
+              <SellerCard sellerId={listing.seller.id} />
+              <TeamCard listing={listing} meId={me.id} />
+            </>
+          )}
 
           {listing.status === 'countered' && listing.counter_amount && (
             <p className="rounded-lg border-2 border-dashed border-blue bg-blue-soft/50 p-4 font-semibold">

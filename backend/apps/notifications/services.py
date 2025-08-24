@@ -47,12 +47,12 @@ def notify_listing_event(event) -> list[Notification]:
     return created
 
 
-def notify_reminder(listing, kind: str, users: list, data: dict | None = None) -> list[Notification]:
-    """Recordatorio de la plataforma: no viene de una transición, así que no tiene actor."""
+def notify_reminder(listing, kind: str, users: list, data=None, actor=None) -> list[Notification]:
+    """Aviso que no viene de una transición: recordatorios y asignaciones."""
     now = timezone.now()
     with transaction.atomic():
         created = Notification.objects.bulk_create(
-            Notification(user=user, kind=kind, listing=listing, data=data or {}, created_at=now)
+            Notification(user=user, kind=kind, listing=listing, actor=actor, data=data or {}, created_at=now)
             for user in users
         )
         for notification in created:

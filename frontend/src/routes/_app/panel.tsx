@@ -29,6 +29,7 @@ const queues: Queue[] = ['unoffered', 'countered', 'pickups_today', 'unpaid']
 type Search = {
   orden?: OfferOrdering
   cola?: Queue
+  mias?: true
   q?: string
   ciudad?: string
   categoria?: string
@@ -52,6 +53,7 @@ export const Route = createFileRoute('/_app/panel')({
     return {
       orden: isOrdering(search.orden) ? (search.orden as OfferOrdering) : undefined,
       cola: queues.includes(search.cola as Queue) ? (search.cola as Queue) : undefined,
+      mias: search.mias === true || search.mias === 'true' ? true : undefined,
       q: text(search.q),
       ciudad: text(search.ciudad),
       categoria: text(search.categoria),
@@ -74,6 +76,7 @@ function Panel() {
 
   const filters = {
     queue: search.cola,
+    assigned: search.mias ? ('me' as const) : undefined,
     q: search.q,
     city: search.ciudad,
     category: search.categoria,
@@ -126,6 +129,15 @@ function Panel() {
           values={{ q: search.q, ciudad: search.ciudad, categoria: search.categoria }}
           onChange={setSearch}
         />
+        <label className="mt-4 flex w-fit items-center gap-2 text-sm font-semibold">
+          <input
+            type="checkbox"
+            checked={Boolean(search.mias)}
+            onChange={(event) => setSearch({ mias: event.target.checked || undefined })}
+            className="size-4 accent-blue"
+          />
+          {t('team.mine')}
+        </label>
         {search.cola && (
           <p className="mt-4 flex items-center gap-3 text-sm text-ink-soft">
             {t(`panel.queue.${search.cola}`)}

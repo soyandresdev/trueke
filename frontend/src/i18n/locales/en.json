@@ -63,7 +63,8 @@
         "review_reminder": "“{{title}}” has been waiting for an offer for {{hours}} hours.",
         "offer_reminder_one": "You still have an offer for “{{title}}”. It expires tomorrow.",
         "offer_reminder_other": "You still have an offer for “{{title}}”. It expires in {{count}} days.",
-        "offer_reminder_zero": "You still have an offer for “{{title}}”. It expires today."
+        "offer_reminder_zero": "You still have an offer for “{{title}}”. It expires today.",
+        "assign": "{{actor}} gave you “{{title}}”."
       },
       "message": {
         "new_one": "New message from {{actor}} on “{{title}}”.",
@@ -526,5 +527,19 @@
     "lead_one": "Trueke has paid you {{total}} for 1 item.",
     "lead_other": "Trueke has paid you {{total}} for {{count}} items.",
     "empty": "You have no payments yet. When we buy an item from you, it shows up here."
+  },
+  "team": {
+    "title": "Team",
+    "private": "Only operators see this. The seller never does.",
+    "owner": "In charge",
+    "nobody": "Nobody yet",
+    "you": "You",
+    "take": "Take this case",
+    "leave": "Leave it",
+    "newNote": "Internal note",
+    "save": "Save note",
+    "noNotes": "No notes yet.",
+    "someone": "Someone on the team",
+    "mine": "Only mine"
   }
 }

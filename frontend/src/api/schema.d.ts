@@ -192,6 +192,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/listings/{id}/assign/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Pone (o quita) el operador que lleva el caso. */
+        post: operations["listings_assign_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/listings/{id}/cancel/": {
         parameters: {
             query?: never;
@@ -286,6 +303,27 @@ export interface paths {
         put?: never;
         post?: never;
         delete: operations["listings_images_destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/listings/{id}/notes/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Notas internas
+         * @description Notas del equipo sobre la publicación. El vendedor no las ve nunca.
+         */
+        get: operations["listings_notes_list"];
+        put?: never;
+        /** @description Notas del equipo sobre la publicación. El vendedor no las ve nunca. */
+        post: operations["listings_notes_create"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -651,6 +689,10 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** @description `operator: null` suelta el caso. */
+        AssignRequest: {
+            operator: number | null;
+        };
         AuthResponse: {
             access: string;
             refresh: string;
@@ -729,12 +771,13 @@ export interface components {
          *     * `listing.pay` - Payment recorded
          *     * `listing.cancel` - Listing cancelled
          *     * `listing.expire` - Offer expired
+         *     * `listing.assign` - Caso asignado
          *     * `listing.review_reminder` - Listing waiting for an offer
          *     * `listing.offer_reminder` - Offer with no answer
          *     * `message.new` - New messages
          * @enum {string}
          */
-        KindEnum: "listing.create" | "listing.offer" | "listing.accept" | "listing.reject" | "listing.counter" | "listing.accept_counter" | "listing.pickup" | "listing.complete" | "listing.pay" | "listing.cancel" | "listing.expire" | "listing.review_reminder" | "listing.offer_reminder" | "message.new";
+        KindEnum: "listing.create" | "listing.offer" | "listing.accept" | "listing.reject" | "listing.counter" | "listing.accept_counter" | "listing.pickup" | "listing.complete" | "listing.pay" | "listing.cancel" | "listing.expire" | "listing.assign" | "listing.review_reminder" | "listing.offer_reminder" | "message.new";
         /**
          * @description * `es` - Español
          *     * `en` - English
@@ -780,6 +823,7 @@ export interface components {
              */
             readonly counter_amount: string | null;
             readonly counters_left: number;
+            readonly assigned_to: components["schemas"]["Seller"] | null;
             /** Pickup handled by */
             readonly pickup_by: components["schemas"]["ListingPickupByEnum"];
             /** Format: date */
@@ -837,6 +881,18 @@ export interface components {
              * Format: int64
              */
             position?: number;
+        };
+        ListingNote: {
+            readonly id: number;
+            /** Nota */
+            text: string;
+            readonly author: components["schemas"]["Seller"];
+            /** Format: date-time */
+            readonly created_at: string;
+        };
+        ListingNoteRequest: {
+            /** Nota */
+            text: string;
         };
         /**
          * @description * `seller` - The seller ships it
@@ -956,6 +1012,7 @@ export interface components {
             /** Name */
             readonly title: string;
             readonly seller: components["schemas"]["Seller"];
+            readonly assigned_to: components["schemas"]["Seller"] | null;
             readonly category: string;
             readonly city: string;
             readonly status: components["schemas"]["ListingStatusEnum"];
@@ -1322,6 +1379,8 @@ export interface operations {
     listings_list: {
         parameters: {
             query?: {
+                /** @description Responsable (solo operadores) */
+                assigned?: "me" | "none";
                 /** @description Código de la categoría */
                 category?: string;
                 city?: string;
@@ -1470,6 +1529,8 @@ export interface operations {
     listings_retrieve: {
         parameters: {
             query?: {
+                /** @description Responsable (solo operadores) */
+                assigned?: "me" | "none";
                 /** @description Código de la categoría */
                 category?: string;
                 city?: string;
@@ -1571,6 +1632,34 @@ export interface operations {
             };
         };
     };
+    listings_assign_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this listing. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssignRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["AssignRequest"];
+                "multipart/form-data": components["schemas"]["AssignRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Listing"];
+                };
+            };
+        };
+    };
     listings_cancel_create: {
         parameters: {
             query?: never;
@@ -1652,6 +1741,8 @@ export interface operations {
     listings_events_list: {
         parameters: {
             query?: {
+                /** @description Responsable (solo operadores) */
+                assigned?: "me" | "none";
                 /** @description Código de la categoría */
                 category?: string;
                 city?: string;
@@ -1726,6 +1817,68 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    listings_notes_list: {
+        parameters: {
+            query?: {
+                /** @description Responsable (solo operadores) */
+                assigned?: "me" | "none";
+                /** @description Código de la categoría */
+                category?: string;
+                city?: string;
+                /** @description Busca en nombre, descripción y vendedor */
+                q?: string;
+                /** @description Cola del operador */
+                queue?: "countered" | "pickups_today" | "unoffered" | "unpaid";
+                /** @description Uno o varios estados separados por coma */
+                status?: string;
+            };
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this listing. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ListingNote"][];
+                };
+            };
+        };
+    };
+    listings_notes_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description A unique integer value identifying this listing. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ListingNoteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ListingNoteRequest"];
+                "multipart/form-data": components["schemas"]["ListingNoteRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ListingNote"];
+                };
             };
         };
     };
@@ -1816,6 +1969,8 @@ export interface operations {
     listings_receipt_retrieve: {
         parameters: {
             query?: {
+                /** @description Responsable (solo operadores) */
+                assigned?: "me" | "none";
                 /** @description Código de la categoría */
                 category?: string;
                 city?: string;
@@ -1875,6 +2030,8 @@ export interface operations {
     listings_dashboard_retrieve: {
         parameters: {
             query?: {
+                /** @description Responsable (solo operadores) */
+                assigned?: "me" | "none";
                 /** @description Código de la categoría */
                 category?: string;
                 city?: string;
@@ -1904,6 +2061,8 @@ export interface operations {
     listings_offers_list: {
         parameters: {
             query?: {
+                /** @description Responsable (solo operadores) */
+                assigned?: "me" | "none";
                 /** @description Código de la categoría */
                 category?: string;
                 city?: string;
@@ -1937,6 +2096,8 @@ export interface operations {
     listings_offers_export_retrieve: {
         parameters: {
             query?: {
+                /** @description Responsable (solo operadores) */
+                assigned?: "me" | "none";
                 /** @description Código de la categoría */
                 category?: string;
                 city?: string;
@@ -1967,6 +2128,8 @@ export interface operations {
     listings_stats_retrieve: {
         parameters: {
             query?: {
+                /** @description Responsable (solo operadores) */
+                assigned?: "me" | "none";
                 /** @description Código de la categoría */
                 category?: string;
                 city?: string;
@@ -1996,6 +2159,8 @@ export interface operations {
     listings_summary_retrieve: {
         parameters: {
             query?: {
+                /** @description Responsable (solo operadores) */
+                assigned?: "me" | "none";
                 /** @description Código de la categoría */
                 category?: string;
                 city?: string;
