@@ -20,7 +20,7 @@ Everything happens in real time: offers, status changes, chat and notifications.
 - **A state machine**: in review → offer made (the seller can make a counteroffer) → accepted → pickup → completed → paid (or cancelled). Every action has permissions and a full history.
 - **Live chat** for each listing, with private attachments and read receipts.
 - **Live notifications** (bell and pop-up messages) through one authenticated WebSocket.
-- **Operator panel**: search, filters, the seller's profile and documents, offers and pickups.
+- **Operator panel**: search, filters, the seller's profile and documents, offers and pickups. Each case can have an owner and internal notes.
 - **Dashboard**: what is waiting for the team, the funnel, the numbers of the last 30 days and every offer in one table (with CSV).
 - **The seller's own numbers**: earned, to be paid, listings in progress, and the history of payments with their receipts.
 - **Private documents**: ID and bank certificate have no public URL (signed URLs on S3).

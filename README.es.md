@@ -20,7 +20,7 @@ Todo pasa en tiempo real: ofertas, cambios de estado, chat y notificaciones.
 - **Máquina de estados** (en revisión → con oferta, con contraoferta posible → aceptada → recogida → completada → pagada, o cancelada), con permisos por acción y el historial completo.
 - **Chat en vivo** por publicación, con adjuntos privados y leídos.
 - **Notificaciones en vivo** (campana y avisos) por un único WebSocket autenticado.
-- **Panel del operador**: búsqueda, filtros, ficha del vendedor con sus documentos, ofertas y recogidas.
+- **Panel del operador**: búsqueda, filtros, ficha del vendedor con sus documentos, ofertas y recogidas. Cada caso puede tener responsable y notas internas.
 - **Tablero**: lo que espera al equipo, el embudo, los números de los últimos 30 días y todas las ofertas en una tabla (con CSV).
 - **Los números del vendedor**: ganado, por cobrar, en curso y el historial de pagos con sus comprobantes.
 - **Documentos privados**: identidad y certificado bancario, sin URL pública (en S3, URLs firmadas).

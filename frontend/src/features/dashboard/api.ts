@@ -8,6 +8,7 @@ import { unwrap } from '../listings/api'
 
 export type OfferFilters = {
   queue?: Queue
+  assigned?: 'me'
   q?: string
   city?: string
   category?: string

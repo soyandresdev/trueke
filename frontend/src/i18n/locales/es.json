@@ -63,7 +63,8 @@
         "review_reminder": "«{{title}}» lleva {{hours}} horas esperando una oferta.",
         "offer_reminder_one": "Todavía tienes una oferta por «{{title}}». Vence mañana.",
         "offer_reminder_other": "Todavía tienes una oferta por «{{title}}». Vence en {{count}} días.",
-        "offer_reminder_zero": "Todavía tienes una oferta por «{{title}}». Vence hoy."
+        "offer_reminder_zero": "Todavía tienes una oferta por «{{title}}». Vence hoy.",
+        "assign": "{{actor}} te pasó «{{title}}»."
       },
       "message": {
         "new_one": "Mensaje nuevo de {{actor}} en «{{title}}».",
@@ -526,5 +527,19 @@
     "lead_one": "Trueke te ha pagado {{total}} por 1 artículo.",
     "lead_other": "Trueke te ha pagado {{total}} por {{count}} artículos.",
     "empty": "Todavía no tienes pagos. Cuando te compremos un artículo, aparece aquí."
+  },
+  "team": {
+    "title": "Equipo",
+    "private": "Esto lo ven solo los operadores. El vendedor nunca.",
+    "owner": "Responsable",
+    "nobody": "Nadie todavía",
+    "you": "Tú",
+    "take": "Tomar este caso",
+    "leave": "Soltarlo",
+    "newNote": "Nota interna",
+    "save": "Guardar nota",
+    "noNotes": "Todavía no hay notas.",
+    "someone": "Alguien del equipo",
+    "mine": "Solo las mías"
   }
 }

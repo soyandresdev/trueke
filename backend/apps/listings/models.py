@@ -114,6 +114,16 @@ class Listing(models.Model):
         blank=True,
     )
 
+    # Operador que lleva el caso. El vendedor no lo ve: es organización interna.
+    assigned_to = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="assigned_listings",
+        verbose_name=_("responsable"),
+    )
+
     # Último recordatorio enviado por este estado. Cada transición lo borra: así se avisa
     # una sola vez por cada espera, y no todos los días.
     reminded_at = models.DateTimeField(_("último recordatorio"), null=True, blank=True)
@@ -178,6 +188,25 @@ class ListingImage(models.Model):
         for field in (self.image, self.thumbnail):
             if field:
                 field.delete(save=False)
+
+
+class ListingNote(models.Model):
+    """Nota interna del equipo sobre una publicación. El vendedor nunca la ve."""
+
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="notes")
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="listing_notes"
+    )
+    text = models.TextField(_("nota"), max_length=2000)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at", "-id"]
+        verbose_name = _("nota interna")
+        verbose_name_plural = _("notas internas")
+
+    def __str__(self):
+        return self.text[:50]
 
 
 class ListingEvent(models.Model):

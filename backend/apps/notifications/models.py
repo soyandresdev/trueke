@@ -18,6 +18,7 @@ class Notification(models.Model):
         LISTING_PAY = "listing.pay", _("Pago registrado")
         LISTING_CANCEL = "listing.cancel", _("Publicación cancelada")
         LISTING_EXPIRE = "listing.expire", _("Oferta vencida")
+        LISTING_ASSIGN = "listing.assign", _("Caso asignado")
         LISTING_REVIEW_REMINDER = "listing.review_reminder", _("Publicación esperando oferta")
         LISTING_OFFER_REMINDER = "listing.offer_reminder", _("Oferta sin responder")
         MESSAGE_NEW = "message.new", _("Mensajes nuevos")

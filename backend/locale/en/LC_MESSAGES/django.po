@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Trueke\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-19 20:46-0500\n"
+"POT-Creation-Date: 2026-09-19 21:08-0500\n"
 "PO-Revision-Date: 2026-09-19 08:50-0500\n"
 "Last-Translator: \n"
 "Language-Team: English\n"
@@ -271,6 +271,9 @@ msgstr "payment reference"
 msgid "comprobante de pago"
 msgstr "payment receipt"
 
+msgid "responsable"
+msgstr "in charge"
+
 msgid "último recordatorio"
 msgstr "last reminder"
 
@@ -295,6 +298,15 @@ msgstr "thumbnail"
 
 msgid "imágenes"
 msgstr "images"
+
+msgid "nota"
+msgstr "note"
+
+msgid "nota interna"
+msgstr "internal note"
+
+msgid "notas internas"
+msgstr "internal notes"
 
 msgid "acción"
 msgstr "action"
@@ -401,6 +413,9 @@ msgstr "Only the seller can edit the listing."
 msgid "La publicación ya no se puede editar."
 msgstr "The listing can no longer be edited."
 
+msgid "No es un operador activo."
+msgstr "That is not an active operator."
+
 #, python-format
 msgid "Máximo %(n)s imágenes por publicación."
 msgstr "At most %(n)s images per listing."
@@ -449,6 +464,9 @@ msgstr "Payment recorded"
 
 msgid "Publicación cancelada"
 msgstr "Listing cancelled"
+
+msgid "Caso asignado"
+msgstr "Case assigned"
 
 msgid "Publicación esperando oferta"
 msgstr "Listing waiting for an offer"

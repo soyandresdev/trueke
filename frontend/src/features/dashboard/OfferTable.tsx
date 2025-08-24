@@ -81,6 +81,11 @@ export function OfferTable({ rows, ordering, onOrder }: Props) {
                 </Link>
                 <p className="text-muted">
                   {row.seller.name || '—'} · {row.category}
+                  {row.assigned_to && (
+                    <span className="ml-2 rounded-pill bg-blue-soft px-2 py-0.5 text-xs font-semibold text-blue-dark">
+                      {row.assigned_to.name}
+                    </span>
+                  )}
                 </p>
               </td>
               <td className="px-4 py-3">{row.city}</td>
