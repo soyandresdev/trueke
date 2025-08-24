@@ -1,0 +1,63 @@
+33de2271b51ad5f1155f7835ef3877004d11bd42 | 2026-09-19 18:30:22 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Base del repo y marca de Trueke
+56e1950ccdd0731242b9b6648e9a828f826bb9d2 | 2026-09-19 18:48:17 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Backend: scaffold y app accounts
+2816f3e80137516e463822b05b94c4f61306ed36 | 2026-09-19 19:13:28 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Backend: app listings
+0856a9193b676548772e991502f8aae5fc1f2996 | 2026-09-19 19:14:19 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/listings' into develop
+01f18d44b60b0b1ef70aae8b915a59614396468c | 2026-09-19 19:14:59 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Git flow: convención de ramas y CI en develop
+08923e2c6198b77ecfc7f80c68a93e8bddef8bb0 | 2026-09-19 19:19:24 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Backend: chat y WebSocket único
+d30730eae5aefea60d55cbd4784968deb0ce76b0 | 2026-09-19 19:59:17 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/chat' into develop
+b736e234e667f2fa6f99885e4e01e7273489601a | 2026-09-19 20:01:38 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Backend: notificaciones
+1b508a3d4cac29cd5cabd8060cbe10aebf515294 | 2026-09-19 20:15:05 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/notifications' into develop
+0b8183c000ec38ff6ed4c3e5dea82a1cae6da31c | 2026-09-19 20:19:04 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Backend: newsletter, endpoints del operador y datos de demo
+c616352079520f3c795ce1ced17c2d9a5a11cb95 | 2026-09-19 20:20:39 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/newsletter-seed' into develop
+14bff06a4fd1603935da07e212d139cb4a347958 | 2026-09-19 20:28:48 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Frontend: scaffold
+dcf621319a3e6a76dbf8cc2f7cf29ae01f582bcb | 2026-09-19 21:35:23 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/frontend-scaffold' into develop
+db57efed9b9f2b8f3f285a61ae63a5380cbba957 | 2026-09-19 21:41:22 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Frontend: sistema de diseño
+ca3af9672365028755827a8345b94c4c334d19ec | 2026-09-19 21:46:42 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/design-system' into develop
+006e7f00c9e2fd6f0ef939a53373d1787c1c7bfb | 2026-09-19 21:58:24 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Frontend: login OTP y mi cuenta
+c456fd45bac7a7b039baaf0bb54b1e3fc159c983 | 2026-09-19 22:04:36 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Docker: ALLOWED_HOSTS para el proxy de Vite e ignorar tests en src/routes
+15949eb9111b54efde32fb0a83d52148e8080cff | 2026-09-19 22:10:11 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Backend: WebSocket estable con Redis
+02a2ee9b6543a7d2ecdffa5090b138a244afdb37 | 2026-09-19 22:14:01 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | CI: tests del WebSocket contra Redis real
+e09dc621785e7493ccff839c406a84f444fdc761 | 2026-09-19 22:14:13 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/auth' into develop
+71f213d3d20f95e8c5559ff65b75a000e06f13ed | 2026-09-19 22:15:07 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Vite: el proxy conserva el Host para que las URLs de /media funcionen
+c6b6afed5b4ed0fe4f044ef4e3c2ec835ecc76c4 | 2026-09-19 22:32:07 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Frontend: publicaciones
+2ddec55dd93d0916277c792b9b687c46df56af8a | 2026-09-19 23:01:06 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/listings-ui' into develop
+b1a2d9a9df5cf05ec720f0e4b2cdf95f40cfffbb | 2026-09-19 23:15:27 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Frontend: chat y campana de notificaciones
+5672a4ddf16b542b0b08c76e25e02fdc6411211b | 2026-09-19 23:21:07 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/chat-ui' into develop
+c7b309e58e3a3815d623c4c1094493098d8c8c98 | 2026-09-19 23:31:47 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Frontend: panel del operador
+974bf9e477bc97070b9f03a2516dd88211b1371a | 2026-09-19 23:35:05 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/operator-panel' into develop
+56ef1ff4a39f36206b3a27e42d37c665c4dca20c | 2026-09-19 23:40:22 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Frontend: editar publicación en revisión
+a020210461d1c8e4ac1a4fc5fdd3bd6531ac501b | 2026-09-19 23:41:37 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/edit-listing' into develop
+61c6b83551899f3e8a94aa05f035d30ee30491ef | 2026-09-19 23:48:20 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Frontend: landing, términos y newsletter
+b40a38ed10131f021e7655aac471dfbc3e395555 | 2026-09-19 23:48:36 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/landing' into develop
+fb04c038a82415d878faf567476e055651f008df | 2026-09-19 23:51:21 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Backend: traducciones al inglés
+73e329b3d4ddd8b2c8ca696307f8d7de554e8ffa | 2026-09-19 23:51:39 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/i18n-backend' into develop
+97a9257844d291955e6f4d43f20796ad3d39246a | 2026-09-19 23:54:49 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Frontend: test de conteo de renders
+62e9e2ffa0b45426c6a6ccfb92858212aa018ed8 | 2026-09-19 23:55:09 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/render-tests' into develop
+9e09ad3c58bd5d82556ec1a727e7f775494aaf99 | 2026-09-20 00:07:01 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | E2E con Playwright y tres arreglos que encontró
+0ac24073395e0a403e2b8ea621b4e782a83bb124 | 2026-09-20 00:07:57 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/e2e' into develop
+921fc47f5753cea7b87d79267d8798da06ba3ea4 | 2026-09-20 00:19:39 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Documentación, capturas y backend listo para producción
+efd2c7ee07a0d77551fc012b78c2fa695c5dea52 | 2026-09-20 00:20:38 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/docs' into develop
+453c66a0ba09ce77d9f21f9b7f3f679ad8c385fb | 2026-09-20 00:23:41 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Backend: inglés por defecto, español cuando se pide
+b649953b9b36b3ea664232812be32b09c0bd6d02 | 2026-09-20 00:37:31 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Inglés primero: app, API, datos de demo y documentación
+1c8b5ac7960d45432b4e1b9828af3f1f16c4be24 | 2026-09-20 00:38:01 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/english-first' into develop
+e556cf3a7276d4b62a20c5a9f5f85712f72ef4bb | 2026-09-20 00:38:49 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Release 0.1.0
+d84e2b4f1ce6ca4cb2a9fc5ed02e99c854d93144 | 2026-09-20 00:39:10 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'release/0.1.0' into develop
+2ba5fb7a588da399c27ed6e98b19698b00e1ac21 | 2026-09-20 00:46:50 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Repo: fuera los documentos internos y la caché de pnpm
+f9b27a934aee11005a42c443c885011115a995fb | 2026-09-20 00:47:06 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/limpieza-repo' into develop
+f1b2af540e88a4a290954f3737e4ae1db0f4f4d7 | 2026-09-20 00:49:48 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Docker: la caché de pnpm va a su volumen con --store-dir
+e1279e4b5799c6ea56360c89107b313b4ac805e3 | 2026-09-20 00:49:48 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/pnpm-store' into develop
+755719acac710ef6e37bb07498d325e636ea9d81 | 2026-09-20 00:59:07 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Registrar el pago al vendedor
+865ddc3b4e9a54ba5e647525a216d0a10206462f | 2026-09-20 00:59:07 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/pago' into develop
+b4babdcc5a5a83cba881401d93c005c0e34afc50 | 2026-09-20 01:07:53 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Contraofertas y catálogo español corregido
+dd7388f538fb4dbade5dabc81c08c08487c5584e | 2026-09-20 01:07:53 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/contraoferta' into develop
+5567d7d22d51505e1f553cdd9e52cb3bc881f5b1 | 2026-09-20 01:17:40 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Fotos optimizadas: WebP, miniaturas y sin metadatos
+fb9c77d2f11af6ed85afd3e1324686f05a323a3e | 2026-09-20 01:17:40 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/fotos' into develop
+cbeacbcd1a5409d873dcf2fb7f3096a90217ad27 | 2026-09-20 11:37:27 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Tablero del operador: colas, embudo, números y tabla de ofertas
+70fd6325a4d8a4b7a2bb16ab6fe9ce73ddaa74db | 2026-09-20 11:37:27 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/panel' into develop
+b4abd08e6d597eb9b9135eb32252fa06069b68ba | 2026-09-20 11:51:54 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Recordatorios automáticos y vencimiento de las ofertas
+5e5b851986cae5b66eb97340fc7a2bc992e791ed | 2026-09-20 11:51:54 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/recordatorios' into develop
+647086b3c3d594848cb9655637e7675a766e08b3 | 2026-09-20 12:01:15 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Resumen del vendedor y su historial de pagos
+04a512f1c3bef5a1c1f4e47c7db077d1a18f9af4 | 2026-09-20 12:01:15 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/resumen-vendedor' into develop
+d8eb4e1fc33d8f05bc4fe5b1e3b0ccd95289c152 | 2026-09-20 12:11:49 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Responsable del caso y notas internas del equipo
+b44a7d57ddf7b0d346a0f84ee989999d0d71be44 | 2026-09-20 12:11:49 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Merge branch 'feature/asignacion' into develop
+3bf879734b6ceeedd8302eb8688f6cdd76c74b2c | 2026-09-20 13:42:12 +1000 | Andres Hernandez Lozano <soyandresdev@gmail.com> | Ignorar el archivo de reloj de Celery
