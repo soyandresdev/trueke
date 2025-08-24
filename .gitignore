@@ -27,6 +27,8 @@ brand/.tmp/
 # Backend local
 backend/private-media/
 backend/db.sqlite3
+# Reloj de Celery: lo escribe `celery beat` al correr.
+backend/celerybeat-schedule*
 
 # Documentos internos de planificación (no se publican)
 /PLAN.md
